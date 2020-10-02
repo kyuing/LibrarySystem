@@ -1,0 +1,6 @@
+//may add state of rental history
+B01#Java#Jay Z#Y
+B02#Python#Snake#N
+B03#PHP#MC Shit#Y
+B04#Hello World!#Tom#N
+B05#Lorem itsum#Web#N
