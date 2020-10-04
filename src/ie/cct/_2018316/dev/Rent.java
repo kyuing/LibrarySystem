@@ -1,17 +1,66 @@
 package ie.cct._2018316.dev;
-
+//may need to define booleans for state checking and send the state into books
 public class Rent {
 	
-	private String rentID, titleID, readerID, waitingQ;
+	private String rentID, titleID, readerID, state, waitingQ;
+	private boolean isRented, isNormal;
 
-	public Rent(String rentID, String titleID, String readerID, String waitingQ) {
+	public Rent() {
+		
+	}
+	//specific constructor for loading data
+	public Rent(String rentID, String titleID, String readerID, String state/* , String waitingQ */) {
 		
 		this.rentID = rentID;
 		this.titleID = titleID;
 		this.readerID = readerID;
-		this.waitingQ = waitingQ;
+		initState(state);
+//		this.waitingQ = waitingQ;
 	}
 
+	private void initState(String state) {
+		this.state = state;
+		if(state.equalsIgnoreCase("Rented")) {
+			this.isRented = true;	//rented
+			this.isNormal = false;
+		}else {
+			this.isRented = false;
+			this.isNormal = true;	
+		}	
+		
+	}
+	
+	public boolean isRented() {
+		return isRented;
+	}
+	
+	public void setRented(boolean isRented) {
+		//check isRented in controller
+		this.isRented = isRented;
+		if(this.isRented == true) {
+			this.state = "Rented";
+		}
+	}
+	
+	public boolean isNormal() {
+		return isNormal;
+	}
+
+	public void setNormal(boolean isNormal) {
+		
+		this.isNormal = isNormal;
+		if(this.isNormal == true) {
+			this.state = "Normal";	
+		}
+	}
+	
+	public String getState() {
+		return state;
+	}
+//	public void setState(String state) {
+//		this.state = state;
+//	}
+	
 	public String getRentID() {
 		return rentID;
 	}
@@ -46,8 +95,9 @@ public class Rent {
 
 	@Override
 	public String toString() {
-		return "Rent [rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + ", waitingQ=" + waitingQ
-				+ "]";
+		return "\n" + rentID + "[rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + ", state=" + state
+				+ "]\n";
+//		return "\n" + rentID + "[rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + "]\n";
 	}
 
 }

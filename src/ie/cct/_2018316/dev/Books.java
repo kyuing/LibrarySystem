@@ -4,16 +4,17 @@ public class Books {
 
 //	private int id;
 	private String id, title, author, rentalState, wState, renter;
-	private boolean isRentalState;
+	private boolean isRented, isInQueue, isAvailable;	//rented or in queue, available
 	
 	//waiting reader number should be dynamic value
-	//do you really need renterID here?
+	//rentalState 
 	public Books(String id, String title, String author, String rentalState/*, String renterID, String wState*/) {
 		
 		this.id = id;
 		this.title = title;
 		this.author = author;
-		setRentalState(rentalState);
+//		this.rentalState = rentalState;
+		initRentalState(rentalState);
 	}
 
 //	public int getId() {
@@ -28,14 +29,24 @@ public class Books {
 		return rentalState;
 	}
 
-	public void setRentalState(String rentalState) {
+	
+	public void initRentalState(String rentalState) {
 		
 		this.rentalState = rentalState;
-		if(rentalState.equalsIgnoreCase("y")) {
-			this.isRentalState = true;	//rented
+		if(rentalState.equalsIgnoreCase("Rented")) {
+			this.isRented = true;	//rented
+			this.isAvailable = false;
+		}else {
+			this.isRented = false;
+			this.isAvailable = true;	
 		}
-		this.isRentalState = false;	//!rented	
+		
 	}
+
+//	public void setRentalState(String rentalState) {
+//		//validation can be done outside of this by accessing to its state only...?
+//		this.rentalState = rentalState;	
+//	}
 
 	public String getTitle() {
 		return title;
@@ -44,13 +55,48 @@ public class Books {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
 	public String getAuthor() {
 		return author;
 	}
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	public boolean isRented() {
+		return isRented;
+	}
+
+	public void setRented(boolean isRented) {
+		//check isRented in controller
+		this.isRented = isRented;
+		if(this.isRented == true) {
+			this.rentalState = "Rented";
+		}
+	}
+
+	public boolean isAvailable() {
+		return isAvailable;
+	}
+
+	public void setAvailable(boolean isAvailable) {
+		
+		this.isAvailable = isAvailable;
+		if(this.isAvailable == true) {
+			this.rentalState = "Available";	
+		}
+//		else {
+//			this.rentalState = "Rented";	
+//		}
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override

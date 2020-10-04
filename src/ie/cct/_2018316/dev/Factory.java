@@ -53,4 +53,25 @@ public class Factory implements FactoryInterface {
 		return r;
 	}
 
+	@Override
+	public Collection<Rent> createRentDB(BufferedReader in) throws IOException {
+		List<Rent> rt = new ArrayList<>();
+		String[] temp = null;
+		String line, id, bID, rID, state;
+		
+		in.readLine();
+		line = in.readLine();
+
+		while(line != null) {	
+			temp = line.split("#");
+			id = temp[0];
+			bID = temp[1];
+			rID = temp[2];
+			state = temp[3];
+			rt.add(new Rent(id, bID, rID, state));
+			line = in.readLine();
+		}
+		return rt;
+	}
+
 }

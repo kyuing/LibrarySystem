@@ -11,12 +11,31 @@ public final class IO {
     private static Matcher m = null;
 
 	public static String printMenu() {
-		return "\n++++++++++Please select menu+++++++++++++"
+		return "___________________________________________________________________________"
+				+ "\n[Please select menu]"
 				+ "\n1: Search for books"
-				+ "\n2: List all books"
+				+ "\n2: List books"
 				+ "\n3: Search for readers"
-				+ "\n4: List all readers"
-				+ "\n3: Close program";
+				+ "\n4: List readers"
+				+ "\n5: Register a rent"
+				+ "\n6: Register a return"
+				+ "\n7: Close program";
+	}
+	
+	public static String printReaderIDMenu() {
+		return "___________________________________________________________________________"
+				+ "\nEnter the reader ID"
+				+ "\n* This is case-sensitive. Please enter the reader ID as it is"
+				+ "\n* i.g. R1  => correct"
+				+ "\n* i.g. r1  => incorrect";
+	}
+	
+	public static String printBookIDMenu() {
+		return "___________________________________________________________________________"
+				+ "\nEnter the book ID"
+				+ "\n* This is case-sensitive. Please enter the book ID as it is"
+				+ "\n* i.g. B1  => correct"
+				+ "\n* i.g. b1  => incorrect";
 	}
 	
 	public static String menu(String prompt, String regx) {

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collection;
 import ie.cct._2018316.dev.Books;
 import ie.cct._2018316.dev.Readers;
+import ie.cct._2018316.dev.Rent;
 
 public interface FactoryInterface {
 	
@@ -27,4 +28,12 @@ public interface FactoryInterface {
 	 */
 	public Collection<Readers> createReaderDB(BufferedReader in) throws IOException;
   
+	/**
+	 * Method for loading data
+	 * 
+	 * @param in of the type bufferedReader
+	 * @return an instance of Rent
+	 * @throws IOException
+	 */
+	public Collection<Rent> createRentDB(BufferedReader in) throws IOException;
 }
