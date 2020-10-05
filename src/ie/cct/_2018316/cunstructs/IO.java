@@ -38,6 +38,16 @@ public final class IO {
 				+ "\n* i.g. b1  => incorrect";
 	}
 	
+	public static String printRentIDMenu() {
+		return "___________________________________________________________________________"
+				+ "\nEnter the rent Id"
+		/*
+		 * + "\n* This is case-sensitive. Please enter the book ID as it is" +
+		 * "\n* i.g. R1  => correct    or  B1  => correct" +
+		 * "\n* i.g. r1  => incorrect  or  b1  => incorrect"
+		 */;
+	}
+	
 	public static String menu(String prompt, String regx) {
 		
 		boolean isValid = false;

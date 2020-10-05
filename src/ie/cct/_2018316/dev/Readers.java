@@ -1,5 +1,7 @@
 package ie.cct._2018316.dev;
 
+
+//really need to create collection to record rent history????
 public class Readers {
 
 //	private int id;

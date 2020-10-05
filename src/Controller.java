@@ -18,7 +18,8 @@ public class Controller {
 	
 	public Controller() throws IOException {
 		
-		//the structure of reading txt input followed and edited the code (in main method & factoryInterface class) from the sample solution of CA1 in the semester4. 
+		//the structure of reading txt-input followed and edited the code (in main method & factoryInterface class) 
+		//from the sample solution of CA1 in the semester4. 
 		FactoryInterface factory = new Factory();	//declare & init factory
 	    
 		//read input and store them
@@ -48,10 +49,30 @@ public class Controller {
 		  case "5":
 		    registerRent();
 		    
-		  
+		  case "6":
+			registerReturn();  
+		    
 		  default:
 		    menu();
 		}
+	}
+
+	private void registerReturn() {
+		String rtID = "", rID = "", bID;
+		rtID = checkRentID(rtID, rID);
+		
+		if(rtID != null) {
+			rent.get(Integer.parseInt(rtID.substring(2))-1).setRented(false);
+			rent.get(Integer.parseInt(rtID.substring(2))-1).setNormal(true);
+			bID = rent.get(Integer.parseInt(rtID.substring(2))-1).getTitleID();
+			books.get(Integer.parseInt(bID.substring(1))-1).setRented(rent.get(Integer.parseInt(rtID.substring(2))-1).isRented());
+			books.get(Integer.parseInt(bID.substring(1))-1).setAvailable(rent.get(Integer.parseInt(rtID.substring(2))-1).isNormal());
+			System.out.println(rent);
+			System.out.println(books);
+		}
+//		else { 
+//			System.out.println("No result found. Try again"); 
+//		}
 	}
 
 	/**
@@ -66,7 +87,7 @@ public class Controller {
 			if(rID != null) {	//the reader exists
 				rent.add(new Rent());
 				rent.get(rent.size()-1).setRentID("RT" + String.valueOf(rent.size()));
-				rent.get(rent.size()-1).setTitleID(bID);
+				rent.get(rent.size()-1).setTitleID(bID); 
 				rent.get(rent.size()-1).setReaderID(rID);
 				rent.get(rent.size()-1).setRented(true);
 				rent.get(rent.size()-1).setNormal(false);
@@ -79,10 +100,9 @@ public class Controller {
 			}else {
 				System.out.println("the reader does not exist. Try again");
 			}
-			
-		} /*
-			 * else { System.out.println("null"); }
-			 */
+		}else { 
+			System.out.println("Wrong input. Try again"); 
+		}
 	}
 	
 	/**
@@ -98,6 +118,34 @@ public class Controller {
 			if (readers.get(i).getId().equals/* IgnoreCase */(rID)) {
 					return rID;
 			  }
+		 }
+		return null;
+	}
+	
+	/**
+	 * method to return the valid rent id
+	 * @param rtID, rID
+	 * @return
+	 */
+	public String checkRentID(String rtID, String rID) {
+		
+		rtID = IO.menu(IO.printRentIDMenu(), "[a-zA-Z0-9]");
+		rID = IO.menu(IO.printReaderIDMenu(), "[a-zA-Z0-9]");
+		for(int i=0; i<rent.size(); i++) {
+			if (rent.get(i).getRentID().equalsIgnoreCase(rtID)) {
+				  int rtIdToInt = Integer.parseInt(rtID.substring(2));
+				  if((rent.get(rtIdToInt-1).isRented()) 
+					&& (rent.get(rtIdToInt-1).getReaderID().equalsIgnoreCase(rID))) {
+					  return rtID.toUpperCase();
+					
+				  }else {
+					  System.out.println("The rent Id doesn't match with the reader Id."
+					  		+ "\nOr the book in the rent record has already been returned. ");
+				  }
+			  }
+//			else {
+//				  System.out.println("The rent Id is not found. Try again");
+//			  }
 		 }
 		return null;
 	}
