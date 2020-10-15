@@ -5,13 +5,13 @@ package ie.cct._2018316.dev;
 public class Readers {
 
 //	private int id;
-	private String id, fname, lname, address;
+	private String id, fname, lname, currentRent;
 	
-	Readers(String id, String fname, String lname, String address) {
+	Readers(String id, String fname, String lname, String currentRent) {
 		this.id = id;
 		this.fname = fname;
 		this.lname = lname;
-		this.address = address;
+		this.currentRent = currentRent;
 	}
 
 	public String getId() {
@@ -38,18 +38,18 @@ public class Readers {
 		this.lname = lname;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getCurrentRent() {
+		return currentRent;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddress(String currentRent) {
+		this.currentRent = currentRent;
 	}
 
 	@Override
 	public String toString() {
 //		return "\n" + "Readers [id=" + id + ", fname=" + fname + ", lname=" + lname + ", address=" + address + "]\n";
-		return "\n" + id + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", address=" + address + "]\n";
+		return "\n" + id + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
 	}
 	
 	

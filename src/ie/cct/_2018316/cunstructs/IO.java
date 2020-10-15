@@ -10,6 +10,17 @@ public final class IO {
 	private static Pattern p = null;
     private static Matcher m = null;
 
+    public static String printUnderLine() {
+    	return "___________________________________________________________________________";
+    }
+    
+    public static String printRendRecordCheckOption() {
+    	return "___________________________________________________________________________" 
+    			+ "\nAre you sure that the rent record above is correct?"
+    			+ "\nEnter y if so"
+    			+ "\nEnter n to double check the reader ID"
+    			+ "\nEnter q to go back to main menu";
+    }
 	public static String printMenu() {
 		return "___________________________________________________________________________"
 				+ "\n[Please select menu]"
@@ -24,28 +35,25 @@ public final class IO {
 	
 	public static String printReaderIDMenu() {
 		return "___________________________________________________________________________"
-				+ "\nEnter the reader ID"
-				+ "\n* This is case-sensitive. Please enter the reader ID as it is"
-				+ "\n* i.g. R1  => correct"
-				+ "\n* i.g. r1  => incorrect";
+				+ "\nEnter the reader ID";
 	}
 	
 	public static String printBookIDMenu() {
 		return "___________________________________________________________________________"
-				+ "\nEnter the book ID"
-				+ "\n* This is case-sensitive. Please enter the book ID as it is"
-				+ "\n* i.g. B1  => correct"
-				+ "\n* i.g. b1  => incorrect";
+				+ "\nEnter the book ID";
 	}
 	
 	public static String printRentIDMenu() {
 		return "___________________________________________________________________________"
-				+ "\nEnter the rent Id"
-		/*
-		 * + "\n* This is case-sensitive. Please enter the book ID as it is" +
-		 * "\n* i.g. R1  => correct    or  B1  => correct" +
-		 * "\n* i.g. r1  => incorrect  or  b1  => incorrect"
-		 */;
+				+ "\nEnter the rent Id";
+	}
+	
+	public static String printWaitingQueueMenu() {
+		return "___________________________________________________________________________"
+				+ "\nThe book is in rent"
+				+ "\nWould the reader like to be in the waiting queue for renting the book?"
+				+ "\nEnter y if so"
+				+ "\nEnter any other key(s) to go back to the main menu";
 	}
 	
 	public static String menu(String prompt, String regx) {

@@ -1,7 +1,7 @@
-//may add rent id
-R1#Georgi#Facello#80 N. Colonial Dr.Oviedo, FL 32765
-R2#Bezalel#Simmel#7765 E. Pulaski Street Pittsford, NY 14534
-R3#Parto#Bamford#7012 Baker St.Portland, ME 04103
-R4#Chirstian#Koblick#8211 Prospect St.Reidsville, NC 27320
-R5#Kyoichi#Maliniak#1 Pennington St.Dawsonville, GA 30534
-R6#Anneke#Preusig#953 Livingston Drive Nampa, ID 83651
+//may add rent id | myBooks <- current rent only. and make things work from Rent class
+R1#Georgi#Facello#B3
+R2#Bezalel#Simmel#none
+R3#Parto#Bamford#none
+R4#Chirstian#Koblick#none
+R5#Kyoichi#Maliniak#B1
+R6#Anneke#Preusig#none

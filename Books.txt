@@ -1,6 +1,6 @@
-//may add state of rental history
-B1#Java#Jay Z#Rented
-B2#Python#Snake#Available
-B3#PHP#MC Shit#Rented
-B4#Hello World!#Tom#Available
-B5#Lorem itsum#Web#In queue
+bookID | title name | rental state | waitingQ(reader waiting for a rent)
+B1#Java#Jay Z#Rented#none
+B2#Python#Snake#Available#none
+B3#PHP#MC Shit#Rented#none
+B4#Hello World!#Tom#Available#none
+B5#Lorem itsum#Web#In queue#none

@@ -2,28 +2,36 @@ package ie.cct._2018316.dev;
 
 public class Books {
 
-//	private int id;
-	private String id, title, author, rentalState, wState, renter;
-	private boolean isRented, isInQueue, isAvailable;	//rented or in queue, available
+	private String id, title, author, rentalState, readerInQ;
+	private MyQueue mq;
+	private boolean isRented, isInQueue, isAvailable;	
 	
 	//waiting reader number should be dynamic value
 	//rentalState 
-	public Books(String id, String title, String author, String rentalState/*, String renterID, String wState*/) {
+	public Books(String id, String title, String author, String rentalState, String readerInQ) {
 		
 		this.id = id;
 		this.title = title;
 		this.author = author;
-//		this.rentalState = rentalState;
 		initRentalState(rentalState);
+		this.readerInQ = readerInQ;
 	}
 
-//	public int getId() {
-//		return id;
+
+	public String getReaderInQ() {
+		return readerInQ;
+	}
+
+//	public void initReaderInQ(String readerInQ) {
+//		this.readerInQ = readerInQ;
+//		if(this)
 //	}
-//
-//	public void setId(int id) {
-//		this.id = id;
-//	}
+	
+
+	public void setReaderInQ(String readerInQ) {
+		this.readerInQ = readerInQ;
+	}
+
 
 	public String getRentalState() {
 		return rentalState;
