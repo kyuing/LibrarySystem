@@ -15,6 +15,7 @@ public class Factory implements FactoryInterface {
 		List<Books> b = new ArrayList<>();
 		String[] temp = null;
 		String line, id, title, author, rentalState, readerInQ;
+//		MyQueue mq = null;
 		
 		in.readLine();
 		line = in.readLine();
@@ -26,7 +27,7 @@ public class Factory implements FactoryInterface {
 			author = temp[2];
 			rentalState = temp[3];
 			readerInQ = temp[4];
-			b.add(new Books(id, title, author, rentalState, readerInQ));
+			b.add(new Books(id, title, author, rentalState, readerInQ/* , mq */));
 			
 			line = in.readLine();
 		}

@@ -17,8 +17,8 @@ public class Controller {
 	private List<Books> books;
 	private List<Readers> readers;
 	private List<Rent> rent;
-	private MyQueue mq;
-	private Node node;
+//	private MyQueue mq;
+//	private Node node;
 	
 	public Controller() throws IOException {
 		
@@ -42,7 +42,19 @@ public class Controller {
 		rent = (List<Rent>) factory.createRentDB(rent_in);
 		System.out.println(rent);
 
-		mq = new MyQueue();
+		//add some dummy queue into some of the books
+		//this for-loop can be commented out if you want to start the program with no queue in books
+		for(int i=0; i<books.size(); i++) {
+			books.get(i).cloneReadersDB(readers);	
+		}
+		books.get(0).setEnQueue(0);
+		books.get(0).setEnQueue(1);
+		System.out.println(books.get(0).getQueueToString());
+		books.get(2).setEnQueue(2);
+		books.get(2).setEnQueue(3);
+		books.get(2).setEnQueue(4);
+		System.out.println(books.get(2).getQueueToString());
+		
 		menu();
 	}
 
@@ -57,6 +69,10 @@ public class Controller {
 		    
 		  case "6":
 			registerReturn();  
+			
+			
+			//add to check all the queue's belonged to a book
+			//add numbering into queue record
 		    
 		  default:
 		    menu();
@@ -69,7 +85,10 @@ public class Controller {
 		rtID = checkRentID(rtID, rID);
 		
 		if(rtID != null) {
+			
 			rtIdToInt = Integer.parseInt(rtID.substring(2))-1;
+			
+			
 			rent.get(rtIdToInt).setRented(false);
 			rent.get(rtIdToInt).setNormal(true);
 			bID = rent.get(rtIdToInt).getTitleID();
@@ -79,6 +98,16 @@ public class Controller {
 			System.out.println("### Successfully returned###");
 			System.out.println(rent);
 			System.out.println(books);
+			
+			if(!books.get(bIdToInt).getQueueIsEmpty()) {
+				System.out.println(IO.printUnderLine()
+									+ "\n!!!!!!!!!!!!!!!!!! QUICK UPDATE !!!!!!!!!!!!!!!!"
+									+ "\n[The book info]\n" + books.get(bIdToInt).toString()
+									+ "\n\n[The first available reader in the book's queue for renting]\n" 
+									+ books.get(bIdToInt).getFirstInQueueToString());
+			}
+
+			
 		}
 
 	}
@@ -95,7 +124,7 @@ public class Controller {
 			//need to add something for waiting queue?
 			if(bID.equals("Successfully added to the reader into the book's queue")) {
 				//this line is printed only when a reader is added to queue
-				System.out.println("Successfully added to the reader into the book's queue");
+				System.out.println("\n###### Successfully added to the reader into the book's queue ######");
 				
 			}else {
 				rID = checkReeaderID(rID);
@@ -114,6 +143,7 @@ public class Controller {
 						System.out.println("### A new rent has just been recorded successfully ###");
 						System.out.println(rent);
 						System.out.println(books);
+						System.out.println(readers);
 					}else {
 						
 						if(books.get(bIdToIndex).getReaderInQ().equals(rID)) {
@@ -129,13 +159,14 @@ public class Controller {
 							System.out.println("### A new rent has just been recorded successfully ###");
 							System.out.println(rent);
 							System.out.println(books);
+							System.out.println(readers);
 							
-							mq.deQueue();	//remove the 1st node from queue
-							if(!mq.isEmpty()) {
+							books.get(bIdToIndex).setDeQueue();	//remove the 1st node from queue
+							if(!books.get(bIdToIndex).getQueueIsEmpty()) {
 								//if the book's queue is not empty, that means at least one node(reader ID) in queue
 								//so here, set the first reader ID in queue to be the first reader in the book's waiting queue
 								
-								books.get(bIdToIndex).setReaderInQ(mq.getFirst().getID());
+								books.get(bIdToIndex).setReaderInQ(books.get(bIdToIndex).getFirstInQueue().getID());
 								System.out.println(books.get(bIdToIndex).getReaderInQ());
 							}else {
 								//if the book's queue is empty, 
@@ -143,17 +174,14 @@ public class Controller {
 								books.get(bIdToIndex).setReaderInQ("none");
 								System.out.println(books.get(bIdToIndex).getReaderInQ());
 							}
-							//now refine all the queue related code to make look good
-							//Reader class needs to get at least current rent ID
-							
 							
 						}else {
 							//the book's queue has the first node(a reader) that is not equals to this reader  
 							//the queue should go in order
 							System.out.println(IO.printUnderLine());
 							System.out.println("The reader who is in the first queue to rent this book is as follows");
-							System.out.println(mq.getFirst().toString());
-							System.out.println(mq);
+							System.out.println(books.get(bIdToIndex).getFirstInQueue());
+							System.out.println(books.get(bIdToIndex).getQueueToString());
 							System.out.println("Please wait for your turn");
 						}
 				
@@ -223,8 +251,11 @@ public class Controller {
 				
 				if(yn.equalsIgnoreCase("n")) {
 				    rID = IO.menu(IO.printReaderIDMenu(), "[a-zA-Z0-9]");
+				    int rIdIndex = 0;
+				    rIdIndex = Integer.parseInt(rID.substring(1))-1;
 				    if((rent.get(rtIdToInt-1).isRented()) 
-				  	  && (rent.get(rtIdToInt-1).getReaderID().equalsIgnoreCase(rID))) {
+				  	  && (rent.get(rtIdToInt-1).getReaderID().equalsIgnoreCase(rID))
+				  	  | (readers.get(rIdIndex).getCurrentRent().equalsIgnoreCase(rID)) ) {
 				      
 				    	System.out.println(IO.printUnderLine());
 						System.out.println("One rent record found as follows");
@@ -300,7 +331,8 @@ public class Controller {
 							return null;
 						}
 						
-						if(mq != null && !mq.equalsCustom(rID)) {
+						if(!books.get(i).getQueueIsEmpty() 
+								&& !books.get(i).retrieveEqualsInQueue(rID)) {
 							//there's no the existing same reader info(ID) in the book's queue
 							waitingListManager(rID, bID);
 							return "Successfully added to the reader into the book's queue";
@@ -354,25 +386,42 @@ public class Controller {
 //	
 //	}
 	
+	//queue implementation issue
+	//queue doesnt distinghuish book....
+	//it needs to be an attribute in Books
+	
+	//rent and return issue
+	//decide if Readers needs to have all the list of books being rented (allow multiple rents)or
+	//if one book only (allow only one rent)
 	private void waitingListManager(String rIDTobeInQ, String bIDPassed) {
 
 		String first = ""; 
 		int readerIndex = Integer.parseInt(rIDTobeInQ.substring(1))-1;
 		int bookIndex = Integer.parseInt(bIDPassed.substring(1))-1;
+
+		books.get(bookIndex).setEnQueue(readerIndex);
+		System.out.println(books.get(bookIndex).getQueueToString());
+
 		
-		//create a node only if the reader is not currently in the book's queue
-//		if(mq != null && mq.equalsCustom(rIDTobeInQ)) {
-		
-		node = new Node(readers.get(readerIndex));
-		mq.enQueue(node);	//add a node to the last
-		
-		System.out.println(mq);
-		
-		if(books.get(bookIndex).getReaderInQ().equals("none")) {
+//		if(!books.get(bookIndex).getReaderInQ().equals("none")) {
 			//set current reader ID into the book record.
 			//a book record only holds the first queue of the current reader ID
-			books.get(bookIndex).setReaderInQ(mq.getFirst().getID());	
-		}
+//			books.get(bookIndex).setReaderInQ("none");
+			
+			
+			//create a node only if the reader is not currently in the book's queue
+//			books.get(bookIndex).setEnQueue(readerIndex);
+//			System.out.println(books.get(bookIndex).getQueueToString());
+
+//		}
+		
+		//create a node only if the reader is not currently in the book's queue
+//		books.get(bookIndex).setEnQueue(readerIndex);
+//		mq.enQueue(node);	//add a node to the last
+		
+//		System.out.println(books.get(bookIndex).getQueueToString());
+		
+		
 		
 //		if(mq == null) {
 //			node = new Node(readers.get(readerIndex));

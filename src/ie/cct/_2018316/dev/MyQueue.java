@@ -1,6 +1,6 @@
 package ie.cct._2018316.dev;
 
-
+import ie.cct._2018316.cunstructs.IO;
 
 public class MyQueue /* implements MyQueueInterface */ {
 
@@ -35,7 +35,7 @@ public class MyQueue /* implements MyQueueInterface */ {
 			first = newElement;
 			last = first;
 		}else {
-			last.setNext(newElement);	//assign the new element to be the last
+			last.setNext(newElement);	//next one for first
 			last = newElement;	
 		}
 		
@@ -48,7 +48,9 @@ public class MyQueue /* implements MyQueueInterface */ {
 		}
 		if (size == 1) {
 			last = null;
-			first = last;
+//			first = last;
+//			size--;
+//			return first;
 		}
 		Node toReturn = first;
 		first = first.getNext();	//assign the next node to first
@@ -127,16 +129,33 @@ public class MyQueue /* implements MyQueueInterface */ {
 		return size == 0;
 	}
 	
+	public String firstToString() {
+		
+		String toReturn = "";
+		int qNum = 0;	//queue numbering
+		Node current = first;
+		
+		if(current != null) {
+			qNum++;
+			toReturn = "\nQueue\tReader info\n" 
+						+ (qNum) + current.toString().replaceAll("\n", "\t");
+		}
+		return toReturn;
+	}
+	
 	@Override
 	public String toString() {
 		
-		String toReturn = "[ ";
+		String toReturn = "";
+		int qNum = 0;	//queue numbering
 		Node current = first;
+		
+		toReturn = "\n\nQueue\tReader info";
 		while(current != null) {
-			toReturn += current.toString() + " ";
+			qNum++;
+			toReturn += "\n" + (qNum) + current.toString().replaceAll("\n", "\t");
 			current = current.getNext();
 		}
-		toReturn += "]";
 		return toReturn;		
 		
 	}

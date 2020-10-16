@@ -1,7 +1,5 @@
 package ie.cct._2018316.dev;
 
-import java.util.List;
-
 public class Node {
 
 //	private List<Readers> element;
@@ -32,9 +30,7 @@ public class Node {
 	@Override 
 	public String toString() {
 		return this.element.toString();
-//		System.out.println(this.element);
-//		return "";
-//		return this.element.getId();
+
 	}
 
 	public String getID() {

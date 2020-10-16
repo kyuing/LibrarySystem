@@ -1,4 +1,4 @@
-bookID | title name | rental state | waitingQ(reader waiting for a rent)
+bookID | title name | rental state | waitingQ
 B1#Java#Jay Z#Rented#none
 B2#Python#Snake#Available#none
 B3#PHP#MC Shit#Rented#none
