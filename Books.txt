@@ -1,6 +1,6 @@
-bookID | title name | rental state | waitingQ
-B1#Java#Jay Z#Rented#none
+bookID | title name | author | rental state | waitingQ
+B1#Java#Jay Z#Rented#R1 R2
 B2#Python#Snake#Available#none
-B3#PHP#MC Shit#Rented#none
-B4#Hello World!#Tom#Available#none
-B5#Lorem itsum#Web#In queue#none
+B3#PHP#MC Shit#Rented#R3 R4 R5
+B4#Hello World!#Tom#Rented#none
+B5#JAVA OOC#somebody#Rented#none

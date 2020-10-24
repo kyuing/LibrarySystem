@@ -9,48 +9,35 @@ public class Books {
 
 	private String id, title, author, rentalState, readerInQ;
 	private MyQueue mq;
-	private List<Readers> readers;
+	private String[] testingQueueDB/* = null */;
 	private Node node;
 	private boolean isRented, isAvailable;	
 	
 	//waiting reader number should be dynamic value
 	//rentalState 
-	public Books(String id, String title, String author, String rentalState, String readerInQ/* , MyQueue mq */) {
+	public Books(String id, String title, String author, String rentalState, String[] testingQueueDB/* , String readerInQ, MyQueue mq */) {
 		
 		this.id = id;
 		this.title = title;
 		this.author = author;
 		initRentalState(rentalState);
-		this.readerInQ = readerInQ;
+		this.testingQueueDB = null;
+		this.testingQueueDB = testingQueueDB;
+		this.readerInQ = "";
 		this.node = null;
-//		this.mq = null;
-//		cloneReadersDB();
-		mq = new MyQueue();
+		this.mq = null;
+
 	}
 	
-	public void cloneReadersDB(List<Readers> readers) {
+	public String[] getTestingQueueDB() {
+		return this.testingQueueDB;
+	}
+	
+	public MyQueue getMQ() {
 		
-//		this.readers = new ArrayList<>();
-		this.readers = readers;
+		return this.mq;
 	}
 
-	public boolean retrieveEqualsInQueue(String readerIdInNode) {
-		
-		return this.mq.equalsCustom(readerIdInNode);
-	}
-	
-	public Node getFirstInQueue() {
-		
-//		return this.mq.getFirst().getID();
-		return this.mq.getFirst();
-	}
-
-	public boolean getQueueIsEmpty() {
-		
-		return mq.isEmpty();
-		//may need to do mq = null;
-	}
-	
 	public String getQueueToString() {
 		
 		String toReturn = "";
@@ -63,28 +50,13 @@ public class Books {
 		
 		return toReturn;
 	}
-	
-//	public String getFirstInQueueToString() {
-//		
-//		String toReturn = "";
-//		toReturn = IO.printUnderLine()
-//				+ "\n[The book info]"
-//				+ toString()
-//				+ "\n\n[The first available reader in the book's queue]"
-//				+ this.mq.getFirst().toString();		
-//		
-//		return toReturn;
-//	}
-	
-	public String getFirstInQueueToString() {
-		
-		return mq.firstToString();
-	}
 
-	public void setEnQueue(int readerIndex) {
+	public void setEnQueue(List<Readers> readers, int index) {
 		
-		node = new Node(readers.get(readerIndex));
-//		mq = new MyQueue();
+		node = new Node(readers.get(index));
+		if(this.mq == null) {
+			this.mq = new MyQueue();
+		}
 		mq.enQueue(node);
 		this.readerInQ = mq.getFirst().getID();
 	}
@@ -92,24 +64,29 @@ public class Books {
 	public void setDeQueue() {
 		
 		mq.deQueue();
+//		System.out.println("deque test :" + mq);
 		
 		if(!mq.isEmpty()) {
+			this.readerInQ = mq.getFirst().getID();
+//			System.out.println("deque test :" + this.readerInQ);
+		}else {
+			this.readerInQ = "none";	
+		}
+		
+	}
+
+
+	public void setReaderInQ(String none) {
+
+		if(this.mq == null ) {			
+			this.readerInQ = none;	
+		}else {
 			this.readerInQ = mq.getFirst().getID();	
 		}
-		this.readerInQ = "none";
 	}
-
-
+	
 	public String getReaderInQ() {
-		return readerInQ;
-	}
-
-	public void setReaderInQ(String readerInQ) {
-		if(this.mq.isEmpty() && readerInQ.equals("none")) {
-			
-			this.readerInQ = readerInQ;	
-		}
-		this.readerInQ = mq.getFirst().getID();
+		return this.readerInQ;
 	}
 
 
@@ -130,11 +107,6 @@ public class Books {
 		}
 		
 	}
-
-//	public void setRentalState(String rentalState) {
-//		//validation can be done outside of this by accessing to its state only...?
-//		this.rentalState = rentalState;	
-//	}
 
 	public String getTitle() {
 		return title;
@@ -174,9 +146,6 @@ public class Books {
 		if(this.isAvailable == true) {
 			this.rentalState = "Available";	
 		}
-//		else {
-//			this.rentalState = "Rented";	
-//		}
 	}
 
 	public String getId() {
@@ -189,8 +158,10 @@ public class Books {
 
 	@Override
 	public String toString() {
-//		return "\n" + title + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState + "]\n";
-		return "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState + "]\n";
+		return "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author 
+				+ ", rental_state=" + rentalState
+				+ ", First Queue=" + getReaderInQ() + "]\n";
+		
 	}
 	
 	

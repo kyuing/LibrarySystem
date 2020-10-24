@@ -48,7 +48,7 @@ public class MyQueue /* implements MyQueueInterface */ {
 		}
 		if (size == 1) {
 			last = null;
-//			first = last;
+			first = last;
 //			size--;
 //			return first;
 		}
@@ -127,6 +127,28 @@ public class MyQueue /* implements MyQueueInterface */ {
 	 */
 	public boolean isEmpty() {
 		return size == 0;
+	}
+	
+	public String equalsCustomToString (String readerID) {
+		if(size != 0 | size > 0) {
+			
+			Node current = first;
+			int length = size;
+			int counter = 0;
+			String toReturn = "\n\nQueue\tReader info";
+			
+			while(counter < length) {
+				
+				if(current.getID().equals(readerID)) {
+					
+					toReturn += "\n" + (counter+1) + current.toString().replaceAll("\n", "\t");
+					return toReturn;	
+				}
+				current = current.getNext();
+				counter++;
+			}	
+		}
+		return null;
 	}
 	
 	public String firstToString() {

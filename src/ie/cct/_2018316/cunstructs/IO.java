@@ -1,8 +1,11 @@
 package ie.cct._2018316.cunstructs;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ie.cct._2018316.dev.Books;
 
 public final class IO {
 	
@@ -48,10 +51,19 @@ public final class IO {
 				+ "\nEnter the rent Id";
 	}
 	
-	public static String printWaitingQueueMenu() {
+	public static String printWaitingQueueMenu(List<Books> books, String bookID) {
+		
+		int index = 0;
+		index = Integer.parseInt(bookID.substring(1))-1;
 		return "___________________________________________________________________________"
-				+ "\nThe book is in rent"
-				+ "\nWould the reader like to be in the waiting queue for renting the book?"
+				+ "\n* The following book is in rent "
+				+ "\n* Otherwise, it has the existing preceding waiting queue "
+				+ "\n  for readers to have chance to rent the book in order of the waiting queue. "
+//				+ "\n___________________________________________________________________________"
+				+ "\n" + books.get(index)
+				+ "\n" + books.get(index).getMQ().toString()
+				+ "\n___________________________________________________________________________"
+				+ "\n* Would the reader like to be in the waiting queue for renting the book?"
 				+ "\nEnter y if so"
 				+ "\nEnter any other key(s) to go back to the main menu";
 	}

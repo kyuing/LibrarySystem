@@ -1,7 +1,7 @@
-//may add rent id | myBooks <- current rent only. and make things work from Rent class
-R1#Georgi#Facello#B3
+//may add rent id | myRent <- current rent only. and make things work from Rent class
+R1#Georgi#Facello#RT2 RT3 RT4
 R2#Bezalel#Simmel#none
 R3#Parto#Bamford#none
 R4#Chirstian#Koblick#none
-R5#Kyoichi#Maliniak#B1
+R5#Kyoichi#Maliniak#RT1
 R6#Anneke#Preusig#none

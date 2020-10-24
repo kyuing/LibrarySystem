@@ -15,7 +15,6 @@ public class Rent {
 		this.titleID = titleID;
 		this.readerID = readerID;
 		initState(state);
-//		this.waitingQ = waitingQ;
 	}
 
 	private void initState(String state) {
@@ -57,9 +56,6 @@ public class Rent {
 	public String getState() {
 		return state;
 	}
-//	public void setState(String state) {
-//		this.state = state;
-//	}
 	
 	public String getRentID() {
 		return rentID;
@@ -97,7 +93,6 @@ public class Rent {
 	public String toString() {
 		return "\n" + rentID + "[rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + ", state=" + state
 				+ "]\n";
-//		return "\n" + rentID + "[rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + "]\n";
 	}
 
 }

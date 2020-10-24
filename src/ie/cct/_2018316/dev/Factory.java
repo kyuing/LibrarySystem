@@ -10,12 +10,11 @@ import ie.cct._2018316.cunstructs.FactoryInterface;
 public class Factory implements FactoryInterface {
 
 	@Override
-	public Collection<Books> createBookDB(BufferedReader in) throws IOException {
+	public Collection<Books> createBookDB(BufferedReader in, List<Readers> readers) throws IOException {
 		
 		List<Books> b = new ArrayList<>();
-		String[] temp = null;
+		String[] temp = null, myQueueTemp = null;
 		String line, id, title, author, rentalState, readerInQ;
-//		MyQueue mq = null;
 		
 		in.readLine();
 		line = in.readLine();
@@ -27,18 +26,42 @@ public class Factory implements FactoryInterface {
 			author = temp[2];
 			rentalState = temp[3];
 			readerInQ = temp[4];
-			b.add(new Books(id, title, author, rentalState, readerInQ/* , mq */));
+			myQueueTemp = readerInQ.split(" ");
+			b.add(new Books(id, title, author, rentalState, myQueueTemp));
 			
 			line = in.readLine();
 		}
+		
+		int index = 0;
+		String s = "";
+		for(int i=0; i<b.size(); i++) {
+			
+			for(int j=0; j<b.get(i).getTestingQueueDB().length; j++) {
+		
+				if(!b.get(i).getTestingQueueDB()[j].toString().equals("none")) {
+					
+					s = b.get(i).getTestingQueueDB()[j].toString().substring(1);
+					index = Integer.parseInt(s)-1;
+					b.get(i).setEnQueue(readers, index);
+					index = 0;
+					
+				}else {
+					b.get(i).setReaderInQ("none");
+				}
+		
+			}
+		}
+		
 		return b;
 	}
+	
 
 	@Override
-	public Collection<Readers> createReaderDB(BufferedReader in) throws IOException {
+	public Collection<Readers> createReaderDB(BufferedReader in, List<Rent> rent) throws IOException {
 		List<Readers> r = new ArrayList<>();
-		String[] temp = null;
-		String line, id, fname, lname, currentRent;
+		List<Rent> myRent = null;
+		String[] temp = null, myRentTemp = null; 
+		String line, id, fname, lname, myRentLine;		
 		
 		in.readLine();
 		line = in.readLine();
@@ -48,8 +71,32 @@ public class Factory implements FactoryInterface {
 			id = temp[0];
 			fname = temp[1];
 			lname = temp[2];
-			currentRent = temp[3];
-			r.add(new Readers(id, fname, lname, currentRent));
+			myRentLine = temp[3];
+			if(myRentLine.equals("none")) {
+				r.add(new Readers(id, fname, lname, null));
+			
+			}else {
+				myRentTemp = myRentLine.split(" ");
+				
+				if (myRentTemp != null /* && myRentTemp.length > 1 */) {
+					
+					myRent = new ArrayList<>();
+					
+					for(int i=0; i<rent.size(); i++) {
+						
+						for(int j=0; j<myRentTemp.length; j++) {
+							if(rent.get(i).getRentID().equals(myRentTemp[j].toString())) {
+								
+								myRent.add(rent.get(i));
+							}
+						}
+					}
+				}
+				
+				r.add(new Readers(id, fname, lname, myRent));
+				myRent = null;
+			}
+
 			line = in.readLine();
 		}
 		return r;
@@ -75,5 +122,4 @@ public class Factory implements FactoryInterface {
 		}
 		return rt;
 	}
-
 }
