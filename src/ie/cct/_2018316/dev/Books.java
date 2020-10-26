@@ -58,17 +58,27 @@ public class Books {
 			this.mq = new MyQueue();
 		}
 		mq.enQueue(node);
-		this.readerInQ = mq.getFirst().getID();
+//		this.readerInQ = mq.getFirst().getID();
+		
+		String toReturn = "";
+		if (this.mq == null) {
+			toReturn = "none";
+			this.readerInQ = toReturn;	
+		
+		}else {
+			//set all the queue elements as a string in a line
+			toReturn = this.mq.readerInQueueToString();
+			this.readerInQ = toReturn;
+		}
 	}
 	
 	public void setDeQueue() {
 		
 		mq.deQueue();
-//		System.out.println("deque test :" + mq);
 		
 		if(!mq.isEmpty()) {
-			this.readerInQ = mq.getFirst().getID();
-//			System.out.println("deque test :" + this.readerInQ);
+//			this.readerInQ = mq.getFirst().getID();
+			this.readerInQ = this.mq.readerInQueueToString();
 		}else {
 			this.readerInQ = "none";	
 		}
@@ -81,7 +91,8 @@ public class Books {
 		if(this.mq == null ) {			
 			this.readerInQ = none;	
 		}else {
-			this.readerInQ = mq.getFirst().getID();	
+//			this.readerInQ = mq.getFirst().getID();	
+			this.readerInQ = this.mq.readerInQueueToString();
 		}
 	}
 	
@@ -160,7 +171,7 @@ public class Books {
 	public String toString() {
 		return "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author 
 				+ ", rental_state=" + rentalState
-				+ ", First Queue=" + getReaderInQ() + "]\n";
+				+ ", Queue=" + getReaderInQ() + "]\n";
 		
 	}
 	

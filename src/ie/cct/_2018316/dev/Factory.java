@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import ie.cct._2018316.cunstructs.FactoryInterface;
+import ie.cct._2018316.cunstructs.IO;
 
 public class Factory implements FactoryInterface {
 
@@ -19,6 +20,7 @@ public class Factory implements FactoryInterface {
 		in.readLine();
 		line = in.readLine();
 
+		
 		while(line != null) {	
 			temp = line.split("#");
 			id = temp[0];
@@ -32,18 +34,35 @@ public class Factory implements FactoryInterface {
 			line = in.readLine();
 		}
 		
+		
+		
+//		for(int i=0; i<readers.size(); i++) {
+//			
+//			for(int j=0; j<b.get(i).getTestingQueueDB().length; j++) {
+//				
+//				if(readers.get(i).getId().equals(anObject))
+//		
+//			}
+//		}
+
 		int index = 0;
-		String s = "";
+		String s = ""/*, rIdToString = ""*/;
 		for(int i=0; i<b.size(); i++) {
 			
 			for(int j=0; j<b.get(i).getTestingQueueDB().length; j++) {
-		
+				
 				if(!b.get(i).getTestingQueueDB()[j].toString().equals("none")) {
 					
-					s = b.get(i).getTestingQueueDB()[j].toString().substring(1);
-					index = Integer.parseInt(s)-1;
-					b.get(i).setEnQueue(readers, index);
-					index = 0;
+					s = b.get(i).getTestingQueueDB()[j].toString();
+					if(validReeaderID(readers, s)) {
+						//ONLY take the valid existing reader ID from the book's queue whatever is there.
+						s = s.substring(1);
+						index = Integer.parseInt(s)-1;
+						b.get(i).setEnQueue(readers, index);
+						index = 0;
+					} /*
+						 * else { System.out.println("wrong wrong wrong"); }
+						 */
 					
 				}else {
 					b.get(i).setReaderInQ("none");
@@ -53,6 +72,20 @@ public class Factory implements FactoryInterface {
 		}
 		
 		return b;
+	}
+	
+	
+	@Override
+	public boolean validReeaderID(List<Readers> readers, String rID) {
+		
+		
+		//may need to add some search function to search for reader id
+		for(int i=0; i<readers.size(); i++) {
+			if (readers.get(i).getId().equalsIgnoreCase(rID)) {
+					return true;
+			  }
+		 }
+		return false;
 	}
 	
 

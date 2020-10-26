@@ -1,6 +1,5 @@
 package ie.cct._2018316.dev;
 
-import ie.cct._2018316.cunstructs.IO;
 
 public class MyQueue /* implements MyQueueInterface */ {
 
@@ -162,6 +161,20 @@ public class MyQueue /* implements MyQueueInterface */ {
 			toReturn = "\nQueue\tReader info\n" 
 						+ (qNum) + current.toString().replaceAll("\n", "\t");
 		}
+		return toReturn;
+	}
+	
+	public String readerInQueueToString() {
+		
+		String toReturn = "";
+		Node current = first;
+		
+		while(current != null) {
+			toReturn += current.getID() + " ";
+			current = current.getNext();	
+		}
+		toReturn = toReturn.substring(0, toReturn.length() - 1);
+		
 		return toReturn;
 	}
 	

@@ -57,4 +57,12 @@ public interface FactoryInterface {
 	 * @throws IOException
 	 */
 	Collection<Books> createBookDB(BufferedReader in, List<Readers> readers) throws IOException;
+	
+	/**
+	 * Method for validating reader input between a book's queue and the existing reader DB
+	 * @param readers
+	 * @param rID
+	 * @return true if reader ID in List<Readers> readers exists
+	 */
+	public boolean validReeaderID(List<Readers> readers, String rID);
 }

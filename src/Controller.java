@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import ie.cct._2018316.cunstructs.FactoryInterface;
 import ie.cct._2018316.cunstructs.IO;
@@ -10,6 +11,7 @@ import ie.cct._2018316.dev.MyQueue;
 import ie.cct._2018316.dev.Node;
 import ie.cct._2018316.dev.Readers;
 import ie.cct._2018316.dev.Rent;
+import ie.cct._2018316.dev.Search;
 
 public class Controller {
 
@@ -61,6 +63,11 @@ public class Controller {
 		String op = IO.menu(IO.printMenu(), "^[1|2|3|4|5|6|7]$");
 		//test to add rental record first.
 		switch(op) {
+		  
+	      case "1":
+		    searchForBooks();
+		    menu();
+		
 		  case "5":
 		    registerRent();
 		    menu();
@@ -75,6 +82,74 @@ public class Controller {
 		}
 	}
 
+//	//linear search 1
+//	//tried to store all possible index numbers into a list obj but it only stores only one result
+//	private void searchForBooks() {
+////		public List<Integer> LinearSerch(List<Books> b, String keyword) {
+//		String keyword = "";
+//		List<Integer> result = new ArrayList<>();
+//		Search s = new Search();
+//		keyword = IO.menu(IO.printBookSearchMenu(), "[a-zA-Z0-9]");
+////		int initNum = 0;
+////		result = s.LinearSerch(this.books, initNum, keyword);
+//		result = s.LinearSerch(this.books, keyword);
+//		
+//		if(result == null) {
+//			System.out.println("No match found with the keyword");
+//		}else {
+//			for(int i=0; i<result.size(); i++) {
+//				System.out.println(this.books.get(result.get(i)));
+//			}	
+//		}
+//		
+//		
+//	}
+	
+	//just return one index
+	private void searchForBooks() {
+		String keyword = "", askUserOp = "";
+		
+		askUserOp = IO.menu(IO.printBookSearchOptionMenu(), "^[1|2|q|Q]$");
+		if(askUserOp.equals("1")) {
+			Search s = new Search();
+			keyword = IO.menu(IO.printBookSearchMenu(), "[a-zA-Z0-9]++");
+			int found = 0;
+			found = s.LinearSerch(this.books, keyword);
+			
+			if(found == -1) {
+				System.out.println("No match found with the keyword");
+			
+			}else {
+				System.out.println(this.books.get(found));
+			}	
+		}
+		
+		if(askUserOp.equals("2")) {
+			
+			String t="", a="";
+			t = IO.menu(IO.printUnderLine() + "\nEnter the title name of the book", "[a-zA-Z0-9]++");
+			a = IO.menu(IO.printUnderLine() + "\nEnter the author name of the book", "[a-zA-Z0-9]++");
+			
+			Search s = new Search();
+			keyword = "+" + t.trim() + "&" + a.trim();
+			int found = 0;
+			found = s.LinearSerch(this.books, keyword);
+			
+			if(found == -1) {
+				System.out.println("No match found with the keyword");
+			
+			}else {
+				System.out.println(this.books.get(found));
+			}	
+		}
+		
+		if(askUserOp.equalsIgnoreCase("q")) {
+			System.out.println("Going back to menu...");
+		}
+			
+		
+	}
+	
 	private void registerReturn() {
 		String rtID = "", bID = "";	//don't think i really need book id here since rent id holds everything
 		int rtIdToInt = 0, bIdToInt = 0, rIdToInt = 0;
@@ -150,7 +225,8 @@ public class Controller {
 					}else {
 						
 						//if wanted, here, you can validate with mq referece in a book 
-						if(books.get(bIdToIndex).getReaderInQ().equals(rID)) {
+//						if(books.get(bIdToIndex).getReaderInQ().equals(rID)) {
+						if(books.get(bIdToIndex).getMQ().getFirst().getID().equals(rID)) {
 							//if the reader who is in the 1st queue == rID, process a rent
 							rent.add(new Rent());
 							rent.get(rent.size()-1).setRentID("RT" + String.valueOf(rent.size()));
@@ -197,12 +273,20 @@ public class Controller {
 												+ "\n  in order for he/she to be able to rent the book."
 												+ "\n\n  Please refer to the following prompt.");
 								
-								
-								if(waitingQueueManager(bID, bIdToIndex, rID).equals("Successfully added to the reader into the book's queue")) {
-									//this line is printed only when a reader is added to queue
-									System.out.println("\n###### Successfully added to the reader into the book's queue ######");
+								String temp = "";
+								if((temp = waitingQueueManager(bID, bIdToIndex, rID)) != null) {
+									
+									if(temp.equals("Successfully added to the reader into the book's queue")) {
+										//this line is printed only when a reader is added to queue
+										System.out.println("\n###### Successfully added to the reader into the book's queue ######");
+										
+									}
+										
 									
 								}
+								/*
+								 * else { System.out.println("SDfdsfsdfsdf"); }
+								 */
 
 							}
 							
@@ -297,6 +381,7 @@ public class Controller {
 				
 				if(yn.equalsIgnoreCase("q")) {
 					System.out.println("Back to main menu....");
+//					return null;
 				}
 				
 			}
@@ -448,67 +533,10 @@ public class Controller {
 	//if one book only (allow only one rent)
 	private void enQueueManager(String rIDTobeInQ, String bIDPassed) {
 
-		String first = ""; 
 		int readerIndex = Integer.parseInt(rIDTobeInQ.substring(1))-1;
 		int bookIndex = Integer.parseInt(bIDPassed.substring(1))-1;
 
 		books.get(bookIndex).setEnQueue(readers, readerIndex);
-//		System.out.println(books.get(bookIndex).getQueueToString());
-
-		
-//		if(!books.get(bookIndex).getReaderInQ().equals("none")) {
-			//set current reader ID into the book record.
-			//a book record only holds the first queue of the current reader ID
-//			books.get(bookIndex).setReaderInQ("none");
-			
-			
-			//create a node only if the reader is not currently in the book's queue
-//			books.get(bookIndex).setEnQueue(readerIndex);
-//			System.out.println(books.get(bookIndex).getQueueToString());
-
-//		}
-		
-		//create a node only if the reader is not currently in the book's queue
-//		books.get(bookIndex).setEnQueue(readerIndex);
-//		mq.enQueue(node);	//add a node to the last
-		
-//		System.out.println(books.get(bookIndex).getQueueToString());
-		
-		
-		
-//		if(mq == null) {
-//			node = new Node(readers.get(readerIndex));
-//			mq.enQueue(node);	//add a node to the last
-//			
-//			System.out.println(mq);
-//			
-//			if(books.get(bookIndex).getReaderInQ().equals("none")) {
-//				//set current reader ID into the book record.
-//				//a book record only holds the first queue of the current reader ID
-//				books.get(bookIndex).setReaderInQ(mq.getFirst().getID());	
-//			}
-//		}else {
-//			if(mq.equalsCustom(rIDTobeInQ)) {
-//				//the reader has been already in queue
-//				System.out.println("The reader is already in the book's queue. Please wait for your turn");
-//			}else {
-//				node = new Node(readers.get(readerIndex));	//create a node
-//				mq.enQueue(node);	//add a node to the last
-//				
-//				System.out.println(mq);
-//				
-//				if(books.get(bookIndex).getReaderInQ().equals("none")) {
-//					//set current reader ID into the book record.
-//					//a book record only holds the first queue of the current reader ID
-//					books.get(bookIndex).setReaderInQ(mq.getFirst().getID());	
-//				}
-//			}
-//		}
-			
-//		}
-		
-
-//		mq.findElementByPosition(position)
 
 	}
 }
