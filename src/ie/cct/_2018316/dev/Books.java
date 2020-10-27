@@ -166,6 +166,27 @@ public class Books {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public String titleAndAuthorSortedToString(String s) {
+		return "\n" + s + "[id=" + id + ", title=" + title + ", author=" + author 
+				+ ", rental_state=" + rentalState
+				+ ", Queue=" + getReaderInQ() + "]\n";
+		
+	}
+	
+	public String authorSortedToString() {
+		return "\n" + author + "[id=" + id + ", title=" + title + ", author=" + author 
+				+ ", rental_state=" + rentalState
+				+ ", Queue=" + getReaderInQ() + "]\n";
+		
+	}
+	
+	public String titleSortedToString() {
+		return "\n" + title + "[id=" + id + ", title=" + title + ", author=" + author 
+				+ ", rental_state=" + rentalState
+				+ ", Queue=" + getReaderInQ() + "]\n";
+		
+	}
 
 	@Override
 	public String toString() {

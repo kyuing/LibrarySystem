@@ -65,6 +65,15 @@ public final class IO {
 				+ "\n\nq: go back to menu ";
 	}
 	
+	public static String printBookSortOptionMenu() {
+		return "___________________________________________________________________________"
+				+ "\nSelect one of the following options for listing books in alphabetical order. "
+				+ "\n\n1: list title"
+				+ "\n2: list author."
+				+ "\n3: list title and author"
+				+ "\n\nq: go back to menu ";
+	}
+	
 	public static String printWaitingQueueMenu(List<Books> books, String bookID) {
 		
 		int index = 0;

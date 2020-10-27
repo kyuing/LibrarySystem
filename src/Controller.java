@@ -12,6 +12,7 @@ import ie.cct._2018316.dev.Node;
 import ie.cct._2018316.dev.Readers;
 import ie.cct._2018316.dev.Rent;
 import ie.cct._2018316.dev.Search;
+import ie.cct._2018316.dev.Sort;
 
 public class Controller {
 
@@ -67,6 +68,10 @@ public class Controller {
 	      case "1":
 		    searchForBooks();
 		    menu();
+		    
+	      case "2":
+		    sortBooks();
+		    menu();
 		
 		  case "5":
 		    registerRent();
@@ -82,28 +87,40 @@ public class Controller {
 		}
 	}
 
-//	//linear search 1
-//	//tried to store all possible index numbers into a list obj but it only stores only one result
-//	private void searchForBooks() {
-////		public List<Integer> LinearSerch(List<Books> b, String keyword) {
-//		String keyword = "";
-//		List<Integer> result = new ArrayList<>();
-//		Search s = new Search();
-//		keyword = IO.menu(IO.printBookSearchMenu(), "[a-zA-Z0-9]");
-////		int initNum = 0;
-////		result = s.LinearSerch(this.books, initNum, keyword);
-//		result = s.LinearSerch(this.books, keyword);
-//		
-//		if(result == null) {
-//			System.out.println("No match found with the keyword");
-//		}else {
-//			for(int i=0; i<result.size(); i++) {
-//				System.out.println(this.books.get(result.get(i)));
-//			}	
-//		}
-//		
-//		
-//	}
+	private void sortBooks() {
+
+		Sort s = new Sort();
+		String[] result = null;
+
+		String op = IO.menu(IO.printBookSortOptionMenu(), "^[1|2|3|q|Q]$");
+		switch(op) {
+		  case "1":
+			  //title sort
+			  if((result = s.BubbleSort(this.books, 1)) != null) {
+				  System.out.println(IO.printUnderLine() + "\n[Titles of all the books sorted in alphabetical order.]\n");
+				  s.titleSorted(result, this.books, 1); 
+			  }
+			  break;
+		  case "2":
+			  //author sort
+			  if((result = s.BubbleSort(this.books, 2)) != null) {
+				  System.out.println(IO.printUnderLine() + "\n[Authors of all the books sorted in alphabetical order.]\n");
+				  s.titleSorted(result, this.books, 2); 
+			  }
+			  break;
+		  case "3":
+			  //title + author sort
+			  if((result = s.BubbleSort(this.books, 3)) != null) {
+				  System.out.println(IO.printUnderLine() + "\n[Titles and authors of all the books sorted in alphabetical order.]\n");
+				  s.titleSorted(result, this.books, 3); 
+			  }
+			  break;
+		 
+		  default:
+			  System.out.println("going back to menu...");
+				  
+		}
+	}
 	
 	//just return one index
 	private void searchForBooks() {
