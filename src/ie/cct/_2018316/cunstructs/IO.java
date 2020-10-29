@@ -56,6 +56,20 @@ public final class IO {
 				+ "\nEnter the book ID, the title name or the author. ";
 	}
 	
+	public static String printReaderSearchMenu() {
+		return "___________________________________________________________________________"
+				+ "\nEnter the reader ID and/or the name";
+	}
+	
+//	public static String printReaderSearchOptionMenu() {
+//		return "___________________________________________________________________________"
+//				+ "\nSelect one of the following options for searching for a reader. "
+//				+ "\n\n1: search for a book by multiple search keywords"
+//				+ "\n2: search for a book with the extact title name & author match."
+//				+ "\n   (This option requires accurate inputs of a specific book)"
+//				+ "\n\nq: go back to menu ";
+//	}
+	
 	public static String printBookSearchOptionMenu() {
 		return "___________________________________________________________________________"
 				+ "\nSelect one of the following options for searching for a book. "

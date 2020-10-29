@@ -7,7 +7,9 @@ import java.util.List;
 public class Readers {
 
 //	private int id;
-	private String id, fname, lname, currentRent;
+	private String id, fname, lname, currentRent, nameTag;
+	private int rIndex;
+	private Readers r;
 	private List<Rent> myRent;
 	private int indexToRemove = 0;
 	
@@ -17,6 +19,21 @@ public class Readers {
 		this.lname = lname;		
 		this.myRent = myRent;
 		setCurrentState();
+	}
+	
+	//specific constructor to clone current states of each of Readers for searching a reader
+	Readers(Readers r, int index) {
+		
+		this.r = r;
+		this.rIndex = index;
+		this.nameTag = null;
+		
+		//clone att from the original Reader obj
+		this.id = r.getId();
+		this.fname = r.getFname();
+		this.lname = r.getLname();		
+		this.myRent = r.getMyRent();
+		setCurrentState();		
 	}
 
 	public void setMyRent(List<Rent> currRentRecord) {
@@ -52,8 +69,7 @@ public class Readers {
 				}
 			}	
 		}
-		
-		
+
 		return false;
 	}
 	
@@ -123,6 +139,33 @@ public class Readers {
 	public void setAddress(String currentRent) {
 		this.currentRent = currentRent;
 	}
+	
+	public void setNameTag(String s, int index) {
+		this.rIndex = index;
+		this.nameTag = s;
+	}
+	
+	public void setNameTag(String s) {
+		this.nameTag = s;
+		
+	}	
+	
+	public String getNameTag() {
+		return this.nameTag;
+	}
+	
+	public String nameTagToString(String s) {
+		return "\n" + s + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
+	}
+	
+//	@Override
+	public String sortedAllInAcendingToString() {
+		return "\n" + "temp.get(" + this.rIndex + ")"  + this.r.nameTagToString(this.nameTag);
+//		return "\n" + "temp.get(" + this.rIndex + ")"  + this.nameTagToString(this.nameTag);
+//		return "\n" + "temp.get(" + this.tempNameTagIndex + ") " + this.tempNameTag + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
+//		return "\n" + "temp.get(" + this.tempNameTagIndex + ") " + getTempNameTag() + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
+	}
+	
 
 	@Override
 	public String toString() {

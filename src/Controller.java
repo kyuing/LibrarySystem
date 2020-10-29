@@ -12,6 +12,8 @@ import ie.cct._2018316.dev.Node;
 import ie.cct._2018316.dev.Readers;
 import ie.cct._2018316.dev.Rent;
 import ie.cct._2018316.dev.Search;
+import ie.cct._2018316.dev.Search_equalsIgnore_approach_test;
+import ie.cct._2018316.dev.Search_dot_java_BinarySearchForReaders_temp;
 import ie.cct._2018316.dev.Sort;
 
 public class Controller {
@@ -66,13 +68,21 @@ public class Controller {
 		switch(op) {
 		  
 	      case "1":
-		    searchForBooks();
+		    searchForBook();
 		    menu();
 		    
 	      case "2":
 		    sortBooks();
 		    menu();
 		
+	      case "3":
+		    searchForReader();
+		    menu();
+			    
+	      case "4":
+		    sortReaders();
+		    menu();
+			    
 		  case "5":
 		    registerRent();
 		    menu();
@@ -85,6 +95,30 @@ public class Controller {
 		  default:
 		    menu();
 		}
+	}
+
+	private void sortReaders() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//@SuppressWarnings("static-access")
+	private void searchForReader() {
+		
+		String keyword = "";
+		Search s = new Search();
+		keyword = IO.menu(IO.printReaderSearchMenu(), "[a-zA-Z0-9]++");
+		//System.out.println(keyword + " at controller.searchForReader()");
+		int found = 0;
+		found = s.BinarySearch(this.readers, keyword.trim());	//return an index number of a reader
+		 
+		if(found == -1) {
+			System.out.println("No match found with the keyword");
+		
+		}else {
+
+			System.out.println(this.readers.get(found));	
+		}	
 	}
 
 	private void sortBooks() {
@@ -123,12 +157,12 @@ public class Controller {
 	}
 	
 	//just return one index
-	private void searchForBooks() {
+	private void searchForBook() {
 		String keyword = "", askUserOp = "";
 		
 		askUserOp = IO.menu(IO.printBookSearchOptionMenu(), "^[1|2|q|Q]$");
 		if(askUserOp.equals("1")) {
-			Search s = new Search();
+			Search_dot_java_BinarySearchForReaders_temp s = new Search_dot_java_BinarySearchForReaders_temp();
 			keyword = IO.menu(IO.printBookSearchMenu(), "[a-zA-Z0-9]++");
 			int found = 0;
 			found = s.LinearSerch(this.books, keyword);
@@ -147,7 +181,7 @@ public class Controller {
 			t = IO.menu(IO.printUnderLine() + "\nEnter the title name of the book", "[a-zA-Z0-9]++");
 			a = IO.menu(IO.printUnderLine() + "\nEnter the author name of the book", "[a-zA-Z0-9]++");
 			
-			Search s = new Search();
+			Search_dot_java_BinarySearchForReaders_temp s = new Search_dot_java_BinarySearchForReaders_temp();
 			keyword = "+" + t.trim() + "&" + a.trim();
 			int found = 0;
 			found = s.LinearSerch(this.books, keyword);
