@@ -1,6 +1,9 @@
 package ie.cct._2018316.dev;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -154,5 +157,140 @@ public class Factory implements FactoryInterface {
 			line = in.readLine();
 		}
 		return rt;
+	}
+	
+	@Override
+	public void writeNewRentToFile (List<Rent> rent, boolean isNew) {
+		
+		String lineZero = "";	
+		
+		try {	//use try-catch in case there some errors
+			//BufferedReader br = new BufferedReader(new FileReader("Rent.txt"));
+			
+			if(isNew) {
+				BufferedWriter bw = new BufferedWriter(new FileWriter("Rent.txt", true));	//append
+				bw.newLine();
+				bw.write(rent.get(rent.size()-1).getRentID());
+				bw.write("#");
+				bw.write(rent.get(rent.size()-1).getTitleID());
+				bw.write("#");
+				bw.write(rent.get(rent.size()-1).getReaderID());
+				bw.write("#");
+				bw.write(rent.get(rent.size()-1).getState());
+				bw.close();
+				
+			}else {
+				
+				BufferedReader br = new BufferedReader(new FileReader("Rent.txt"));
+				lineZero = br.readLine();	//store the field description on line 0 in the txt file
+				br.close();
+
+				BufferedWriter bw = new BufferedWriter(new FileWriter("Rent.txt", false));	//overwrite
+				
+				bw.write(lineZero);
+				
+				for(int i=0; i<rent.size(); i++) {
+					bw.newLine();	
+					bw.write(rent.get(i).getRentID());
+					bw.write("#");
+					bw.write(rent.get(i).getTitleID());
+					bw.write("#");
+					bw.write(rent.get(i).getReaderID());
+					bw.write("#");
+					bw.write(rent.get(i).getState());
+				}
+				
+				bw.close();
+			}
+			
+			
+		}catch (IOException ioe) {	//it's possible that there were unexpected input & output errors 
+			
+			System.out.println("IO Error while writing to a file.");
+		}		
+		
+		if(isNew) {
+			System.out.println("### A new rent record has just been written into Rent.txt ###");
+	
+		}else {
+			System.out.println("### Rent.txt is updated ###");
+		}
+		
+	}
+	
+	@Override
+	public void writeBooksToFile(List<Books> b) {
+		
+		String lineZero = "";	
+
+		try {	//use try-catch in case there some errors
+			
+			BufferedReader br = new BufferedReader(new FileReader("Books.txt"));
+			lineZero = br.readLine();	//store the field description on line 0 in the txt file
+			br.close();
+			
+			BufferedWriter bw = new BufferedWriter(new FileWriter("Books.txt", false));	//overwrite
+			bw.write(lineZero);
+//			bw.newLine();
+			
+			for(int i=0; i<b.size(); i++) {
+				bw.newLine();	
+				bw.write(b.get(i).getId());
+				bw.write("#");
+				bw.write(b.get(i).getTitle());
+				bw.write("#");
+				bw.write(b.get(i).getAuthor());
+				bw.write("#");
+				bw.write(b.get(i).getRentalState());
+				bw.write("#");
+				bw.write(b.get(i).getReaderInQ());
+//				bw.newLine();
+			}
+				
+			bw.close();
+			
+			
+		}catch (IOException ioe) {	//it's possible that there were unexpected input & output errors 
+			
+			System.out.println("IO Error while writing to a file.");
+		}		
+		
+		System.out.println("### Books.txt is updated ###");
+	}
+	
+	@Override
+	public void writeReadersToFile(List<Readers> r) {
+		
+		String lineZero = "";	
+		
+		try {	//use try-catch in case there some errors
+			
+			BufferedReader br = new BufferedReader(new FileReader("Readers.txt"));
+			lineZero = br.readLine();	//store the field description on line 0 in the txt file
+			br.close();
+			
+			BufferedWriter bw = new BufferedWriter(new FileWriter("Readers.txt", false));	//overwrite
+			bw.write(lineZero);
+			
+			for(int i=0; i<r.size(); i++) {
+				bw.newLine();	
+				bw.write(r.get(i).getId());
+				bw.write("#");
+				bw.write(r.get(i).getFname());
+				bw.write("#");
+				bw.write(r.get(i).getLname());
+				bw.write("#");
+				bw.write(r.get(i).getCurrentRent());
+			}
+				
+			bw.close();
+			
+			
+		}catch (IOException ioe) {	//it's possible that there were unexpected input & output errors 
+			
+			System.out.println("IO Error while writing to a file.");
+		}		
+		
+		System.out.println("### Readers.txt is updated ###");
 	}
 }

@@ -1,0 +1,7 @@
+readerID | first name | last name | current rent
+R1#Georgi#FACELLO#RT2 RT3 RT4
+R2#Bezalel#Simmel#none
+R3#Parto#Bamford#none
+R4#Chirstian#Koblick#none
+R5#Kyoichi#Maliniak#RT1
+R6#Anneke#Preusig#none

@@ -1,7 +1,21 @@
-//may add rent id | myRent <- current rent only. and make things work from Rent class
-R1#Georgi#FACELLO#RT2 RT3 RT4
-R2#Bezalel#Simmel#none
-R3#Parto#Bamford#none
-R4#Chirstian#Koblick#none
-R5#Kyoichi#Maliniak#RT1
-R6#Anneke#Preusig#none
+readerID | first name | last name | current rent
+R1#Dulce#Abril#RT2 RT3 RT4
+R2#Mara#Hashimoto#none
+R3#Philip#Gent#none
+R4#Kathleen#Hanner#none
+R5#Nereida#Magwood#RT1
+R6#Gaston#Brumm#none
+R7#Etta#Hurn#none
+R8#Earlean#Melgar#none
+R9#Vincenza#Weiland#none
+R10#Fallon#Winward#none
+R11#Arcelia#Bouska#none
+R12#Franklyn#Unknow#none
+R13#Sherron#Ascencio#none
+R14#Marcel#Zabriskie#none
+R15#Kina#Hazelton#none
+R16#Shavonne#Pia#none
+R17#Shavon#Benito#none
+R18#Lauralee#Perrine#none
+R19#Loreta#Curren#none
+R20#Teresa#Strawn#none

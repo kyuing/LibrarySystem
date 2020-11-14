@@ -11,29 +11,89 @@ public class Sort {
 
 	}
 
+//	/**
+//	 * method that returns a sorted string array
+//	 * @param List<Readers> r
+//	 * @param String[] arr to store strings
+//	 * @return arr; a string array with the sorted strings
+//	 */
+//	public String[] BubbleSort(List<Readers> r, String[] arr) {
+//
+//		String temp = "";
+//		for (int i = 0; i < r.size(); i++) {
+//			arr[i] = r.get(i).getId();
+//		}
+//		for (int i = 0; i < r.size(); i++) {
+//			arr[r.size() + i] = r.get(i).getFname();
+//		}
+//		for (int i = 0; i < r.size(); i++) {
+//			arr[r.size() * 2 + i] = r.get(i).getLname();
+//		}
+//
+//		for (int i = 0; i < arr.length - 1; i++) { // stop at 2nd last item since the last one must be sorted
+//			for (int j = 0; j < arr.length - 1; j++) { // stop on getting to the one that is already sorted
+//
+//				// .compareTo() needs to be implemented manually
+//				if (arr[j].compareTo(arr[j + 1]) > 0) { // can change the > to < for DESCENDING order
+//
+//					// the value at arr[j] > arr[j+1]
+//					temp = arr[j]; // temp assigned with the value at current index
+//					arr[j] = arr[j + 1]; // current index assigned with the value at the next index of current index
+//					arr[j + 1] = temp; // the next index of current index assigned with temp
+//				}
+//			}
+//		}
+//
+//		return arr;
+//	}
+	
 	/**
 	 * method that returns a sorted string array
-	 * @param List<Readers> r
-	 * @param String[] arr to store strings
-	 * @return arr; a string array with the sorted strings
+	 * 
+	 * @param readers    ref
+	 * @param sortOp; 1,2, 3 or 4
+	 * @return a string array with the sorted strings
 	 */
-	public String[] BubbleSort(List<Readers> r, String[] arr) {
+	public String[] BubbleSortForReaders(List<Readers> r, int sortOp) {
 
-		String temp = "";
-		for (int i = 0; i < r.size(); i++) {
-			arr[i] = r.get(i).getId();
-		}
-		for (int i = 0; i < r.size(); i++) {
-			arr[r.size() + i] = r.get(i).getFname();
-		}
-		for (int i = 0; i < r.size(); i++) {
-			arr[r.size() * 2 + i] = r.get(i).getLname();
+		String[] arr = null; // an array to store temp
+		String temp = ""; // temp string
+
+		if (sortOp == 1) {	//id
+			arr = new String[r.size()];
+			for (int i = 0; i < arr.length; i++) {
+				arr[i] = r.get(i).getId();
+			}
+		} else if (sortOp == 2) {	//fname
+			arr = new String[r.size()];
+			for (int i = 0; i < arr.length; i++) {
+				arr[i] = r.get(i).getFname();
+			}
+		} else if (sortOp == 3) {	//lname
+			arr = new String[r.size()];
+			for (int i = 0; i < arr.length; i++) {
+				arr[i] = r.get(i).getLname();
+			}
+		} else {
+			//reader ID + names
+			arr = new String[r.size()*3]; // init arr size
+
+			for (int i = 0; i < r.size(); i++) {
+				arr[i] = r.get(i).getId();
+			}
+			for (int i = 0; i < r.size(); i++) {
+				arr[r.size() + i] = r.get(i).getFname();
+			}
+			for (int i = 0; i < r.size(); i++) {
+				arr[r.size()*2+i] = r.get(i).getLname();
+			}
+
 		}
 
 		for (int i = 0; i < arr.length - 1; i++) { // stop at 2nd last item since the last one must be sorted
 			for (int j = 0; j < arr.length - 1; j++) { // stop on getting to the one that is already sorted
 
-				// .compareTo() needs to be implemented manually
+				// .compareTo() needs to be implemented manually?
 				if (arr[j].compareTo(arr[j + 1]) > 0) { // can change the > to < for DESCENDING order
 
 					// the value at arr[j] > arr[j+1]
@@ -43,9 +103,9 @@ public class Sort {
 				}
 			}
 		}
-
 		return arr;
 	}
+
 
 	/**
 	 * method that returns a sorted string array
@@ -114,6 +174,81 @@ public class Sort {
 
 		return arr;
 	}
+	
+	/**
+	 * method to print the sorted result
+	 * 
+	 * @param result
+	 * @param books   ref
+	 * @param sortOp; 1,2 or 3
+	 */
+	public void printResultForReaders(String[] result, List<Readers> r, int sortOp) {
+
+		List<Readers> l = new ArrayList<>();
+
+		if (sortOp == 1) {
+			for (int i = 0; i < result.length; i++) {
+				for (int j = 0; j < r.size(); j++) {
+
+					if (result[i].equals(r.get(j).getId())) {
+						l.add(r.get(j)); // the sorted string values are added to l; the temp Books list
+					}
+				}
+			}
+			for (int i = 0; i < l.size(); i++) {
+				System.out.print(l.get(i).nameTagToString(result[i])); // print
+			}
+
+		} else if (sortOp == 2) {
+			for (int i = 0; i < result.length; i++) {
+				for (int j = 0; j < r.size(); j++) {
+
+					if (result[i].equals(r.get(j).getFname())) {
+						l.add(r.get(j)); // the sorted string values are added to l; the temp Books list
+					}
+				}
+			}
+
+			for (int i = 0; i < l.size(); i++) {
+				System.out.print(l.get(i).nameTagToString(result[i])); // print
+			}
+
+		} else if (sortOp == 3) {
+			for (int i = 0; i < result.length; i++) {
+				for (int j = 0; j < r.size(); j++) {
+
+					if (result[i].equals(r.get(j).getLname())) {
+						l.add(r.get(j)); // the sorted string values are added to l; the temp Books list
+					}
+				}
+			}
+
+			for (int i = 0; i < l.size(); i++) {
+				System.out.print(l.get(i).nameTagToString(result[i])); // print
+			}
+
+		} else {
+			for (int i = 0; i < result.length; i++) {
+				for (int j = 0; j < r.size(); j++) {
+
+					
+					if (result[i].equals(r.get(j).getId()) 
+							|| result[i].equals(r.get(j).getFname())
+							|| result[i].equals(r.get(j).getLname())) {
+
+						l.add(r.get(j)); // the sorted string values are added to l; the temp Books list
+					}
+
+				}
+			}
+
+			for (int i = 0; i < l.size(); i++) {
+				System.out.print(l.get(i).nameTagToString(result[i])); // print
+			}
+		}
+
+	}
+	
 
 	/**
 	 * method to print the sorted result
@@ -122,7 +257,7 @@ public class Sort {
 	 * @param books   ref
 	 * @param sortOp; 1,2 or 3
 	 */
-	public void titleSorted(String[] result, List<Books> b, int sortOp) {
+	public void printResult(String[] result, List<Books> b, int sortOp) {
 
 		List<Books> l = new ArrayList<>();
 

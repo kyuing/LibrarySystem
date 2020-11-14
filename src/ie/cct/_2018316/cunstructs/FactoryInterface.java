@@ -11,25 +11,6 @@ import ie.cct._2018316.dev.Rent;
 
 public interface FactoryInterface {
 	
-//	/**
-//	 * Method for loading data
-//	 * 
-//	 * @param in of the type bufferedReader
-//	 * @return an instance of Books
-//	 * @throws IOException
-//	 */
-//	public Collection<Books> createBookDB(BufferedReader in) throws IOException;
-	
-	
-//	/**
-//	 * Method for loading data
-//	 * 
-//	 * @param in of the type bufferedReader
-//	 * @return an instance of Readers
-//	 * @throws IOException
-//	 */
-//	public Collection<Readers> createReaderDB(BufferedReader in) throws IOException;
-  
 	/**
 	 * Method for loading data
 	 * 
@@ -65,4 +46,14 @@ public interface FactoryInterface {
 	 * @return true if reader ID in List<Readers> readers exists
 	 */
 	public boolean validReeaderID(List<Readers> readers, String rID);
+	
+
+	public void writeNewRentToFile(List<Rent> rent, boolean isNew);
+	
+	public void writeBooksToFile(List<Books> b);
+	
+	public void writeReadersToFile(List<Readers> r);
+	
+//	public void writeToFileGetRentalState (List<Books> b, int index);
+	
 }

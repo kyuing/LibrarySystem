@@ -3,5 +3,3 @@ RT1#B1#R5#Rented
 RT2#B3#R1#Rented
 RT3#B4#R1#Rented
 RT4#B5#R1#Rented
-RT5#B7#R7#Normal
-RT6#B2#R2#Normal

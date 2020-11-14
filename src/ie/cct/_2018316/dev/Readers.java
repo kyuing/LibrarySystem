@@ -59,6 +59,21 @@ public class Readers {
 		return this.myRent;
 	}
 	
+//	public boolean findqualsRentInMyRents(String rentIdTemp) {
+//		
+//		if(myRent != null) {
+//			for(int i=0; i<myRent.size(); i++) {
+//				if(myRent.get(i).getRentID().equalsIgnoreCase(rentIdTemp)) {
+//					this.indexToRemove = i;
+//					return true;
+//				}
+//			}	
+//		}
+//
+//		return false;
+//	}
+	
+	
 	public boolean equalsRentInMyRents(String rentIdTemp) {
 		
 		if(myRent != null) {
@@ -166,7 +181,10 @@ public class Readers {
 //		return "\n" + "temp.get(" + this.tempNameTagIndex + ") " + getTempNameTag() + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
 	}
 	
-
+	public String menu7_1_toString() {
+		return "\n" + id + "\n[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
+	}
+	
 	@Override
 	public String toString() {
 		return "\n" + id + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
