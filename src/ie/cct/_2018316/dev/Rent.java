@@ -1,40 +1,66 @@
 package ie.cct._2018316.dev;
-//may need to define booleans for state checking and send the state into books
+
 public class Rent {
 	
-	private String rentID, titleID, readerID, state, waitingQ;
+	/* The field state info in detail
+	 * 
+	 * the variable state takes one of the following value
+	 * "Rented" == this book is in rent
+	 * "Normal" == this book is not in rent so returned. 
+	 *             thus, it's in 'Normal' state
+	 * 
+	 * Depending on the state of the variable state, 
+	 * a state of the boolean variables isRented and isNormal each is assigned. 
+	 * 
+	 * */
+	private String rentID, titleID, readerID, state;
 	private boolean isRented, isNormal;
 
-	public Rent() {
+	//default constructor
+	public Rent() {}
+	
+	/**
+	 * specific constructor for loading data
+	 * @param rentID
+	 * @param titleID
+	 * @param readerID
+	 * @param state
+	 */
+	public Rent(String rentID, String titleID, String readerID, String state) {
 		
-	}
-	//specific constructor for loading data
-	public Rent(String rentID, String titleID, String readerID, String state/* , String waitingQ */) {
-		
+		//init fields
 		this.rentID = rentID;
 		this.titleID = titleID;
 		this.readerID = readerID;
+		
+		//init isRented and isNormal when a new rent record is created.
 		initState(state);
 	}
 
+	/**
+	 * method to initialize the boolean variables isRented and isNormal
+	 * @param state that represents a rent state of an obj of Rent list as string
+	 */
 	private void initState(String state) {
+		
 		this.state = state;
 		if(state.equalsIgnoreCase("Rented")) {
 			this.isRented = true;	//rented
-			this.isNormal = false;
+			this.isNormal = false;	//thus, not Normal
 		}else {
-			this.isRented = false;
-			this.isNormal = true;	
+			this.isRented = false;	//not rented == returned
+			this.isNormal = true;	//thus, Normal
 		}	
 		
 	}
 	
+	//getters and setters
 	public boolean isRented() {
 		return isRented;
 	}
 	
 	public void setRented(boolean isRented) {
-		//check isRented in controller
+	
 		this.isRented = isRented;
 		if(this.isRented == true) {
 			this.state = "Rented";
@@ -81,14 +107,7 @@ public class Rent {
 		this.readerID = readerID;
 	}
 
-	public String getWaitingQ() {
-		return waitingQ;
-	}
-
-	public void setWaitingQ(String waitingQ) {
-		this.waitingQ = waitingQ;
-	}
-
+	//toString methods as needed
 	@Override
 	public String toString() {
 		return "\n" + rentID + "[rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + ", state=" + state

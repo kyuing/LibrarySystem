@@ -2,9 +2,8 @@ package ie.cct._2018316.dev;
 
 public class Node {
 
-//	private List<Readers> element;
-	private Readers element;
-	private Node next;	//reference/pointer for/to next
+	private Readers element;	//element with type Readers
+	private Node next;	
 	
 	public Node(Readers readers) {
 		this.element = readers;
@@ -34,7 +33,6 @@ public class Node {
 	}
 
 	public String getID() {
-		// TODO Auto-generated method stub
 		return this.element.getId();
 	}
 	

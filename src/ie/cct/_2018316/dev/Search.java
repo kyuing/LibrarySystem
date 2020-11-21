@@ -8,6 +8,7 @@ import ie.cct._2018316.cunstructs.IO;
 public class Search {
 
 	public int LinearSerch(List<Books> b, String keyword) {
+		
 		int curLocation = 0;
 		boolean isFound = false;
 
@@ -219,6 +220,13 @@ public class Search {
 		return false;
 	}
 
+	/**
+	 * method to execute a binary search
+	 * 
+	 * @param r that is ref of the original Readers list
+	 * @param key that user enters as a string on a line
+	 * @return index number found
+	 */
 	public /* static */ int BinarySearch(List<Readers> r, String key) {
 
 		List<Readers> temp = new ArrayList<>(); // create a temp list
@@ -226,21 +234,29 @@ public class Search {
 		arr = new String[r.size() * 3]; // init size of arr
 
 		Sort s = new Sort();
-		arr = s.BubbleSortForReaders(r, 4); // arr will store the sorted strings(reader ID, 1st name and 2nd name) in
-									// alphabetical order
+		
+		// arr will store the sorted strings(reader ID, 1st name and 2nd name)
+		// in alphabetical order
+		arr = s.collectFieldsOfReaders(r, 4); 
+		arr = s.bubbleSort(arr);
+		
+		//uncomment out this for-loop if wanting to check the state/result of arr stored in ASC at run time
+		/**************************************************** 
+		System.out.println("+++the sorted array arr+++ ");
+		for (int i = 0; i < arr.length; i++) {
+			System.out.println(arr[i]);
+		}
+		/***************************************************/
 
-//		System.out.println("the sorted array arr+++++++++++++++++++++++++++++");
-//		for (int i = 0; i < arr.length; i++) {
-//			System.out.println(arr[i]);
-//		}
-
+		
+		//create a temporary Readers list
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < r.size(); j++) {
 
 				if (arr[i].equalsIgnoreCase(r.get(j).getId()) || arr[i].equalsIgnoreCase(r.get(j).getFname())
 						|| arr[i].equalsIgnoreCase(r.get(j).getLname())) {
-					// now, add reader obj to temp Reader list if arr found the matching string
-					// value from the Reader list r.
+					// now, add reader obj to temp Reader list 
+					//if arr found the matching string value from the Reader list r.
 					temp.add(new Readers(r.get(j), i));
 				}
 
@@ -249,36 +265,39 @@ public class Search {
 
 		for (int i = 0; i < temp.size(); i++) {
 
-			// set a temp name tag which will work for binary search to each of reader obj
-			// in temp
+			/* The list 'temp' now has elements.
+			 * However, the order of the elements in it is based fully on the values in 'arr' in order. 
+			 * Thus, set a temporary name tag(a string value of an index in 'arr') for each of reader OBJs in the 'temp' list.
+			 * This will be the key when executing .compareToIgnoreCase() for binary search
+			 */
 			temp.get(i).setNameTag(arr[i]);
-			System.out.print(temp.get(i).sortedAllInAcendingToString());
+			
+			//uncomment the code below out if wanting to check what have been set with the setter just above
+			/* System.out.print(temp.get(i).sortedAllInAcendingToString()); */
 		}
 
-		/*
-		 * now, Everything is ready to do a binary search. We've just got a temp reader
-		 * SORTED in alphabetical order based on reader's ID, fname and lname.
+		/* Now, Everything is ready to do a binary search. 
+		 * We've just got a temp reader list SORTED in alphabetical order based on reader's ID, fname and lname.
 		 * 
-		 * Technically, index number in temp list is conceptually the same as the
-		 * nameTag in each of the index since all the nameTags were initially sorted in
-		 * alphabetical order.
+		 * Conceptually, 
+		 * the nameTag in each of OBJs in 'temp' list is the same as its index number,
+		 * which will, again, be the key comparable value when executing .compareToIgnoreCase() for binary search.
+		 * 
+		 * For searching a specific reader in this binary search algorithm,
+		 * .compareToIgnoreCase() is used rather than .compareTo()
+		 * so that the user's keyword input in not filtered too strictly  
 		 */
 		boolean isFound = false;
-//		int mid = 0;
-//		int left = 0;
-//		int indexNum = 0;
-//		int right = temp.size() - 1;
-		int mid;
-		int left;
+		int mid, left, right;
 		int indexNum = 0;
-		int right;
 
-		// split up the input
+		// split up the keyword input
 		String[] keySplit = null;
 		keySplit = key.trim().split(" ");
 
 		for (int i = 0; i < keySplit.length; i++) {
 
+			//init local fields for binary search every time int i increments
 			mid = 0;
 			left = 0;
 			indexNum = 0;
@@ -287,70 +306,82 @@ public class Search {
 			while (right >= left) {
 				mid = (right + left) / 2; // set the middle index
 
-				System.out.println("\ntemp.get(" + mid + ").getTempNameTag(): " + temp.get(mid).getNameTag());
+				
+				//uncommented this out if wanna check the mid index at run time
+				/* System.out.println("\ntemp.get(" + mid + ").getTempNameTag(): " + temp.get(mid).getNameTag()); */
 
-				// .compareToIgnoreCase() checks the length of string(char) and the hex value of
-				// string(char) between two strings based on UNICODE
-				// example
-				/*
-				 * String str = "abcd"; System.out.println( str.compareTo("abcd") ); // 0
-				 * System.out.println( str.compareTo("ab") ); // 2 System.out.println(
-				 * str.compareTo("a") ); // 3 System.out.println( str.compareTo("c") ); // -2
-				 * System.out.println( "".compareTo(str) ); // -4
-				 */
+				
+				//uncommented this out if wanna check the keyword input of user split at run time  
+				/************************************************************** 
+				for (int temp_i = 0; temp_i < keySplit.length; temp_i++) {
+					System.out.println("keySplit[temp_i]: " + keySplit[temp_i]);
+				} 
+				***************************************************************/
 
-//			for (int i = 0; i < keySplit.length; i++) {
-//
-//				System.out.println("keySplit[i]: " + keySplit[i]);
-//			}
-
-//				System.out.println("keySplit[i]: " + keySplit[i]);
-				// Thus, if the UNICODE value of a search keyword == the UNICODE value of
-				// nameTag in the mid index of temp list,
+				// if the UNICODE value of a search keyword == the UNICODE value of nameTag in the mid index of 'temp' list,
 				if ((keySplit[i].compareToIgnoreCase(temp.get(mid).getNameTag()) == 0)) {
 
-					// found
-					isFound = true;
-					indexNum = Integer.parseInt(temp.get(mid).getId().substring(1)) - 1; // take an actual index from
+					//.compareToIgnoreCase() returns 0
+					isFound = true;	// found
+					
+					// take an actual index from the original Readers list
+					indexNum = Integer.parseInt(temp.get(mid).getId().substring(1)) - 1; 
 
 					// return the exact match
 					System.out.println(IO.printUnderLine());
 					System.out.println("[The exact match]");
-//					System.out.println(key + " is found in the reader index at " + indexNum);
 					System.out.println(keySplit[i] + " is found in the reader index at " + indexNum);
 					break;
+					
 				} else {
+					
+					// if the UNICODE value of a search keyword < the UNICODE value of nameTag in the mid index of 'temp' list
 					if ((keySplit[i].compareToIgnoreCase(temp.get(mid).getNameTag()) < 0)) {
-						// the UNICODE value of a search keyword < the UNICODE value of nameTag in the
-						// mid index of temp list
-						System.out
-								.println("key's value: " + keySplit[i].compareToIgnoreCase(temp.get(mid).getNameTag()));
+						
+						/* .compareToIgnoreCase() returns a negative number
+						 * A specific keyword of user represented as keySplit[i] 
+						 * has less value than the nameTag in the mid index of 'temp' list in hex
+						 */
+						
+						//uncomment this out if wanting to check the value .compareToIgnoreCase() returns at run time
+						/**************************************************************
+						System.out.println("key's value: " 
+						+ keySplit[i].compareToIgnoreCase(temp.get(mid).getNameTag()));
+						***************************************************************/
+						
 						right = mid - 1; // right = mid -1 so that the mid index can move out to left side
+					
 					} else {
-						// the UNICODE value of a search keyword > the UNICODE value of nameTag in the
-						// mid index of temp list
-						System.out
-								.println("key's value: " + keySplit[i].compareToIgnoreCase(temp.get(mid).getNameTag()));
+						// the UNICODE value of a search keyword > the UNICODE value of nameTag in the mid index of 'temp' list
+						
+						/* .compareToIgnoreCase() returns a positive number
+						 * A specific keyword of user represented as keySplit[i] 
+						 * has greater value than the nameTag in the mid index of 'temp' list in hex
+						 */
+						
+						//uncomment this out if wanting to check the value .compareToIgnoreCase() returns at run time
+						/**************************************************************
+						System.out.println("key's value: " 
+						+ keySplit[i].compareToIgnoreCase(temp.get(mid).getNameTag()));
+						***************************************************************/
+						
 						left = mid + 1; // left = mid + 1 so that the mid index can move out to right side
 					}
 				}
 
-			}
+			}//end of while-loop
 
 			if (isFound == true) {
+				//terminate for-loop
 				break;
 			}
 
-		}
+		}//end of for-loop
 
 		if (isFound == false) {
 			return -1;
 		}
 
-//		// return the exact match
-//		System.out.println(IO.printUnderLine());
-//		System.out.println("[The exact match]");
-//		System.out.println(key + " is found in the reader index at " + indexNum);
 
 		return indexNum; // return indexNum
 	}

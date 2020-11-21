@@ -1,19 +1,14 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import ie.cct._2018316.cunstructs.FactoryInterface;
 import ie.cct._2018316.cunstructs.IO;
 import ie.cct._2018316.dev.Books;
 import ie.cct._2018316.dev.Factory;
-import ie.cct._2018316.dev.MyQueue;
-import ie.cct._2018316.dev.Node;
 import ie.cct._2018316.dev.Readers;
 import ie.cct._2018316.dev.Rent;
 import ie.cct._2018316.dev.Search;
-import ie.cct._2018316.dev.Search_equalsIgnore_approach_test;
-import ie.cct._2018316.dev.Search_dot_java_BinarySearchForReaders_temp;
 import ie.cct._2018316.dev.Sort;
 
 public class Controller {
@@ -49,9 +44,6 @@ public class Controller {
 		books = (List<Books>) factory.createBookDB(books_in, readers);
 		System.out.println(books);
 
-		
-//		System.out.println(books.get(0).getQueueToString());
-//		System.out.println(books.get(2).getQueueToString());
 		for(int i=0; i<books.size(); i++) {
 			if (books.get(i).getMQ() != null) {
 				if (!books.get(i).getMQ().isEmpty()) {
@@ -250,36 +242,38 @@ public class Controller {
 		switch (op) {
 		case "1":
 			// id sort
-			if ((result = s.BubbleSortForReaders(this.readers, 1)) != null) {
+			if ((result = s.collectFieldsOfReaders(this.readers, 1)) != null) {
+				result = s.bubbleSort(result);
 				System.out.println(IO.printUnderLine() + "\n[ID of all the readers sorted in alphabetical order.]\n");
-				s.printResultForReaders(result, this.readers, 1);
+				s.printSortedResultOfReaders(result, this.readers, 1);
 			}
 			break;
 		case "2":
-			// author sort
-			if ((result = s.BubbleSortForReaders(this.readers, 2)) != null) {
+			// first name sort
+			if ((result = s.collectFieldsOfReaders(this.readers, 2)) != null) {
+				result = s.bubbleSort(result);
 				System.out.println(
 						IO.printUnderLine() + "\n[First names of all the readers sorted in alphabetical order.]\n");
-				s.printResultForReaders(result, this.readers, 2);
+				s.printSortedResultOfReaders(result, this.readers, 2);
 			}
 			break;
 		case "3":
-			// title + author sort
-			if ((result = s.BubbleSortForReaders(this.readers, 3)) != null) {
+			// last name sort
+			if ((result = s.collectFieldsOfReaders(this.readers, 3)) != null) {
+				result = s.bubbleSort(result);
 				System.out.println(
 						IO.printUnderLine() + "\n[Last names of all the readers sorted in alphabetical order.]\n");
-				s.printResultForReaders(result, this.readers, 3);
+				s.printSortedResultOfReaders(result, this.readers, 3);
 			}
 			break;
 
-		// maybe, add id + name search based on ID and first name only ?
-
 		case "4":
-			// title + author sort
-			if ((result = s.BubbleSortForReaders(this.readers, 4)) != null) {
+			// id, first name and last name
+			if ((result = s.collectFieldsOfReaders(this.readers, 4)) != null) {
+				result = s.bubbleSort(result);
 				System.out.println(
 						IO.printUnderLine() + "\n[ID, names of all the readers sorted in alphabetical order.]\n");
-				s.printResultForReaders(result, this.readers, 4);
+				s.printSortedResultOfReaders(result, this.readers, 4);
 			}
 			break;
 
@@ -290,7 +284,6 @@ public class Controller {
 
 	}
 
-	// @SuppressWarnings("static-access")
 	private void searchForReader() {
 
 		String keyword = "", askUserOp = "";
@@ -363,25 +356,28 @@ public class Controller {
 		switch (op) {
 		case "1":
 			// title sort
-			if ((result = s.BubbleSort(this.books, 1)) != null) {
+			if ((result = s.collectFieldsOfBooks(this.books, 1)) != null) {
+				result = s.bubbleSort(result);
 				System.out.println(IO.printUnderLine() + "\n[Titles of all the books sorted in alphabetical order.]\n");
-				s.printResult(result, this.books, 1);
+				s.printSortedResultOfBooks(result, this.books, 1);
 			}
 			break;
 		case "2":
 			// author sort
-			if ((result = s.BubbleSort(this.books, 2)) != null) {
+			if ((result = s.collectFieldsOfBooks(this.books, 2)) != null) {
+				result = s.bubbleSort(result);
 				System.out
 						.println(IO.printUnderLine() + "\n[Authors of all the books sorted in alphabetical order.]\n");
-				s.printResult(result, this.books, 2);
+				s.printSortedResultOfBooks(result, this.books, 2);
 			}
 			break;
 		case "3":
 			// title + author sort
-			if ((result = s.BubbleSort(this.books, 3)) != null) {
+			if ((result = s.collectFieldsOfBooks(this.books, 3)) != null) {
+				result = s.bubbleSort(result);
 				System.out.println(IO.printUnderLine()
 						+ "\n[Titles and authors of all the books sorted in alphabetical order.]\n");
-				s.printResult(result, this.books, 3);
+				s.printSortedResultOfBooks(result, this.books, 3);
 			}
 			break;
 
@@ -436,7 +432,8 @@ public class Controller {
 	}
 
 	private void registerReturn() {
-		String rtID = "", bID = ""; // don't think i really need book id here since rent id holds everything
+		
+		String rtID = "", bID = "";
 		int rtIdToInt = 0, bIdToInt = 0, rIdToInt = 0;
 
 		rtID = checkRentID(rtID);
@@ -456,7 +453,7 @@ public class Controller {
 
 			boolean isNew = false;
 			// update any changes to a file
-			factory.writeNewRentToFile(rent, isNew);
+			factory.writeRentToFile(rent, isNew);
 			factory.writeBooksToFile(books);
 			factory.writeReadersToFile(readers);
 
@@ -512,7 +509,7 @@ public class Controller {
 
 						boolean isNew = true;
 						// update any changes to a file
-						factory.writeNewRentToFile(rent, isNew);
+						factory.writeRentToFile(rent, isNew);
 						factory.writeBooksToFile(books);
 						factory.writeReadersToFile(readers);
 //						factory.writeToFileGetRentalState(books, Integer.parseInt(bID.substring(1)) - 1);
@@ -541,7 +538,7 @@ public class Controller {
 
 								boolean isNew = true;
 								// update any changes to a file
-								factory.writeNewRentToFile(rent, isNew);
+								factory.writeRentToFile(rent, isNew);
 								factory.writeBooksToFile(books);
 								factory.writeReadersToFile(readers);
 

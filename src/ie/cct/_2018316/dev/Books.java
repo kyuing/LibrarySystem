@@ -1,83 +1,118 @@
 package ie.cct._2018316.dev;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import ie.cct._2018316.cunstructs.IO;
 
 public class Books {
 
-	private String id, title, author, rentalState, readerInQ;
-	private MyQueue mq;
-	private String[] testingQueueDB/* = null */;
-	private Node node;
+	/* [The field rentalState info in detail]
+	 * 
+	 * the variable rentalState references its rental state from OBJs in Rent list
+	 * except when a book has never been rented.
+	 * 
+	 * It takes one of the following value once a book is rented/returned;
+	 * "Rented" == this book is in rent
+	 * "Available" == this book is not in rent so returned. 
+	 *             thus, it's in 'Available' state
+	 *             ('Available' state is also assigned to book OBJs that have never been rented)
+	 *  
+	 * 
+	 * Depending on the states of the variable rentalState, 
+	 * a state of the boolean variables isRented and isAvailable each is assigned. 
+	 * 
+	 * 
+	 * [The field readerInQ info in detail]
+	 * The value of it has two possible states
+	 * "none" == this book has no queue of readers
+	 * i.e. "R1 R2 R3 R4...." == this book has queue of readers
+	 *                           the order of queue starts from the left side. 
+	 *                           so R1 in this example is the first queue of readers
+	 * 
+	 * */
+	private String id, title, author, rentalState, readerInQ;	//main fields
+	private MyQueue mq;	//ref of the queue
+	private String[] queueDB;	//a temp array to store queue values from the text file
+	private Node node;	//ref of node
 	private boolean isRented, isAvailable;
 
-	// waiting reader number should be dynamic value
-	// rentalState
-	public Books(String id, String title, String author, String rentalState,
-			String[] testingQueueDB/* , String readerInQ, MyQueue mq */) {
+	/**
+	 * specific constructor for loading Books.txt into the system and creating book OBJs
+	 * @param id
+	 * @param title
+	 * @param author
+	 * @param rentalState
+	 * @param queueDB
+	 */
+	public Books(String id, String title, String author, String rentalState, String[] queueDB) {
 
+		//init fields
 		this.id = id;
 		this.title = title;
 		this.author = author;
+		
+		/*every book's rental state on a row in Books.txt has one of the following value for its rental state
+		 * "Rented" means this book is in rent
+		 * "Available" means this book is not in rent. (In other word, returned or never been rented) 
+		 *  
+		 * Initialize the boolean variables isRented and isAvailable with those values
+		 * (This step is needed when loading the book DB from Books.txt) */ 
 		initRentalState(rentalState);
-		this.testingQueueDB = null;
-		this.testingQueueDB = testingQueueDB;
+		
+		//init fields
+		this.queueDB = null;
+		this.queueDB = queueDB;
 		this.readerInQ = "";
 		this.node = null;
 		this.mq = null;
 
 	}
 
-	public String[] getTestingQueueDB() {
-		return this.testingQueueDB;
-	}
+	//method for initializing the boolean variables isRented and isAvailable
+	public void initRentalState(String rentalState) {
 
-	public MyQueue getMQ() {
-
-		if (this.mq != null) {
-			return this.mq;
+		this.rentalState = rentalState;
+		if (rentalState.equalsIgnoreCase("Rented")) {
+			this.isRented = true; // rented
+			this.isAvailable = false; //thus, not available
+		} else {
+			this.isRented = false;	//not rented == returned
+			this.isAvailable = true;	//thus, available
 		}
-		return null;
+
 	}
 
-	public String getQueueToString() {
-
-		String toReturn = "";
-		toReturn = IO.printUnderLine() + "\n[The book info]" + toString() + "\n\n[The queue in the book]"
-				+ this.mq.toString();
-
-		return toReturn;
-	}
-
+	/**
+	 * method for enqueue
+	 * @param readers
+	 * @param index
+	 */
 	public void setEnQueue(List<Readers> readers, int index) {
 
-		node = new Node(readers.get(index));
+		node = new Node(readers.get(index)); //create a new node(a new reader)
 		if (this.mq == null) {
 			this.mq = new MyQueue();
 		}
-		mq.enQueue(node);
-//		this.readerInQ = mq.getFirst().getID();
-
+		mq.enQueue(node);	//enqueue the node
+		
 		String toReturn = "";
 		if (this.mq == null) {
 			toReturn = "none";
 			this.readerInQ = toReturn;
 
 		} else {
-			// set all the queue elements as a string in a line
+			// set all the queue elements(reader IDs) as a string into the variable readerInQ
 			toReturn = this.mq.readerInQueueToString();
 			this.readerInQ = toReturn;
 		}
 	}
 
+	//method for dequeue
 	public void setDeQueue() {
 
 		mq.deQueue();
 
 		if (!mq.isEmpty()) {
-//			this.readerInQ = mq.getFirst().getID();
+			// set all the queue elements(reader IDs) as a string into the variable readerInQ
 			this.readerInQ = this.mq.readerInQueueToString();
 		} else {
 			this.readerInQ = "none";
@@ -85,35 +120,35 @@ public class Books {
 
 	}
 
+	//getters & setters
 	public void setReaderInQ(String none) {
 
 		if (this.mq == null) {
 			this.readerInQ = none;
 		} else {
-//			this.readerInQ = mq.getFirst().getID();	
 			this.readerInQ = this.mq.readerInQueueToString();
 		}
 	}
+	
+	public String[] getQueueDB() {
+		return this.queueDB;
+	}
 
+	public MyQueue getMQ() {
+
+		if (this.mq != null) {
+			return this.mq;
+		}
+		this.mq = null;
+		return this.mq;
+	}
+	
 	public String getReaderInQ() {
 		return this.readerInQ;
 	}
 
 	public String getRentalState() {
 		return rentalState;
-	}
-
-	public void initRentalState(String rentalState) {
-
-		this.rentalState = rentalState;
-		if (rentalState.equalsIgnoreCase("Rented")) {
-			this.isRented = true; // rented
-			this.isAvailable = false;
-		} else {
-			this.isRented = false;
-			this.isAvailable = true;
-		}
-
 	}
 
 	public String getTitle() {
@@ -137,16 +172,11 @@ public class Books {
 	}
 
 	public void setRented(boolean isRented) {
-		// check isRented in controller
+		
 		this.isRented = isRented;
 		if (this.isRented == true) {
 			this.rentalState = "Rented";
-//			this.isAvailable = false;
 		}
-	}
-
-	public boolean isAvailable() {
-		return isAvailable;
 	}
 
 	public void setAvailable(boolean isAvailable) {
@@ -155,6 +185,10 @@ public class Books {
 		if (this.isAvailable == true) {
 			this.rentalState = "Available";
 		}
+	}
+	
+	public boolean isAvailable() {
+		return isAvailable;
 	}
 
 	public String getId() {
@@ -165,6 +199,16 @@ public class Books {
 		this.id = id;
 	}
 
+	//toString methods as needed
+	public String getQueueToString() {
+
+		String toReturn = "";
+		toReturn = IO.printUnderLine() + "\n[The book info]" + toString() + "\n\n[The queue in the book]"
+				+ this.mq.toString();
+
+		return toReturn;
+	}
+	
 	public String titleAndAuthorSortedToString(String s) {
 		return "\n" + s + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
 				+ ", Queue=" + getReaderInQ() + "]\n";
@@ -231,47 +275,6 @@ public class Books {
 
 		return toReturn;
 	}
-
-//	public String menu7_1_toString(List<Rent> rent/* , int rentIndex */, List<Readers> reader) {
-//
-//		String toReturn = "";
-//
-//		// it doesnt work as expected.
-//		for (int i = 0; i < reader.size(); i++) {
-//
-//			// if a reader's current list of book rent is not null,
-//			if (reader.get(i).getMyRent() != null) {
-//
-//				for (int j = 0; j < reader.get(i).getMyRent().size(); j++) {
-////					
-////					//if a rent ID in a reader's current rent list == the rent ID in a specific index of Rent list, 
-////					if(reader.get(i).getMyRent().get(j).getRentID().equals(rent.get(rentIndex).getRentID())) {
-////						
-////					}
-//					for (int k = 0; k < rent.size(); k++) {
-//						if (reader.get(i).getMyRent().get(j).getRentID().equals(rent.get(k).getRentID())) {
-////							System.out.println(reader.get(i).getMyRent().get(j).getRentID());
-//							if (rent.get(k).getState().equals("Rented")) {
-//								toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author
-//										+ ", rental_state=" + rentalState + ", Queue=" + getReaderInQ() + "]\n";
-//								return toReturn;
-//							} else {
-//								toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author
-//										+ ", Queue=" + getReaderInQ() + "]\n";
-//								return toReturn;
-//							}
-//						}
-//					}
-//
-//				}
-//			}
-//
-//		}
-//
-//		return null;
-////		return toReturn;
-//	}
-
 
 	@Override
 	public String toString() {

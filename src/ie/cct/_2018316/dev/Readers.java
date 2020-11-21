@@ -3,39 +3,91 @@ package ie.cct._2018316.dev;
 import java.util.ArrayList;
 import java.util.List;
 
-//really need to create collection to record rent history????
+
 public class Readers {
 
-//	private int id;
-	private String id, fname, lname, currentRent, nameTag;
-	private int rIndex;
-	private Readers r;
+	/* [The field currentRent info in detail]
+	 * The value of it has two possible states
+	 * "none" == this reader is not renting any books
+	 * i.e. "RT1 RT2..." == this reader is renting a book.
+	 *                      rent ID(s) that contain related book ID and this reader ID is stored/represented as a string 
+	 */
+	//main fields
+	private String id, fname, lname, currentRent;
 	private List<Rent> myRent;
-	private int indexToRemove = 0;
 	
+	//fields used temporarily when searching for readers 
+	private String nameTag;
+	private int rIndex, indexToRemove;
+	private Readers r;
+	
+	
+	/**
+	 * specific constructor for loading Readers.txt into the system and creating reader OBJs
+	 * @param id
+	 * @param fname
+	 * @param lname
+	 * @param myRent
+	 */
 	Readers(String id, String fname, String lname, List<Rent> myRent) {
+		
+		//init fields
 		this.id = id;
 		this.fname = fname;
 		this.lname = lname;		
 		this.myRent = myRent;
-		setCurrentState();
+		setCurrentState();	//init the field currentRent
 	}
 	
-	//specific constructor to clone current states of each of Readers for searching a reader
+	/**
+	 * specific constructor to clone current states of each of Readers for searching a reader
+	 * @param r
+	 * @param index
+	 */
 	Readers(Readers r, int index) {
 		
 		this.r = r;
 		this.rIndex = index;
 		this.nameTag = null;
 		
-		//clone att from the original Reader obj
+		//clone value of the fields from the original Reader obj
 		this.id = r.getId();
 		this.fname = r.getFname();
 		this.lname = r.getLname();		
 		this.myRent = r.getMyRent();
-		setCurrentState();		
+		setCurrentState();		//clone the field currentRent
 	}
 
+	/**
+	 * method to initialize/update the field currentRent
+	 */
+	public void setCurrentState() {
+
+		String toReturn = "";
+		if (this.myRent == null || this.myRent.size() == 0) {
+			toReturn = "none";
+			this.currentRent = toReturn;	
+		
+		}else {
+			
+			for(int i=0; i<myRent.size(); i++) {
+				
+				toReturn += myRent.get(i).getRentID() + " ";	//append
+				
+				if(i == myRent.size()-1) {
+
+					//remove a space from the end of the string
+					toReturn = toReturn.substring(0, toReturn.length() - 1);
+				}
+			}
+			this.currentRent = toReturn;
+		}		
+	}
+	
+	/**
+	 * method to add a rent info into this book's current rent list
+	 * @param currRentRecord
+	 */
 	public void setMyRent(List<Rent> currRentRecord) {
 		
 		String toReturn = "";
@@ -55,27 +107,41 @@ public class Readers {
 		
 	}
 	
-	public List<Rent> getMyRent() {
-		return this.myRent;
+	/**
+	 * method to remove a rent from this reader's current rent list 
+	 * @param rentIdToRemove
+	 */
+	public void removeRent(String rentIdToRemove) {
+		
+		//uncomment out it if wanting to check the state of myRent before executing removing
+		/* System.out.println("before: " + myRent); */
+		
+		if(equalsRentInMyRents(rentIdToRemove)) {
+		
+			myRent.remove(this.indexToRemove);
+			
+			//uncomment out it if wanting to check the state of myRent after executing removing
+			/* System.out.println("after: " + myRent); */
+			
+			//this.indexToRemove = 0;		//re-init it
+			
+			if(myRent.size() == 0) {
+				myRent = null;
+			}
+			setCurrentState();	//update the field currentRent
+		}
 	}
 	
-//	public boolean findqualsRentInMyRents(String rentIdTemp) {
-//		
-//		if(myRent != null) {
-//			for(int i=0; i<myRent.size(); i++) {
-//				if(myRent.get(i).getRentID().equalsIgnoreCase(rentIdTemp)) {
-//					this.indexToRemove = i;
-//					return true;
-//				}
-//			}	
-//		}
-//
-//		return false;
-//	}
-	
-	
+	/**
+	 * method to compare a rent ID in the myRent list of this reader with the parameter rentIdTemp 
+	 * @param rentIdTemp
+	 * @return true if equals 
+	 *         Also, assign the index number found into the field indexToRemove
+	 */
 	public boolean equalsRentInMyRents(String rentIdTemp) {
 		
+		this.indexToRemove = 0;	//init it every time the method is called.
+				
 		if(myRent != null) {
 			for(int i=0; i<myRent.size(); i++) {
 				if(myRent.get(i).getRentID().equalsIgnoreCase(rentIdTemp)) {
@@ -88,39 +154,10 @@ public class Readers {
 		return false;
 	}
 	
-	public void removeRent(String rentIdToRemove) {
-		
-		System.out.println("before: " + myRent);
-		if(equalsRentInMyRents(rentIdToRemove)) {
-			myRent.remove(this.indexToRemove);
-			System.out.println("after: " + myRent);
-			this.indexToRemove = 0;
-			if(myRent.size() == 0) {
-				myRent = null;
-			}
-			setCurrentState();
-		}
-	}
 	
-	public void setCurrentState() {
-
-		String toReturn = "";
-		if (this.myRent == null /* | this.myRent.size() == 0 */) {
-			toReturn = "none";
-			this.currentRent = toReturn;	
-		
-		}else {
-			
-			for(int i=0; i<myRent.size(); i++) {
-				toReturn += myRent.get(i).getRentID() + " ";
-				if(i == myRent.size()-1) {
-
-					//remove a space from the end of the string
-					toReturn = toReturn.substring(0, toReturn.length() - 1);
-				}
-			}
-			this.currentRent = toReturn;
-		}		
+	//getters & setters
+	public List<Rent> getMyRent() {
+		return this.myRent;
 	}
 	
 	public String getId() {
@@ -151,34 +188,37 @@ public class Readers {
 		return currentRent;
 	}
 
-	public void setAddress(String currentRent) {
-		this.currentRent = currentRent;
-	}
+//	public void setAddress(String currentRent) {
+//		this.currentRent = currentRent;
+//	}
 	
-	public void setNameTag(String s, int index) {
-		this.rIndex = index;
-		this.nameTag = s;
-	}
+//	public void setNameTag(String s, int index) {
+//		this.rIndex = index;
+//		this.nameTag = s;
+//	}
 	
+	//used when preparing .compareTo() during binary search 
 	public void setNameTag(String s) {
 		this.nameTag = s;
 		
 	}	
 	
+	//used when executing .compareTo() during binary search
 	public String getNameTag() {
 		return this.nameTag;
 	}
 	
+	/************************* toString methods as needed *********************************************/
+	
+	//used when printing sorted result 
 	public String nameTagToString(String s) {
-		return "\n" + s + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
+		
+		this.nameTag = s;
+		return "\n" + nameTag + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
 	}
 	
-//	@Override
 	public String sortedAllInAcendingToString() {
 		return "\n" + "temp.get(" + this.rIndex + ")"  + this.r.nameTagToString(this.nameTag);
-//		return "\n" + "temp.get(" + this.rIndex + ")"  + this.nameTagToString(this.nameTag);
-//		return "\n" + "temp.get(" + this.tempNameTagIndex + ") " + this.tempNameTag + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
-//		return "\n" + "temp.get(" + this.tempNameTagIndex + ") " + getTempNameTag() + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
 	}
 	
 	public String menu7_1_toString() {

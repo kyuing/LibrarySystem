@@ -1,7 +1,7 @@
 rentID | bookID | readerID | State | 
-RT1#B1#R5#Rented
-RT2#B3#R1#Rented
-RT3#B4#R1#Rented
-RT4#B5#R1#Rented
-RT5#B7#R7#Normal
-RT6#B2#R2#Normal
+RT01#B01#R05#Normal
+RT02#B03#R01#Rented
+RT03#B04#R01#Rented
+RT04#B05#R01#Rented
+RT05#B07#R07#Normal
+RT06#B02#R02#Normal

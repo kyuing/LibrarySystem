@@ -1,13 +1,13 @@
 readerID | first name | last name | current rent
-R01#Dulce#Abril#RT02 RT03 RT04
-R02#Mara#Hashimoto#none
-R03#Philip#Gent#none
-R04#Kathleen#Hanner#none
-R05#Nereida#Magwood#none
-R06#Gaston#Brumm#none
-R07#Etta#Hurn#none
-R08#Earlean#Melgar#none
-R09#Vincenza#Weiland#none
+R1#Dulce#Abril#RT2 RT3 RT4 999
+R2#Mara#Hashimoto#none
+R3#Philip#Gent#none
+R4#Kathleen#Hanner#none
+R5#Nereida#Magwood#RT1
+R6#Gaston#Brumm#none
+R7#Etta#Hurn#none
+R8#Earlean#Melgar#none
+R9#Vincenza#Weiland#none
 R10#Fallon#Winward#none
 R11#Arcelia#Bouska#none
 R12#Franklyn#Unknow#none

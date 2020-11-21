@@ -1,46 +1,71 @@
 package ie.cct._2018316.dev;
 
-
-public class MyQueue /* implements MyQueueInterface */ {
+/**
+ * Class that manages queue of each of books
+ * This custom queue implementation references/has modified/has improved the queue & linked list course contents
+ * that was lectured by Professor Amilcar   
+ * 
+ * @author Kyu
+ *
+ */
+public class MyQueue {
 
 	private Node first;
 	private Node last;
 	private int size;
 	
 	public MyQueue() {
+		
+		//init fields
 		this.first = null;
 		this.last = null;
 		this.size = 0;
 	}
 
-	//return the first node of element
+	/**
+	 * @return size of queue
+	 */
+	public int size() {
+		return size;
+	}
+
+	/**
+	 * @return true if size is 0
+	 */
+	public boolean isEmpty() {
+		return size == 0;
+	}
+	
+	/**
+	 * getter for this.first
+	 * @return first node in queue
+	 */
 	public Node getFirst() {
 		return this.first;
 	}
 	
-//	public void addFirst(Node newElement) {
-//		if(size == 0) {
-//			last = newElement;
-//		}
-//		//while newElement is a value and is also a reference to acesss Node class?
-//		//when there is one node with a value, it's the first node and the last node at the same time
-//		newElement.setNext(first);	//assign the first node to be next
-//		first = newElement;	//assign the new element to be the first
-//		size++;
-//	}
 	
+	/**
+	 * method to put a new element into queue as the last node 
+	 * @param newElement
+	 */
 	public void enQueue(Node newElement) {
 		if(size == 0) {
+			//if size == 0, first is also last
 			first = newElement;
 			last = first;
 		}else {
-			last.setNext(newElement);	//next one for first
-			last = newElement;	
+			last.setNext(newElement);	//set the next node into the current last node	
+			last = newElement;	//re-init last
 		}
 		
-		size++;
+		size++;	//increment size of queue
 	}
 	
+	/**
+	 * method to return/remove the first node from queue
+	 * @return first node
+	 */
 	public Node deQueue() {
 		if(size == 0) {
 			return null;
@@ -48,14 +73,17 @@ public class MyQueue /* implements MyQueueInterface */ {
 		if (size == 1) {
 			last = null;
 			first = last;
-//			size--;
-//			return first;
 		}
-		Node toReturn = first;
-		first = first.getNext();	//assign the next node to first
-		size--;
+		Node toReturn = first;	//point and temp-store the current first node
+		first = first.getNext();	//assign the next node to be first
+		size--;	//decrement size as deQueued
 		return toReturn;
 	}
+	
+	/**************************************************************************************************
+	 * not in use.
+	 * However, all of methods below modifies/improves its functionality 
+	 * based on this method's logic to change the pointer at a time
 	
 	public Node findElementByPosition(int position) {
 		if(size == 0 || position >= size -1) {
@@ -70,86 +98,75 @@ public class MyQueue /* implements MyQueueInterface */ {
 		return current;
 	}
 	
+	***************************************************************************************************/
 	
+	/**
+	 * method to compare @param readerID with readerID inside queue 
+	 * @param readerID
+	 * @return true if queue has readerID
+	 */
 	public boolean equalsCustom(String readerID) {
+		
 		if(size == 0 ) {
+			
 			return false;
+			
 		}else {
 			Node current = first;
-			int length = size;
+			int length = size;	
 			int counter = 0;
 			while(counter < length) {
-				
+				//if current node's readerID in the queue == readerID
 				if(current.getID().equals(readerID)) {
 					return true;
 				}
-				current = current.getNext();
-				counter++;
+				
+				//point the next node of the current node to be a new current node
+				current = current.getNext();	
+				counter++;	//increment counter
 			}	
 		}
 		
 		return false;
 	}
-	
-//	public Node removeLast() {
-//		
-//		Node toReturn = last;
-//		if(size == 0) {
-//			return toReturn;
-//		}
-//		if(size == 1) {
-//			first = null;
-//			last = null;
-//			size--;
-//			return toReturn;
-//		}
-//		
-//		Node secondLast = findElementByPosition(size - 2);
-//		secondLast.setNext(null);
-//		last = secondLast;
-//		size--;	
-//		return toReturn;
-//		
-//	}
+		
 	
 	/**
-	 * 
-	 * @return size of queue
+	 * method to return a node in the queue by comparing @param readerID with readerID inside queue 
+	 * @param readerID
+	 * @return the node found as string
 	 */
-	public int size() {
-		return size;
-	}
-
-	/**
-	 * 
-	 * @return true if size is 0
-	 */
-	public boolean isEmpty() {
-		return size == 0;
-	}
-	
 	public String equalsCustomToString (String readerID) {
+		
 		if(size != 0 | size > 0) {
 			
 			Node current = first;
 			int length = size;
-			int counter = 0;
-			String toReturn = "\n\nQueue\tReader info";
+			int qNum = 0;
+			String toReturn = "\n\nQueue\tReader info";	//print a temp column info for printout
 			
-			while(counter < length) {
+			while(qNum < length) {
 				
+				qNum++;	//increment qNum; the number of times WHILE-LOOP is executed
+				//if current node's readerID in the queue == readerID
 				if(current.getID().equals(readerID)) {
-					
-					toReturn += "\n" + (counter+1) + current.toString().replaceAll("\n", "\t");
+					//the node that matches with the parameter readerID is found
+					toReturn += "\n" + (qNum) + current.toString().replaceAll("\n", "\t");
 					return toReturn;	
 				}
+				
+				//point the next node of the current node to be a new current node
 				current = current.getNext();
-				counter++;
+
 			}	
 		}
 		return null;
 	}
 	
+	/**
+	 * method to return the first node 
+	 * @return first node in the queue as string
+	 */
 	public String firstToString() {
 		
 		String toReturn = "";
@@ -158,26 +175,41 @@ public class MyQueue /* implements MyQueueInterface */ {
 		
 		if(current != null) {
 			qNum++;
+			//if current != null, this book's queue has at least one node
 			toReturn = "\nQueue\tReader info\n" 
 						+ (qNum) + current.toString().replaceAll("\n", "\t");
-		}
+		}/*else {
+			toReturn = null;
+		}*/
 		return toReturn;
 	}
 	
+	/**
+	 * method to return all of nodes
+	 * @return all of readerIDs in nodes of the queue as string on a line/row
+	 */
 	public String readerInQueueToString() {
 		
 		String toReturn = "";
 		Node current = first;
 		
 		while(current != null) {
-			toReturn += current.getID() + " ";
-			current = current.getNext();	
+			toReturn += current.getID() + " ";   //store current node's readerID adding a space
+			current = current.getNext();	//point the next of the current node to be current node	
 		}
+		
+		//substring toReturn by removing a space that is at the end of toReturn
 		toReturn = toReturn.substring(0, toReturn.length() - 1);
 		
+		//this will be used for each of book OBJs to represent the value of the field 'queue' 
+		//on a line/row if not empty. 
 		return toReturn;
 	}
 	
+	/**
+	 * method to return all of nodes 
+	 * @return all of nodes in the queue as string
+	 */
 	@Override
 	public String toString() {
 		
