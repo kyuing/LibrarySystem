@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import ie.cct._2018316.cunstructs.FactoryInterface;
 import ie.cct._2018316.cunstructs.IO;
@@ -289,14 +290,37 @@ public class Controller {
 		String keyword = "", askUserOp = "";
 
 		askUserOp = IO.menu(IO.printReaderSearchOptionMenu(), "^[1|2|q|Q]$");
-		if (askUserOp.equals("1")) {
+		
+		if (askUserOp.equals("1")) {	//search for reader allowing multiple keywords on a line
 			keyword = IO.menu(IO.printReaderSearchMenu(), "[a-zA-Z0-9]++");
 
 			if (keyword != null) {
 
+				Sort sort = new Sort();
+				String[] arr = null; // arr for storing the values of reader ID, 1st name and 2nd name
+				
+
+				//the size of arr should be readers.size() * 3 since three fields(reader ID, 1st name and 2nd name) are involved.
+				//arr = new String[readers.size() * 3]; // init size of arr
+				
+				// arr will have the sorted strings(reader ID, 1st name and 2nd name) retunred in alphabetical order
+				arr = sort.collectFieldsOfReaders(readers, 4);
+				arr = sort.bubbleSort(arr);
+				
+				// uncomment out this for-loop if wanting to check the state/result of arr
+				// stored in ASC at run time
+				/****************************************************
+				 System.out.println("+++the sorted array arr+++ "); 
+				 for (int i = 0; i <arr.length; i++) { System.out.println(arr[i]); } 
+				 ***************************************************/
+				
 				Search s = new Search();
+				List<Readers> temp = null;
+				temp = s.createTempReadersList(arr, readers);
+				
+				
 				int found = 0;
-				found = s.BinarySearch(this.readers, keyword.trim()); // return an index number of a reader
+				found = s.binarySearch(temp, keyword.trim()); // return an index number of a reader
 
 				if (found == -1) {
 					System.out.println("No match found with the keyword");
@@ -316,8 +340,9 @@ public class Controller {
 			}
 		}
 
-		if (askUserOp.equals("2")) {
+		if (askUserOp.equals("2")) {	//search for reader with reader's Id, fname and lname
 
+			//take accurate input from user and execute a linear search
 			String id = "", f = "", l = "";
 			id = IO.menu(IO.printUnderLine() + "\nEnter the reader ID", "[a-zA-Z0-9]++");
 			f = IO.menu(IO.printUnderLine() + "\nEnter the reader's first name", "[a-zA-Z0-9]++");
@@ -326,7 +351,8 @@ public class Controller {
 			Search s = new Search();
 			keyword = "+" + id.trim() + "&" + f.trim() + "&" + l.trim();
 			int found = 0;
-			found = s.LinearSerchByIdAndFnameAndLname(this.readers, keyword);
+			//found = s.linearSerchForReader(this.readers, keyword);	//parameterized approach
+			found = s.linearSerch(this.readers, keyword);	//generic method approach
 
 			if (found == -1) {
 				System.out.println("No match found with the keyword");
@@ -352,8 +378,9 @@ public class Controller {
 		Sort s = new Sort();
 		String[] result = null;
 
-		String op = IO.menu(IO.printBookSortOptionMenu(), "^[1|2|3|q|Q]$");
+		String op = IO.menu(IO.printBookSortOptionMenu(), "^[1|2|3|4|q|Q]$");
 		switch (op) {
+		
 		case "1":
 			// title sort
 			if ((result = s.collectFieldsOfBooks(this.books, 1)) != null) {
@@ -362,6 +389,7 @@ public class Controller {
 				s.printSortedResultOfBooks(result, this.books, 1);
 			}
 			break;
+		
 		case "2":
 			// author sort
 			if ((result = s.collectFieldsOfBooks(this.books, 2)) != null) {
@@ -371,6 +399,7 @@ public class Controller {
 				s.printSortedResultOfBooks(result, this.books, 2);
 			}
 			break;
+		
 		case "3":
 			// title + author sort
 			if ((result = s.collectFieldsOfBooks(this.books, 3)) != null) {
@@ -380,6 +409,16 @@ public class Controller {
 				s.printSortedResultOfBooks(result, this.books, 3);
 			}
 			break;
+			
+		case "4":
+			// bookID + title + author sort
+			if ((result = s.collectFieldsOfBooks(this.books, 4)) != null) {
+				result = s.bubbleSort(result);
+				System.out.println(IO.printUnderLine()
+						+ "\n[BookID, Titles and authors of all the books sorted in alphabetical order.]\n");
+				s.printSortedResultOfBooks(result, this.books, 4);
+			}
+			break;
 
 		default:
 			System.out.println("going back to menu...");
@@ -387,27 +426,97 @@ public class Controller {
 		}
 	}
 
-	// just return one index
+	// method for searching a book
 	private void searchForBook() {
+		
 		String keyword = "", askUserOp = "";
 
 		askUserOp = IO.menu(IO.printBookSearchOptionMenu(), "^[1|2|q|Q]$");
-		if (askUserOp.equals("1")) {
+		
+		if (askUserOp.equals("1")) {	//search for a book by multiple keywords from user 
+			
+			Sort sort = new Sort();	//declare & init a new sort 
+			String[] arr =  null;
+				
+			if ((arr = sort.collectFieldsOfBooks(this.books, 4)) != null) {
+				
+				//bookId, title and author are stored
+				System.out.println("--------------before merging----------");
+				sort.printArray(arr);
+				
+				arr = sort.mergeSort(arr);	//sort values in arr in ASC
+				
+				System.out.println("--------------after merging----------");
+				sort.printArray(arr);
+
+			}
+			
 			Search s = new Search();
 			keyword = IO.menu(IO.printBookSearchMenu(), "[a-zA-Z0-9]++");
+			String[] keys;			//array to split up keyword
+			List<Books> temp = null;
+			boolean isForAdvancedSearch = false;
+			
+			temp = s.createTempBooksList(arr, this.books, isForAdvancedSearch);
+			
+			//phase1) execute a binary search for a book with the user's original keyword input
 			int found = 0;
-			found = s.LinearSerch(this.books, keyword);
-
-			if (found == -1) {
-				System.out.println("No match found with the keyword");
-
-			} else {
-				System.out.println(this.books.get(found));
+			if(keyword != null) {
+				
+				keys = null;	//not in use for now
+				found = s.binarySearch(temp, keyword.trim(), keys, 0, 0, temp.size()-1);
+				
+				if (found != -1) {
+					System.out.println(this.books.get(found));	//found
+				} else {
+					
+					/* nothing is found by the user's original keyword input.
+					 * prepare to execute a binary search for a book again with the user's keyword input split up
+					 */
+					
+					//collect bookId, titles split up and authors split up
+					if ((arr = sort.collectFieldsOfBooks(this.books)) != null) {
+						
+						sort.printArrayInColumn(arr);
+						
+						//bookId, titles split up and authors split up are stored
+						System.out.println("--------------before merging----------");
+						sort.printArray(arr);
+						
+						arr = sort.mergeSort(arr);	//sort values in arr in ASC
+						
+						System.out.println("--------------after merging----------");
+						sort.printArray(arr);
+					}
+					
+					temp = null;	//re-init the previous temporary Books list
+					isForAdvancedSearch = true;
+					temp = s.createTempBooksList(arr, this.books, isForAdvancedSearch);
+					keys = keyword.trim().split(" ");	// split up the keyword input
+					//System.out.println("Array keys");
+					//s.printArray(keys);
+					found = 0;
+					
+					//phase 2) execute a binary search for a book again with the user's keyword input split up
+					found = s.binarySearch(temp, null, keys, 0, 0, temp.size()-1);
+				
+					if (found != -1) {
+						System.out.println(this.books.get(found));	//found
+					} else {
+						System.out.println("No match found with the keyword");
+					}
+					
+				}
+				
+			}else {
+				System.out.println(IO.printUnderLine() + "\nPlease check search keyword and try it again");
 			}
+					
 		}
 
-		if (askUserOp.equals("2")) {
+		if (askUserOp.equals("2")) {	//search for a book by title and author
 
+			//take accurate input from user and execute a linear search
 			String t = "", a = "";
 			t = IO.menu(IO.printUnderLine() + "\nEnter the title name of the book", "[a-zA-Z0-9]++");
 			a = IO.menu(IO.printUnderLine() + "\nEnter the author name of the book", "[a-zA-Z0-9]++");
@@ -415,7 +524,9 @@ public class Controller {
 			Search s = new Search();
 			keyword = "+" + t.trim() + "&" + a.trim();
 			int found = 0;
-			found = s.LinearSerch(this.books, keyword);
+			
+			//found = s.linearSerchForBook(this.books, keyword);	//parameterized approach
+			found = s.linearSerch(this.books, keyword);	//generic method approach
 
 			if (found == -1) {
 				System.out.println("No match found with the keyword");

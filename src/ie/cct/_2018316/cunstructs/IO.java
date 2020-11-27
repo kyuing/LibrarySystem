@@ -110,6 +110,7 @@ public final class IO {
 				+ "\n\n1: list title"
 				+ "\n2: list author."
 				+ "\n3: list title and author"
+				+ "\n4: list book ID, title and author"
 				+ "\n\nq: go back to menu ";
 	}
 	

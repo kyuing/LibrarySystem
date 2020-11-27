@@ -217,6 +217,7 @@ public class Readers {
 		return "\n" + nameTag + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
 	}
 	
+	//used for testing when executing a binary search for a reader
 	public String sortedAllInAcendingToString() {
 		return "\n" + "temp.get(" + this.rIndex + ")"  + this.r.nameTagToString(this.nameTag);
 	}

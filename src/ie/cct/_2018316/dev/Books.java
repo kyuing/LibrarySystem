@@ -32,8 +32,16 @@ public class Books {
 	private String id, title, author, rentalState, readerInQ;	//main fields
 	private MyQueue mq;	//ref of the queue
 	private String[] queueDB;	//a temp array to store queue values from the text file
+	private String[] titleSplit;	//a temp array used for an advanced search
+	private String[] authorSplit;	//a temp array used for an advanced search
+	private String[] aggregateTitleAndAuthorSplit;	//a temp array used for an advanced search
 	private Node node;	//ref of node
 	private boolean isRented, isAvailable;
+	
+	//fields used temporarily when searching for books 
+	private String nameTag;
+	private int bIndex;
+	private Books b;
 
 	/**
 	 * specific constructor for loading Books.txt into the system and creating book OBJs
@@ -58,6 +66,9 @@ public class Books {
 		 * (This step is needed when loading the book DB from Books.txt) */ 
 		initRentalState(rentalState);
 		
+		//init an advanced search environment
+		initAdvancedSearchEnv();	
+		
 		//init fields
 		this.queueDB = null;
 		this.queueDB = queueDB;
@@ -65,6 +76,62 @@ public class Books {
 		this.node = null;
 		this.mq = null;
 
+	}
+	
+	/**
+	 * method to split up title and author each whether either one's string value is a word-based or it's more than a word-based.
+	 */
+	public void initAdvancedSearchEnv() {
+		
+		if(this.title != null) {
+			this.titleSplit = this.title.split(" ");
+		}
+		
+		if(this.author != null) {
+			this.authorSplit = this.author.split(" ");
+		}
+		
+		this.aggregateTitleAndAuthorSplit = new String[this.titleSplit.length + this.authorSplit.length];
+		
+		
+		for (int i = 0; i < this.titleSplit.length; i++) {
+			this.aggregateTitleAndAuthorSplit[i] = this.titleSplit[i];			
+		}
+		
+		for (int i = 0; i < this.authorSplit.length; i++) {		
+			this.aggregateTitleAndAuthorSplit[this.titleSplit.length + i] = this.authorSplit[i];
+		}
+	
+	}
+	public String[] getAggregateTitleAndAuthorSplit() {
+		return this.aggregateTitleAndAuthorSplit;
+	}
+	public String[] getTitleSplit() {
+		return this.titleSplit;
+	}
+	
+	public String[] getAuthorSplit() {
+		return this.authorSplit;
+	}
+	
+	/**
+	 * specific constructor to clone current states of each of Books when searching for a book
+	 * @param b
+	 * @param index
+	 */
+	public Books(Books b, int index) {
+		
+		this.b = b;
+		this.bIndex = index;
+		this.nameTag = null;
+		
+		//clone value of the fields from the original Reader obj
+		this.id = b.getId();
+		this.title = b.getTitle();
+		this.author = b.getAuthor();
+		this.rentalState = b.getRentalState();
+		this.readerInQ = b.getReaderInQ();
+		//clone node and mq
 	}
 
 	//method for initializing the boolean variables isRented and isAvailable
@@ -199,7 +266,33 @@ public class Books {
 		this.id = id;
 	}
 
-	//toString methods as needed
+	//used when preparing .compareTo() during binary search 
+	public void setNameTag(String s) {
+		this.nameTag = s;
+		
+	}	
+	
+	//used when executing .compareTo() during binary search
+	public String getNameTag() {
+		return this.nameTag;
+	}
+		
+
+	/************************* toString methods as needed *********************************************/
+	
+	public String nameTagToString(String s) {
+		
+		this.nameTag = s;
+		return "\n" + nameTag + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
+				+ ", Queue=" + getReaderInQ() + "]\n";
+
+	}
+	
+	//used for testing when executing a binary search for a reader
+	public String sortedAllInAcendingToString() {
+		return "\n" + "temp.get(" + this.bIndex + ")"  + this.b.nameTagToString(this.nameTag);
+	}
+	
 	public String getQueueToString() {
 
 		String toReturn = "";
