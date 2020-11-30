@@ -1,9 +1,9 @@
 package ie.cct._2018316.dev;
 
 /**
- * Class that manages queue of each of books
+ * Class that manages queue of each of book OBJs
  * This custom queue implementation references/has modified/has improved the queue & linked list course contents
- * that was lectured by Professor Amilcar   
+ * that were lectured by Professor Amilcar   
  * 
  * @author Kyu
  *
@@ -22,24 +22,17 @@ public class MyQueue {
 		this.size = 0;
 	}
 
-	/**
-	 * @return size of queue
-	 */
+	/** @return size of queue */
 	public int size() {
 		return size;
 	}
 
-	/**
-	 * @return true if size is 0
-	 */
+	/** @return true if size is 0 */
 	public boolean isEmpty() {
 		return size == 0;
 	}
 	
-	/**
-	 * getter for this.first
-	 * @return first node in queue
-	 */
+	/** @return first node in queue */
 	public Node getFirst() {
 		return this.first;
 	}
@@ -63,7 +56,7 @@ public class MyQueue {
 	}
 	
 	/**
-	 * method to return/remove the first node from queue
+	 * method to remove the first node from queue
 	 * @return first node
 	 */
 	public Node deQueue() {
@@ -81,7 +74,7 @@ public class MyQueue {
 	}
 	
 	/**************************************************************************************************
-	 * not in use.
+	 * NOT IN USE
 	 * However, all of methods below modifies/improves its functionality 
 	 * based on this method's logic to change the pointer at a time
 	
@@ -97,7 +90,6 @@ public class MyQueue {
 		}
 		return current;
 	}
-	
 	***************************************************************************************************/
 	
 	/**
@@ -107,17 +99,20 @@ public class MyQueue {
 	 */
 	public boolean equalsCustom(String readerID) {
 		
-		if(size == 0 ) {
+		if(size == 0) {	
 			
 			return false;
 			
 		}else {
+			
 			Node current = first;
 			int length = size;	
 			int counter = 0;
+			
 			while(counter < length) {
-				//if current node's readerID in the queue == readerID
+				
 				if(current.getID().equals(readerID)) {
+					//current node's readerID in the queue == the input parameter readerID
 					return true;
 				}
 				
@@ -132,7 +127,7 @@ public class MyQueue {
 		
 	
 	/**
-	 * method to return a node in the queue by comparing @param readerID with readerID inside queue 
+	 * method to print a node in the queue by comparing @param readerID with readerID inside queue 
 	 * @param readerID
 	 * @return the node found as string
 	 */
@@ -143,14 +138,14 @@ public class MyQueue {
 			Node current = first;
 			int length = size;
 			int qNum = 0;
-			String toReturn = "\n\nQueue\tReader info";	//print a temp column info for printout
+			String toReturn = "\n\nQueue\tReader info";	//print a temp column info for printing
 			
 			while(qNum < length) {
 				
 				qNum++;	//increment qNum; the number of times WHILE-LOOP is executed
-				//if current node's readerID in the queue == readerID
+				
 				if(current.getID().equals(readerID)) {
-					//the node that matches with the parameter readerID is found
+					//current node's readerID in the queue == the input parameter readerID
 					toReturn += "\n" + (qNum) + current.toString().replaceAll("\n", "\t");
 					return toReturn;	
 				}
@@ -164,7 +159,7 @@ public class MyQueue {
 	}
 	
 	/**
-	 * method to return the first node 
+	 * method to print the first node 
 	 * @return first node in the queue as string
 	 */
 	public String firstToString() {
@@ -174,7 +169,9 @@ public class MyQueue {
 		Node current = first;
 		
 		if(current != null) {
+			
 			qNum++;
+			
 			//if current != null, this book's queue has at least one node
 			toReturn = "\nQueue\tReader info\n" 
 						+ (qNum) + current.toString().replaceAll("\n", "\t");
@@ -185,8 +182,8 @@ public class MyQueue {
 	}
 	
 	/**
-	 * method to return all of nodes
-	 * @return all of readerIDs in nodes of the queue as string on a line/row
+	 * method to print all of nodes in queue
+	 * @return all of nodes(readerIDs) in the queue as string on a line/row
 	 */
 	public String readerInQueueToString() {
 		
@@ -198,16 +195,16 @@ public class MyQueue {
 			current = current.getNext();	//point the next of the current node to be current node	
 		}
 		
-		//substring toReturn by removing a space that is at the end of toReturn
+		//substring the variable toReturn (remove a space at the end of it)
 		toReturn = toReturn.substring(0, toReturn.length() - 1);
 		
-		//this will be used for each of book OBJs to represent the value of the field 'queue' 
+		//this will be used for each of book OBJs to represent the value of the field 'readerInQ' 
 		//on a line/row if not empty. 
 		return toReturn;
 	}
 	
 	/**
-	 * method to return all of nodes 
+	 * method to print all of nodes 
 	 * @return all of nodes in the queue as string
 	 */
 	@Override

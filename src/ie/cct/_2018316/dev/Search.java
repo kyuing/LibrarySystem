@@ -14,13 +14,13 @@ public class Search {
 	//method for printing an array and that is used for testing some of the result
 	public void printArray(String[] arr) {
 		
-		String toPrint = "[ ";
+		String toReturn = "[ ";
 		for (int i = 0; i < arr.length; i++) {
-			toPrint += arr[i] + ", ";
+			toReturn += arr[i] + ", ";
 			
 		}
-		toPrint += "]";
-		System.out.println(toPrint);
+		toReturn += "]";
+		System.out.println(toReturn);
 		
 	}
 		
@@ -53,7 +53,7 @@ public class Search {
 				author = titileAndAutor[1];
 
 				// execute linear search
-				while (!(isFound = findBooksByTitleAndAuthor(b, curLocation, title, author))
+				while (!(isFound = findBooksByTitleAndAuthor(this.b, curLocation, title, author))
 						&& (curLocation < b.size() - 1)) {
 
 					curLocation++; // move to next box
@@ -74,7 +74,7 @@ public class Search {
 				l = temp[2];
 
 				// execute linear search
-				while (!(isFound = findReaderByIdAndFnameAndLname(r, curLocation, id, f, l))
+				while (!(isFound = findReaderByIdAndFnameAndLname(this.r, curLocation, id, f, l))
 						&& (curLocation < r.size() - 1)) {
 
 					curLocation++; // move to next box
@@ -91,74 +91,7 @@ public class Search {
 
 	}
 
-//	/**
-//	 * method to search for a book with exact field values(title and author) entered by user
-//	 * @param List<Books> b
-//	 * @param keyword
-//	 * @return index number found
-//	 */
-//	public int linearSerchForBook(List<Books> b, String keyword) {
-//
-//		int curLocation = 0;
-//		boolean isFound = false;
-//
-//		if (keyword.startsWith("+")) { // keyword is title + author
-//			String titileAndAutor[] = null, title = "", author = "";
-//			titileAndAutor = keyword.substring(1).split("&");
-//			title = titileAndAutor[0];
-//			author = titileAndAutor[1];
-//
-//			// execute linear search
-//			while (!(isFound = findBooksByTitleAndAuthor(b, curLocation, title, author))
-//					&& (curLocation < b.size() - 1)) {
-//
-//				curLocation++; // move to next box
-//			}
-//
-//			if (isFound == false) {
-//				return -1;
-//			}
-//		}
-//
-//		return curLocation; // return one specific result
-//
-//	}
-//
-//	/**
-//	 * method to search for a reader with exact field values(reader Id, first name and last name) entered by user
-//	 * @param List<Readers> r
-//	 * @param keyword
-//	 * @return index number found
-//	 */
-//	public int linearSerchForReader(List<Readers> r, String keyword) {
-//
-//		int curLocation = 0;
-//		boolean isFound = false;
-//
-//		// keyword is title + author
-//		if (keyword.startsWith("+")) {
-//			String temp[] = null, id = "", f = "", l = "";
-//			temp = keyword.substring(1).split("&");
-//			id = temp[0];
-//			f = temp[1];
-//			l = temp[2];
-//
-//			// execute linear search
-//			while (!(isFound = findReaderByIdAndFnameAndLname(r, curLocation, id, f, l))
-//					&& (curLocation < r.size() - 1)) {
-//
-//				curLocation++; // move to next box
-//			}
-//
-//			if (isFound == false) {
-//				return -1;
-//			}
-//
-//		}
-//
-//		return curLocation;
-//	}
-
+	
 	/**
 	 * method to compare strings with another strings.
 	 * 

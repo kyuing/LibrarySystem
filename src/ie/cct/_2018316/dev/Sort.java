@@ -98,7 +98,7 @@ public class Sort {
 				//the string value in s1's index pointed < the string value in s2's index pointed
 				s[count_s] = s1[count_s1];	//add the string value in s1's index pointed into the sequence array s
 				
-				System.out.println(s[count_s]);
+				//System.out.println(s[count_s]);
 				
 				count_s1++;	//move the pointer == remove the string value in s1's index pointed 			
 			}
@@ -106,7 +106,7 @@ public class Sort {
 				//the string value in s2's index pointed < the string value in s1's index pointed
 				s[count_s] = s2[count_s2];	//add the string value in s2's index pointed into the sequence array s
 				
-				System.out.println(s[count_s]);
+				//System.out.println(s[count_s]);
 				
 				count_s2++;	//move the pointer == remove the string value in s2's index pointed
 			}
@@ -117,9 +117,10 @@ public class Sort {
 		
 		//keep adding the elements that have been left or that have not been moved in s1 into the sequence array s
 		while (count_s1 < s1.length) {
+			
 			s[count_s] = s1[count_s1];	//add the string value in s1's index pointed into the sequence array
 			
-			System.out.println(s[count_s]);
+			//System.out.println(s[count_s]);
 			
 			count_s1++;	//move the pointer == remove the string value in s1's index pointed 
 			count_s++;
@@ -127,9 +128,10 @@ public class Sort {
 		
 		//keep adding the elements that have been left or that have not been moved in s2 into the sequence array s
 		while (count_s2 < s2.length) {
+			
 			s[count_s] = s2[count_s2];	//add the string value in s2's index pointed into the sequence array 
 			
-			System.out.println(s[count_s]);
+			//System.out.println(s[count_s]);
 			
 			count_s2++;	//move the pointer == remove the string value in s2's index pointed
 			count_s++;	//move the pointer == look at the next index of the sequence array
@@ -147,27 +149,35 @@ public class Sort {
 	 */
 	public String[] collectFieldsOfReaders(List<Readers> r, int sortOp) {
 
-		String[] arr = null; // an array to store temp
-
-		if (sortOp == 1) {	//reader id
-			arr = new String[r.size()];
-			for (int i = 0; i < arr.length; i++) {
-				arr[i] = r.get(i).getId();
-			}
-		} else if (sortOp == 2) {	//fname
+		String[] arr = null; 
+			
+		if (sortOp == 2) {	//fname
+			
 			arr = new String[r.size()];
 			for (int i = 0; i < arr.length; i++) {
 				arr[i] = r.get(i).getFname();
 			}
+			
 		} else if (sortOp == 3) {	//lname
+			
 			arr = new String[r.size()];
 			for (int i = 0; i < arr.length; i++) {
 				arr[i] = r.get(i).getLname();
 			}
-		} else {
-			//reader ID + fname + lname
-			arr = new String[r.size()*3]; // init arr size
-
+			
+		} else if (sortOp == 4) {	// fname + lname
+			
+			arr = new String[r.size() * 2]; 
+			for (int i = 0; i < r.size(); i++) {
+				arr[i] = r.get(i).getFname();
+			}
+			for (int i = 0; i < r.size(); i++) {
+				arr[r.size() + i] = r.get(i).getLname();
+			}
+			
+		} else {	//sortOp == 5; reader ID + fname + lname
+	
+			arr = new String[r.size() * 3]; 
 			for (int i = 0; i < r.size(); i++) {
 				arr[i] = r.get(i).getId();
 			}
@@ -175,7 +185,7 @@ public class Sort {
 				arr[r.size() + i] = r.get(i).getFname();
 			}
 			for (int i = 0; i < r.size(); i++) {
-				arr[r.size()*2+i] = r.get(i).getLname();
+				arr[r.size() * 2 + i] = r.get(i).getLname();
 			}
 
 		}
@@ -200,7 +210,6 @@ public class Sort {
 
 				if (arr[j].compareTo(arr[j + 1]) > 0) { // can change the > to < for DESCENDING order
 
-					// the value at arr[j] > arr[j+1]
 					temp = arr[j]; // temp assigned with the value at current index
 					arr[j] = arr[j + 1]; // current index assigned with the value at the next index of current index
 					arr[j + 1] = temp; // the next index of current index assigned with temp
@@ -212,8 +221,12 @@ public class Sort {
 
 	
 	/**
-	 * method that returns field value of OBJs from the Books list
-	 * This is an advanced option for searching a book
+	 * Method that collects field value of OBJs from the Books list.
+	 * titles and authors -except bookIDs- of Books OBJs can compose of either one word or multiple words.
+	 * Thus, all of the values of the field title and author in each of Books OBJs are broken down into one word-based string value,
+	 * which will include both of the cases when a value is one word and is more than one word respectively.    
+	 * 
+	 * This is an advanced option for searching a book.
 	 * 
 	 * @param List<Books> b
 	 * @return a string array collected
@@ -226,28 +239,30 @@ public class Sort {
 		int authorSplitSize = 0;
 		
 		for (int i = 0; i < b.size(); i++) {
-			
+			//init each of the int variables
 			titleSplitSize += b.get(i).getTitleSplit().length;
 			authorSplitSize += b.get(i).getAuthorSplit().length;
 		}
 		
-		System.out.println("titleSplitSize: " + titleSplitSize);
-		System.out.println("authorSplitSize: " + authorSplitSize);
+		/* if necessary, uncomment the following out to check each of the variable sizes assigned*/
+		//System.out.println("titleSplitSize: " + titleSplitSize);
+		//System.out.println("authorSplitSize: " + authorSplitSize);
 		
 		int len = 0;
 		len = b.size() + titleSplitSize + authorSplitSize;
 		arr = new String[len]; // init arr size
 
-		//store bookId, title and author
 		for (int i = 0; i < b.size(); i++) {
-			arr[i] = b.get(i).getId();	//store book IDs
+			arr[i] = b.get(i).getId();	//store book IDs into arr
 		}
 		
 		int index = 0;
 		for (int i = 0; i < b.size(); i++) {
 			for (int j = 0; j < b.get(i).getTitleSplit().length; j++) {
+				
 				//store title by a word unit
 				arr[b.size() + index] = b.get(i).getTitleSplit()[j];
+				
 				if(index < titleSplitSize) {
 					index++;	
 				}
@@ -257,20 +272,21 @@ public class Sort {
 		index = 0;
 		for (int i = 0; i < b.size(); i++) {
 			for (int j = 0; j < b.get(i).getAuthorSplit().length; j++) {
+				
 				//store author by a word unit
 				arr[b.size() + titleSplitSize + index] = b.get(i).getAuthorSplit()[j];
+				
 				if(index < authorSplitSize) {
 					index++;	
 				}
-			}
-			
+			}		
 		}		
 		
 		return arr;
 	}
 	
 	/**
-	 * method that returns field value of OBJs from the Books list
+	 * method that collects field value of OBJs from the Books list
 	 * 
 	 * @param book    ref
 	 * @param sortOp; 1,2 or 3
@@ -278,53 +294,52 @@ public class Sort {
 	 */
 	public String[] collectFieldsOfBooks(List<Books> b, int sortOp) {
 
-		String[] arr = null; // an array to store temp
+		String[] arr = null; 
 
-		if (sortOp == 1) {	//title
+		if (sortOp == 2) {	//title
+			
 			arr = new String[b.size()];
 			for (int i = 0; i < arr.length; i++) {
-				// init arr with titles
-				arr[i] = b.get(i).getTitle();
+				arr[i] = b.get(i).getTitle();	//store titles into arr
 			}
-		} else if (sortOp == 2) {	//author
-			// init arr with author
+			
+		} else if (sortOp == 3) {	//author
+
 			arr = new String[b.size()];
 			for (int i = 0; i < arr.length; i++) {
-				arr[i] = b.get(i).getAuthor();
+				arr[i] = b.get(i).getAuthor();	//store author into arr
 			}
-		} else if (sortOp == 3) {	//title and author
+		} else if (sortOp == 4) {	//title and author
 			
 			int len = 0;
 			len = b.size();
 			len = len * 2;
-			arr = new String[len]; // init arr size
+			arr = new String[len]; 
 
 			for (int i = 0; i < b.size(); i++) {
-				// init arr with titles
-				arr[i] = b.get(i).getTitle();
+				arr[i] = b.get(i).getTitle();	//store titles into arr
 			}
+			
 			for (int i = 0; i < b.size(); i++) {
-				// init arr with author
-				arr[b.size() + i] = b.get(i).getAuthor();
+				arr[b.size() + i] = b.get(i).getAuthor();	//store author into arr
 			}
-		}else {
-			//bookId, title and author
+			
+		}else {	//sortOp == 5; bookId, title and author
+			
 			int len = 0;
 			len = b.size();
 			len = len * 3;
-			arr = new String[len]; // init arr size
+			arr = new String[len];
 
 			for (int i = 0; i < b.size(); i++) {
-				// init arr with titles
-				arr[i] = b.get(i).getId();
+				arr[i] = b.get(i).getId();	//store book IDs into arr
+			}
+			
+			for (int i = 0; i < b.size(); i++) {
+				arr[b.size() + i] = b.get(i).getTitle();	//store titles into arr
 			}
 			for (int i = 0; i < b.size(); i++) {
-				// init arr with titles
-				arr[b.size() + i] = b.get(i).getTitle();
-			}
-			for (int i = 0; i < b.size(); i++) {
-				// init arr with author
-				arr[b.size() * 2 + i] = b.get(i).getAuthor();
+				arr[b.size() * 2 + i] = b.get(i).getAuthor();	//store author into arr
 			}
 		}
 
@@ -332,7 +347,7 @@ public class Sort {
 	}
 	
 	/**
-	 * method to print the sorted result depending on the sort option selected
+	 * method to print the sorted result of Readers list depending on the sort option selected
 	 * 
 	 * @param String[] result
 	 * @param List<Readers> r
@@ -342,25 +357,18 @@ public class Sort {
 
 		List<Readers> l = new ArrayList<>();	//create a temp list
 
-		/* The parameter result should now have its sorted string values in ascending order.
+		/** The parameter String[] result passed should now have its sorted string values in ascending order.
 		 * 
 		 * Now, the following steps should be executed;
-		 * 1. re-order the original Readers list(List<Readers> r) based on the values in the parameter result
-		 * 2. store it into a temp list l
-		 * 3. print it 
+		 * 1. re-order the original Readers list(List<Readers> r) based on the values in the parameter String[] result
+		 * 2. store the sorted Readers OBJs into the temp list l
+		 * 3. the temp list l 
 		 */
 		
 		if (sortOp == 1) {	//reader ID
-			for (int i = 0; i < result.length; i++) {
-				for (int j = 0; j < r.size(); j++) {
 
-					if (result[i].equals(r.get(j).getId())) {
-						l.add(r.get(j)); // the sorted string values are added to l; the temp Books list
-					}
-				}
-			}
-			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).nameTagToString(result[i])); // print
+			for (int i = 0; i < r.size(); i++) {
+				System.out.print(r.get(i)); // just print the original Readers list
 			}
 
 		} else if (sortOp == 2) {	//reader's first name
@@ -368,7 +376,7 @@ public class Sort {
 				for (int j = 0; j < r.size(); j++) {
 
 					if (result[i].equals(r.get(j).getFname())) {
-						l.add(r.get(j)); // the sorted string values are added to l; the temp Books list
+						l.add(r.get(j)); // add the matching one into the temp list l
 					}
 				}
 			}
@@ -382,7 +390,22 @@ public class Sort {
 				for (int j = 0; j < r.size(); j++) {
 
 					if (result[i].equals(r.get(j).getLname())) {
-						l.add(r.get(j)); // the sorted string values are added to l; the temp Books list
+						l.add(r.get(j)); // add the matching one into the temp list l
+					}
+				}
+			}
+
+			for (int i = 0; i < l.size(); i++) {
+				System.out.print(l.get(i).nameTagToString(result[i])); // print
+			}
+
+		} else if (sortOp == 4) {	//reader's first and last name
+			for (int i = 0; i < result.length; i++) {
+				for (int j = 0; j < r.size(); j++) {
+
+					if (result[i].equals(r.get(j).getFname()) || result[i].equals(r.get(j).getLname())) {
+						
+						l.add(r.get(j)); // add the matching one into the temp list l
 					}
 				}
 			}
@@ -392,17 +415,16 @@ public class Sort {
 			}
 
 		} else {	//ascending(alphabetical) order throughout reader Id, fname and lname
+	
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < r.size(); j++) {
 
-					
 					if (result[i].equals(r.get(j).getId()) 
 							|| result[i].equals(r.get(j).getFname())
 							|| result[i].equals(r.get(j).getLname())) {
 
-						l.add(r.get(j)); // the sorted string values are added to l; the temp Books list
+						l.add(r.get(j)); // add the matching one into the temp list l
 					}
-
 				}
 			}
 
@@ -410,7 +432,6 @@ public class Sort {
 				System.out.print(l.get(i).nameTagToString(result[i])); // print
 			}
 		}
-
 	}
 	
 
@@ -425,65 +446,71 @@ public class Sort {
 
 		List<Books> l = new ArrayList<>();
 
-		/* The parameter result should now have its sorted string values in ascending order.
+		/** The parameter String[] result passed should now have its sorted string values in ascending order.
 		 * 
 		 * Now, the following steps should be executed;
-		 * 1. re-order the original Readers list(List<Books> b) based on the values in the parameter result
-		 * 2. store it into a temp list l
-		 * 3. print it 
-		 */
-		
-		if (sortOp == 1) {	//title
+		 * 1. re-order the original Books list(List<Books> b) based on the values in the parameter String[] result
+		 * 2. store the sorted Books OBJs into the temp list l
+		 * 3. the temp list l 
+		 */	
+		if (sortOp == 1) {	//ID
+	
+			for (int i = 0; i < b.size(); i++) {
+				System.out.print(b.get(i)); // just print the ref of the original Books list b
+			}
+
+		} else if (sortOp == 2) {	//title
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
 					if (result[i].equals(b.get(j).getTitle())) {
-						l.add(b.get(j)); // the sorted string values are added to l; the temp Books list
+						l.add(b.get(j)); // add the matching one into the temp list l
 					}
 				}
 			}
 			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).titleSortedToString()); // print
+				System.out.print(l.get(i).booksSortedToString(result[i])); // print
 			}
 
-		} else if (sortOp == 2) {	//author
+		} else if (sortOp == 3) {	//author
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
 					if (result[i].equals(b.get(j).getAuthor())) {
-						l.add(b.get(j)); // the sorted string values are added to l; the temp Books list
+						l.add(b.get(j)); // add the matching one into the temp list l
 					}
 				}
 			}
 
 			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).authorSortedToString()); // print
+				System.out.print(l.get(i).booksSortedToString(result[i])); // print
 			}
 
-		} else if (sortOp == 3) {	//title and author
+		} else if (sortOp == 4) {	//title and author
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
 					if (result[i].equals(b.get(j).getTitle()) || result[i].equals(b.get(j).getAuthor())) {
 
-						l.add(b.get(j)); // the sorted string values are added to l; the temp Books list
+						l.add(b.get(j)); // add the matching one into the temp list l
 					}
 
 				}
 			}
 
 			for (int i = 0; i < l.size(); i++) {
-
-				System.out.print(l.get(i).titleAndAuthorSortedToString(result[i]));	//print
+				System.out.print(l.get(i).booksSortedToString(result[i])); // print
 			}
 			
-		} else {	//sortOp == 4; book Id, title and author
+		} else {	//sortOp == 5; book Id, title and author
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
-					if (result[i].equals(b.get(j).getId()) || result[i].equals(b.get(j).getTitle()) || result[i].equals(b.get(j).getAuthor())) {
+					if (result[i].equals(b.get(j).getId()) 
+							|| result[i].equals(b.get(j).getTitle()) 
+							|| result[i].equals(b.get(j).getAuthor())) {
 
-						l.add(b.get(j)); // the sorted string values are added to l; the temp Books list
+						l.add(b.get(j)); // add the matching one into the temp list l
 					}
 
 				}
@@ -491,11 +518,10 @@ public class Sort {
 
 			for (int i = 0; i < l.size(); i++) {
 
-				System.out.print(l.get(i).titleAndAuthorSortedToString(result[i]));	//print
+				System.out.print(l.get(i).booksSortedToString(result[i])); // print
 			}
 		}
 		
-
 	}
 
 }

@@ -38,9 +38,9 @@ public class Factory implements FactoryInterface {
 			rentalState = temp[3];
 			readerInQ = temp[4];
 			
-			//the variable readerInQ contains reader IDs by the unit of A SPACE or none.
+			//the variable readerInQ can contain reader IDs by the unit of A SPACE or none.
 			myQueueTemp = readerInQ.split(" ");	//split readerInQ 
-			b.add(new Books(id, title, author, rentalState, myQueueTemp));	//create a new book obj
+			b.add(new Books(id, title, author, rentalState, myQueueTemp));	//create a new book OBJ
 			
 			line = in.readLine();	//read the next line
 		}
@@ -54,28 +54,44 @@ public class Factory implements FactoryInterface {
 			for(int j=0; j<b.get(i).getQueueDB().length; j++) {
 				
 				if(!b.get(i).getQueueDB()[j].toString().equals("none")) {
-					
+					//The book OBJ has queue of readers
 					s = b.get(i).getQueueDB()[j].toString();	//the book has at least one queue of reader ID
 					
 					/* All of text files are exposed to such a risk that 
-					 * users can accidentally write wrong-formatted value in them,
+					 * users can accidentally write wrong-formatted value in any files,
 					 * which cannot be 100% prevented.
-					 * Since the queue field stores a bit more dynamic values, a simple filtering is added.
-					 * Check the presence of Reader IDs 
-					 * between one that is in a book obj and the original one that is in a reader obj.
-					 * (This logic works because Reader DB is loaded before loading the book DB) */
-					if(validReeaderID(readers, s)) {
+					 * 
+					 * Since the field "readerInQ" of book's queue stores a bit more dynamic values
+					 * than other fields, 
+					 * checking the presence of Reader IDs between ones that are in a book OBJ 
+					 * (in other words, that are the value of the field "readerInQ" in Books.txt) 
+					 * and the original ones that are in a reader OBJ
+					 * is added.
+					 * 
+					 **************************************************************************************
+					 * The following example can help to outline the case
+					 * 
+					 * e.g. Let's say the first row in Books.txt could have a record like below
+					 * 
+					 * field info  -> bookID | title name | author | rental state | readerInQ
+					 * 1st row     -> B01#Hunger Game#George#Rented#R01 R02 R03 hereIsWrongValue
+					 **************************************************************************************  
+					 * 
+					 * In Books.txt, the field readerInQ must have unique readerIDs as queue representation 
+					 * if it's not "none".
+					 * Thus, "hereIsWrongValue" is wrong value 
+					 * and it does not need to be loaded into the system.
+					 */
+					if(validReaderID(readers, s)) {
 					
-						s = s.substring(1);	//ONLY take the valid existing reader ID from the book's queue.
+						s = s.substring(1);	//ONLY take the valid queue (reader ID) from the book's queue.
 						index = Integer.parseInt(s)-1;	//extract index
 						b.get(i).setEnQueue(readers, index);	//enqueue it at a system level
 						index = 0;	//flush
 						
 					}else {
-						//wrong-formatted value found from the field value of queue in the Books.txt
-						//e.g. B1#Hunger Roof#Georgi Facello#Rented#R1 R2 R3 333   //333 is wrong one
-						//So ignore loading it into the system.
-						System.out.println("!!! wrong formatted input found from the queue field in the Books.txt !!!"
+						//ignore wrong-formatted value and don't load it into the system.
+						System.out.println("!!! wrong formatted input found from the field \"readerInQ\" in the Books.txt !!!"
 								+ "\nthe value '" + s + "' won't be loaded into the system."
 										+ "\nPleade delete it from the Books.txt");
 					}
@@ -92,14 +108,14 @@ public class Factory implements FactoryInterface {
 	}
 	
 	/**
-	 * method for checking the presence of queue(reader ID) between the loaded reader DB and the Books.txt
+	 * method for checking the presence of reader IDs in book's queue when loading Books.txt
 	 * 
-	 * return true if equals. 
+	 * @return true if equals. 
 	 * that means a specific queue(reader ID) written on a specific row in Books.txt before, 
-	 * is valid record/info based on the actual reader DB and is ready to be loaded into the system.
+	 * is valid record/info based on the actual reader DB and it's is ready to be loaded into the system.
 	 * */
 	@Override
-	public boolean validReeaderID(List<Readers> readers, String rID) {
+	public boolean validReaderID(List<Readers> readers, String rID) {
 		
 		for(int i=0; i<readers.size(); i++) {
 			if (readers.get(i).getId().equalsIgnoreCase(rID)) {
@@ -137,6 +153,7 @@ public class Factory implements FactoryInterface {
 	 */
 	@Override
 	public Collection<Readers> createReaderDB(BufferedReader in, List<Rent> rent) throws IOException {
+		
 		List<Readers> r = new ArrayList<>();
 		List<Rent> myRent = null;
 		String[] temp = null, myRentTemp = null; 
@@ -166,19 +183,39 @@ public class Factory implements FactoryInterface {
 					for(int i=0; i<myRentTemp.length; i++) {
 						
 						
-						/* If current rent value(rentID) on a specific row in Readers.txt == a rentID in Rent list,
-						 * take an index of Rent list 
-						 * while filtering wrong-formatted value of the current rent field in the Readers.txt
-						 * (if necessary)  
-						 * e,g, R1#Dulce#Abril#RT2 RT3 RT4 999
+						/* Again, all of text files are exposed to such a risk that 
+						 * users can accidentally write wrong-formatted value in any files,
+						 * which cannot be 100% prevented.
+						 * 
+						 * Since the field "currentRent" of reader OBJs stores a bit more dynamic values
+						 * than other fields, a simple validation is added.
+						 * 
+						 * If current rent value(rentID) of the field "currentRent" on a specific row in Readers.txt == a rentID in Rent list,
+						 * take the index number of Rent list as well as filtering wrong-formatted value if necessary  
+						 *
+						 ****************************************************************************************
+						 * The following example can help to outline the case
+						 * 
+						 * e.g. Let's say the first row in Readers.txt could have a record like below
+						 * 
+						 * field info  -> readerID | first name | last name | currentRent
+						 * 1st row     -> R01#Dulce#Abril#RT02 RT03 RT04 TTTT
+						 **************************************************************************************  
+						 *
+						 * In Readers.txt, the field currentRent must have unique rentIDs as its current rent representation 
+						 * if it's not "none".
+						 * Thus, "TTTT" is wrong value 
+						 * and it does not need to be added into the system 
 						 */
 						rentIndexToReturn = validRentID(rent, myRentTemp[i]);
 						
 						if(rentIndexToReturn != -1) {
-							myRent.add(rent.get(rentIndexToReturn));	//clone a rent obj found into myRent; a temp list
+							
+							//clone/add the valid rent obj found into myRent of the reader
+							myRent.add(rent.get(rentIndexToReturn));	
 						
 						}else {
-							System.out.println("!!! wrong formatted value found from the current rent field in the Readers.txt !!!"
+							System.out.println("!!! wrong formatted value found from the field \"currentRent\" in the Readers.txt !!!"
 									+ "\nthe value '" + myRentTemp[i] + "' won't be loaded into the system."
 									+ "\nPleade delete it from the Readers.txt\n");
 													
@@ -191,6 +228,7 @@ public class Factory implements FactoryInterface {
 				}
 
 			}
+			
 			line = in.readLine();	//read the next line
 			
 		}
@@ -237,7 +275,6 @@ public class Factory implements FactoryInterface {
 		String lineZero = "";	
 		
 		try {	//use try-catch in case there some errors
-			//BufferedReader br = new BufferedReader(new FileReader("Rent.txt"));
 			
 			//new record of Rent
 			if(isNew) {

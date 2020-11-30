@@ -1,0 +1,21 @@
+bookID|title|author|rental state|readerInQ
+B01#Hunger Game#George#Rented#R01 R02 R03 hereIsWrongValue
+B02#Frogmen Breaking#Bezalel Simmel#Available#none
+B03#Outbreak#Parto Bamford#Rented#R03 R04 R05
+B04#Young Language#Chirstian Koblick#Rented#none
+B05#Stampede Disturbing#Kyoichi Maliniak#Rented#none
+B06#World Leathernecks#Anneke Preusig#Available#none
+B07#Goodfellas Salute#Tzvetan#Available#none
+B08#Core Suit#Saniya Kalloufi#Available#none
+B09#Knock Warlock#Sumant Peac#Available#none
+B10#Dangerous#Duangkaew Piveteau#Available#none
+B11#Chocolate#Sluis#Available#none
+B12#Beast#Patricio Bridgland#Available#none
+B13#Trap Guys#Eberhardt Terkki#Available#none
+B14#Grail Frankenstein#Berni Genin#Available#none
+B15#Wisdom Worker#Guoxiang#Available#none
+B16#Divorce#Kazuhito Cappelletti#Available#none
+B17#Groove Fiction#Cristinel Bouloucos#Available#none
+B18#Pet Haunting#Kazuhide Peha#Available#none
+B19#Network Peak#Lillian#Available#none
+B20#Forever Candidate#Mayuko Warwick#Available#none

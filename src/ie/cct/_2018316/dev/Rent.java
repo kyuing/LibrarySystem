@@ -1,5 +1,7 @@
 package ie.cct._2018316.dev;
 
+import java.util.List;
+
 public class Rent {
 	
 	/* The field state info in detail
@@ -53,6 +55,10 @@ public class Rent {
 		}	
 		
 	}
+	
+//	public boolean validateCurrRented(List<Rent> rent, List<Books> books, int bIndex, List<Readers> reader, int rIndex) {
+//		
+//	}
 	
 	//getters and setters
 	public boolean isRented() {

@@ -12,6 +12,7 @@ public class Readers {
 	 * i.e. "RT1 RT2..." == this reader is renting a book.
 	 *                      rent ID(s) that contain related book ID and this reader ID is stored/represented as a string 
 	 */
+	
 	//main fields
 	private String id, fname, lname, currentRent;
 	private List<Rent> myRent;
@@ -72,7 +73,7 @@ public class Readers {
 			
 			for(int i=0; i<myRent.size(); i++) {
 				
-				toReturn += myRent.get(i).getRentID() + " ";	//append
+				toReturn += myRent.get(i).getRentID() + " ";	//append with a space
 				
 				if(i == myRent.size()-1) {
 
@@ -100,9 +101,9 @@ public class Readers {
 		}else {
 
 			this.myRent.add(currRentRecord.get(currRentRecord.size()-1));
-			toReturn = this.currentRent + " " + this.myRent.get(this.myRent.size()-1).getRentID(); 
+			toReturn = this.currentRent + " " + this.myRent.get(this.myRent.size()-1).getRentID(); //append
 
-			this.currentRent = toReturn;
+			this.currentRent = toReturn;	//update the field
 		}
 		
 	}
@@ -114,16 +115,14 @@ public class Readers {
 	public void removeRent(String rentIdToRemove) {
 		
 		//uncomment out it if wanting to check the state of myRent before executing removing
-		/* System.out.println("before: " + myRent); */
+		//System.out.println("before removing: " + myRent);
 		
 		if(equalsRentInMyRents(rentIdToRemove)) {
 		
 			myRent.remove(this.indexToRemove);
 			
 			//uncomment out it if wanting to check the state of myRent after executing removing
-			/* System.out.println("after: " + myRent); */
-			
-			//this.indexToRemove = 0;		//re-init it
+			//System.out.println("after removing: " + myRent);
 			
 			if(myRent.size() == 0) {
 				myRent = null;
@@ -143,14 +142,18 @@ public class Readers {
 		this.indexToRemove = 0;	//init it every time the method is called.
 				
 		if(myRent != null) {
+		
 			for(int i=0; i<myRent.size(); i++) {
+			
 				if(myRent.get(i).getRentID().equalsIgnoreCase(rentIdTemp)) {
+				
 					this.indexToRemove = i;
+					
 					return true;
 				}
 			}	
 		}
-
+		
 		return false;
 	}
 	
@@ -187,17 +190,8 @@ public class Readers {
 	public String getCurrentRent() {
 		return currentRent;
 	}
-
-//	public void setAddress(String currentRent) {
-//		this.currentRent = currentRent;
-//	}
 	
-//	public void setNameTag(String s, int index) {
-//		this.rIndex = index;
-//		this.nameTag = s;
-//	}
-	
-	//used when preparing .compareTo() during binary search 
+	//used when preparing to execute .compareTo() during binary search 
 	public void setNameTag(String s) {
 		this.nameTag = s;
 		
@@ -207,6 +201,7 @@ public class Readers {
 	public String getNameTag() {
 		return this.nameTag;
 	}
+	
 	
 	/************************* toString methods as needed *********************************************/
 	

@@ -30,13 +30,18 @@ public class Books {
 	 * 
 	 * */
 	private String id, title, author, rentalState, readerInQ;	//main fields
+	
 	private MyQueue mq;	//ref of the queue
-	private String[] queueDB;	//a temp array to store queue values from the text file
-	private String[] titleSplit;	//a temp array used for an advanced search
-	private String[] authorSplit;	//a temp array used for an advanced search
-	private String[] aggregateTitleAndAuthorSplit;	//a temp array used for an advanced search
 	private Node node;	//ref of node
-	private boolean isRented, isAvailable;
+	
+	private String[] queueDB;	//a temp array to store queue values from the text file
+	
+	//temp arrays used for an advanced search
+	private String[] titleSplit;	
+	private String[] authorSplit;	
+	private String[] aggregateTitleAndAuthorSplit;	
+	
+	private boolean isRented, isAvailable;	//boolean variables
 	
 	//fields used temporarily when searching for books 
 	private String nameTag;
@@ -79,6 +84,25 @@ public class Books {
 	}
 	
 	/**
+	 * specific constructor to clone current states of each of Books when searching for a book
+	 * @param b
+	 * @param index
+	 */
+	public Books(Books b, int index) {
+		
+		this.b = b;
+		this.bIndex = index;
+		this.nameTag = null;
+		
+		//clone value of the fields from the original Reader obj
+		this.id = b.getId();
+		this.title = b.getTitle();
+		this.author = b.getAuthor();
+		this.rentalState = b.getRentalState();
+		this.readerInQ = b.getReaderInQ();
+	}
+	
+	/**
 	 * method to split up title and author each whether either one's string value is a word-based or it's more than a word-based.
 	 */
 	public void initAdvancedSearchEnv() {
@@ -103,6 +127,8 @@ public class Books {
 		}
 	
 	}
+	
+	//getters used when an advanced search is necessary
 	public String[] getAggregateTitleAndAuthorSplit() {
 		return this.aggregateTitleAndAuthorSplit;
 	}
@@ -114,26 +140,6 @@ public class Books {
 		return this.authorSplit;
 	}
 	
-	/**
-	 * specific constructor to clone current states of each of Books when searching for a book
-	 * @param b
-	 * @param index
-	 */
-	public Books(Books b, int index) {
-		
-		this.b = b;
-		this.bIndex = index;
-		this.nameTag = null;
-		
-		//clone value of the fields from the original Reader obj
-		this.id = b.getId();
-		this.title = b.getTitle();
-		this.author = b.getAuthor();
-		this.rentalState = b.getRentalState();
-		this.readerInQ = b.getReaderInQ();
-		//clone node and mq
-	}
-
 	//method for initializing the boolean variables isRented and isAvailable
 	public void initRentalState(String rentalState) {
 
@@ -167,7 +173,7 @@ public class Books {
 			this.readerInQ = toReturn;
 
 		} else {
-			// set all the queue elements(reader IDs) as a string into the variable readerInQ
+			// set all the queue nodes(reader IDs) as a string into the variable readerInQ
 			toReturn = this.mq.readerInQueueToString();
 			this.readerInQ = toReturn;
 		}
@@ -179,7 +185,7 @@ public class Books {
 		mq.deQueue();
 
 		if (!mq.isEmpty()) {
-			// set all the queue elements(reader IDs) as a string into the variable readerInQ
+			// set all the queue nodes(reader IDs) as a string into the variable readerInQ
 			this.readerInQ = this.mq.readerInQueueToString();
 		} else {
 			this.readerInQ = "none";
@@ -284,7 +290,7 @@ public class Books {
 		
 		this.nameTag = s;
 		return "\n" + nameTag + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
-				+ ", Queue=" + getReaderInQ() + "]\n";
+				+ ", readerInQ=" + getReaderInQ() + "]\n";
 
 	}
 	
@@ -296,29 +302,38 @@ public class Books {
 	public String getQueueToString() {
 
 		String toReturn = "";
-		toReturn = IO.printUnderLine() + "\n[The book info]" + toString() + "\n\n[The queue in the book]"
+		toReturn = "\n<Book info>" + toString() /* + "\n" */
 				+ this.mq.toString();
 
 		return toReturn;
 	}
 	
-	public String titleAndAuthorSortedToString(String s) {
+	public String booksSortedToString(String s) {
+		
+		//s is a temporary name tag that shows the field used for a sort at a time
+		
 		return "\n" + s + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
-				+ ", Queue=" + getReaderInQ() + "]\n";
+				+ ", readerInQ=" + getReaderInQ() + "]\n";
 
 	}
-
-	public String authorSortedToString() {
-		return "\n" + author + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
-				+ ", Queue=" + getReaderInQ() + "]\n";
-
-	}
-
-	public String titleSortedToString() {
-		return "\n" + title + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
-				+ ", Queue=" + getReaderInQ() + "]\n";
-
-	}
+	
+//	public String titleAndAuthorSortedToString(String s) {
+//		return "\n" + s + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
+//				+ ", readerInQ=" + getReaderInQ() + "]\n";
+//
+//	}
+//
+//	public String authorSortedToString() {
+//		return "\n" + author + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
+//				+ ", readerInQ=" + getReaderInQ() + "]\n";
+//
+//	}
+//
+//	public String titleSortedToString() {
+//		return "\n" + title + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
+//				+ ", readerInQ=" + getReaderInQ() + "]\n";
+//
+//	}
 
 	public String menu7_1_toString(List<Rent> rent, int rentIndex, List<Readers> reader, int readerIndex) {
 
@@ -338,7 +353,7 @@ public class Books {
 						//the reader you are looking at is currently renting the book recorded in the row of the Rent list
 						//Thus print rentalState together of this book
 						toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author
-								+ ", rental_state=" + rentalState + ", Queue=" + getReaderInQ() + "]\n";
+								+ ", rental_state=" + rentalState + ", readerInQ=" + getReaderInQ() + "]\n";
 					
 					}
 					
@@ -362,7 +377,7 @@ public class Books {
 			}
 		}else {
 			//the reader has returned book and no need to print rentalState of this book.
-			toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author + ", Queue="
+			toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author + ", readerInQ="
 					+ getReaderInQ() + "]\n";
 		}
 
@@ -372,7 +387,7 @@ public class Books {
 	@Override
 	public String toString() {
 		return "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
-				+ ", Queue=" + getReaderInQ() + "]\n";
+				+ ", readerInQ=" + getReaderInQ() + "]\n";
 
 	}
 

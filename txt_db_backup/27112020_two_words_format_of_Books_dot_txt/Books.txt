@@ -1,0 +1,21 @@
+bookID | title name | author | rental state | waitingQ
+B01#Hunger Game#Georgi Facello#Available#R01 R02 R03
+B02#Frogmen Breaking#Bezalel Simmel#Available#none
+B03#Outbreak Divine#Parto Bamford#Rented#R03 R04 R05
+B04#Young Language#Chirstian Koblick#Rented#none
+B05#Stampede Disturbing#Kyoichi Maliniak#Rented#none
+B06#World Leathernecks#Anneke Preusig#Available#none
+B07#Goodfellas Salute#Tzvetan Zielinski#Available#none
+B08#Core Suit#Saniya Kalloufi#Available#none
+B09#Knock Warlock#Sumant Peac#Available#none
+B10#Dangerous#Duangkaew Piveteau#Available#none
+B11#Chocolate Duck#Mary Sluis#Available#none
+B12#Heavyweights Beast#Patricio Bridgland#Available#none
+B13#Trap Guys#Eberhardt Terkki#Available#none
+B14#Grail Frankenstein#Berni Genin#Available#none
+B15#Wisdom Worker#Guoxiang Nooteboom#Available#none
+B16#Divorce Shining#Kazuhito Cappelletti#Available#none
+B17#Groove Fiction#Cristinel Bouloucos#Available#none
+B18#Pet Haunting#Kazuhide Peha#Available#none
+B19#Network Peak#Lillian Haddadi#Available#none
+B20#Forever Candidate#Mayuko Warwick#Available#none

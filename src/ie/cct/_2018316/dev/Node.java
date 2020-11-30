@@ -1,5 +1,13 @@
 package ie.cct._2018316.dev;
 
+/**
+ * Class to define for a book's queue
+ * 
+ * This class references the queue & linked-list course contents
+ * that were lectured by Professor Amilcar   
+ * 
+ * @author Kyu
+ */
 public class Node {
 
 	private Readers element;	//element with type Readers
