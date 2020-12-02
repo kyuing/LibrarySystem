@@ -1,8 +1,8 @@
 bookID|title|author|rental state|readerInQ
-B01#Hunger Game#George#Available#R01 R02 R03
-B02#Frogmen Breaking#Bezalel Simmel#Available#none
-B03#Outbreak#Parto Bamford#Rented#R03 R04 R05
-B04#Young Language#Chirstian Koblick#Rented#none
+B01#Hunger Game#George#Rented#R02 R03 R04
+B02#Frogmen Breaking#Bezalel Simmel#Rented#none
+B03#Outbreak#Parto Bamford#Available#R03 R04 R05 R06 R01
+B04#Young Language#Chirstian Koblick#Rented#R04
 B05#Stampede Disturbing#Kyoichi Maliniak#Rented#none
 B06#World Leathernecks#Anneke Preusig#Available#none
 B07#Goodfellas Salute#Tzvetan#Available#none

@@ -52,8 +52,8 @@ public class Controller {
 			if (books.get(i).getMQ() != null) {
 				if (!books.get(i).getMQ().isEmpty()) {
 					System.out.println(IO.printUnderLine() + "\n!!!!!!!!!!!!!!!!!! QUICK UPDATE !!!!!!!!!!!!!!!!"
-							+ "\n[The book info]\n" + books.get(i).toString()
-							+ "\n\n[The first available reader in the book's queue for renting]\n"
+							+ "\n<The book info>\n" + books.get(i).toString()
+							+ "\n\n<The first available reader in the book's queue for renting>\n"
 							+ books.get(i).getMQ().firstToString());
 				}
 			}	
@@ -748,43 +748,68 @@ public class Controller {
 
 	}
 
+	/**
+	 * method to register a return of books
+	 */
 	private void registerReturn() {
 		
 		String rtID = "", bID = "";
-		int rtIdToInt = 0, bIdToInt = 0, rIdToInt = 0;
+		int rentIndex = 0, bookIndex = 0, readerIndex = 0;
 
 		rtID = checkRentID(rtID);
 
-		if (rtID != null) { // here, the rentID returned after all possible validation.
+		if (rtID != null) {
 
-			rtIdToInt = Integer.parseInt(rtID.substring(2)) - 1;
-			rIdToInt = Integer.parseInt(rent.get(rtIdToInt).getReaderID().substring(1)) - 1;
+			/* rtID is validated and it's sure that its state is "Rented" */
+			
+			//extract rent index and reader index
+			rentIndex = Integer.parseInt(rtID.substring(2)) - 1;
+			readerIndex = Integer.parseInt(rent.get(rentIndex).getReaderID().substring(1)) - 1;
 
-			rent.get(rtIdToInt).setRented(false);
-			rent.get(rtIdToInt).setNormal(true);
-			bID = rent.get(rtIdToInt).getTitleID();
-			bIdToInt = Integer.parseInt(bID.substring(1)) - 1;
-			books.get(bIdToInt).setRented(rent.get(rtIdToInt).isRented());
-			books.get(bIdToInt).setAvailable(rent.get(rtIdToInt).isNormal());
-			readers.get(rIdToInt).removeRent(rtID);
+			//update the state of the specific rent record in the Rent list
+			rent.get(rentIndex).setRented(false);
+			rent.get(rentIndex).setNormal(true);
+			
+			//extract bID and book index from bID
+			bID = rent.get(rentIndex).getTitleID();
+			bookIndex = Integer.parseInt(bID.substring(1)) - 1;
+			
+			//clone the state of the specific rent record in the Rent list 
+			//into the specific book's rental state 
+			books.get(bookIndex).setRented(rent.get(rentIndex).isRented());
+			books.get(bookIndex).setAvailable(rent.get(rentIndex).isNormal());
+			
+			//remove the specific rent record from the reader's current rent list
+			readers.get(readerIndex).removeRent(rtID);
 
-			boolean isNew = false;
-			// update any changes to a file
+			boolean isNew = false;	//not a new record to write(append) into Rent.txt 
+			
+			// update any changes to files
 			factory.writeRentToFile(rent, isNew);
 			factory.writeBooksToFile(books);
 			factory.writeReadersToFile(readers);
 
 			System.out.println("### Successfully returned###");
-			System.out.println(rent);
-			System.out.println(books);
-			System.out.println(readers);
+			System.out.println(rent.get(rentIndex));
+			System.out.println(books.get(bookIndex));
+			System.out.println(readers.get(readerIndex));
+			
+			
+			/* even though a book is returned and it has a queue of reader,
+			 * it doesn't mean that the next reader waiting for that book
+			 * automatically rent that book. 
+			 * 
+			 * the book is now available to be rented.
+			 * 
+			 * */
 
-			if (books.get(bIdToInt).getMQ() != null) {
-				if (!books.get(bIdToInt).getMQ().isEmpty()) {
+			//display to the user the next reader waiting for that book
+			if (books.get(bookIndex).getMQ() != null) {
+				if (!books.get(bookIndex).getMQ().isEmpty()) {
 					System.out.println(IO.printUnderLine() + "\n!!!!!!!!!!!!!!!!!! QUICK UPDATE !!!!!!!!!!!!!!!!"
-							+ "\n[The book info]\n" + books.get(bIdToInt).toString()
-							+ "\n\n[The first available reader in the book's queue for renting]\n"
-							+ books.get(bIdToInt).getMQ().firstToString());
+							+ "\n<Book info>\n" + books.get(bookIndex).toString()
+							+ "\n\n<The first available reader in the book's queue for renting>\n"
+							+ books.get(bookIndex).getMQ().firstToString());
 				}
 			}
 
@@ -798,7 +823,10 @@ public class Controller {
 	private void registerRent() {
 
 		String bID = "", rID = "";
-		bID = availableBookToLend(bID);
+		bID = availableBookToLend(bID);	
+		
+		// the book whose ID is parameterized as bID is in the state of "Available" 
+		// whether its queue is empty or not 
 		
 		if (bID != null) {
 
@@ -816,7 +844,9 @@ public class Controller {
 					int rIdToIndex = Integer.parseInt(rID.substring(1)) - 1;
 					
 					if (books.get(bIdToIndex).getReaderInQ().equals("none")) {
-						// if nothing is in this book's queue, keep going
+						
+						//nothing is in this book's queue, keep going
+						
 						rent.add(new Rent());
 						
 						if(this.rent.size() < 10) {
@@ -827,7 +857,6 @@ public class Controller {
 							
 							rent.get(rent.size() - 1).setRentID("RT" + String.valueOf(rent.size()));
 						}
-						
 						
 						rent.get(rent.size() - 1).setTitleID(bID);
 						rent.get(rent.size() - 1).setReaderID(rID);
@@ -843,13 +872,10 @@ public class Controller {
 						factory.writeBooksToFile(books);
 						factory.writeReadersToFile(readers);
 						
-						System.out.println("### A new rent has just been recorded successfully ###");
-						System.out.println(rent);
-						System.out.println(books);
-						System.out.println(readers);
-						
-
-
+						System.out.println(IO.printUnderLine());
+						System.out.println(rent.get(rent.size() - 1));
+						System.out.println(books.get(Integer.parseInt(bID.substring(1)) - 1));
+						System.out.println(readers.get(rIdToIndex));
 						
 
 					} else {
@@ -882,14 +908,12 @@ public class Controller {
 								factory.writeRentToFile(rent, isNew);
 								factory.writeBooksToFile(books);
 								factory.writeReadersToFile(readers);
-
-								System.out.println("### A new rent has just been recorded successfully ###");
-								System.out.println(rent);
-								System.out.println(books);
-								System.out.println(readers);
-
 								
-								
+								System.out.println(IO.printUnderLine());
+								System.out.println(rent.get(rent.size() - 1));
+								System.out.println(books.get(Integer.parseInt(bID.substring(1)) - 1));
+								System.out.println(readers.get(rIdToIndex));
+
 								if (!books.get(bIdToIndex).getMQ().isEmpty()) {
 									System.out.println(IO.printUnderLine()
 											+ "\n!!!!!!!!!!!!!!!!!! QUICK UPDATE !!!!!!!!!!!!!!!!"
@@ -914,12 +938,13 @@ public class Controller {
 											+ books.get(bIdToIndex).getMQ().equalsCustomToString(rID));
 									
 								} else {
+									
 									// book is available to rent but has the existing queue and the reader you are looking at is not in it.
 									
 									System.out.println("* The book with ID \"" + books.get(bIdToIndex).getId() + "\" is available to be rented.");
 									System.out.println("* However, the book has the existing waiting queue of the reader(s) "
 											+ "\n* The reader with ID \"" + rID.toUpperCase() + "\" is not in the book's queue"
-											+ "\n* Please check the following detail.");
+									/* + "\n* Please check the following detail." */);
 									
 									
 									String temp = "";
@@ -968,73 +993,73 @@ public class Controller {
 	/**
 	 * method to return the valid rent id
 	 * 
+	 * As an accurate search for a rent record is not the main requirement,
+	 * no dedicated search function such as using reader ID or bookID is added.
+	 * 
+	 * Thus, in this method, a rent ID is an input and return it 
+	 * if the rent record found is in the state of "Rented" 
+	 * 
 	 * @param rtID, rID
-	 * @return
+	 * @return valid rtID
 	 */
 	public String checkRentID(String rtID) {
-		// may need some other approach so as to aske only rent id or reader id in Rent
-		// class
+		
 		String tempBookID = "", tempReaderId = "";
-		int rtIdToInt = 0;
+		int rentIndex = 0;
 
-		rtID = IO.menu(IO.printRentIDMenu(), "[a-zA-Z0-9]"); // this needs to be changed. for just put for loop
+		rtID = IO.menu(IO.printRentIDMenu(), "[a-zA-Z0-9]"); 
+		rtID = rtID.toUpperCase();
+		
 		for (int i = 0; i < rent.size(); i++) {
 			if (rent.get(i).getRentID().equalsIgnoreCase(rtID)) {
 
-				rtIdToInt = Integer.parseInt(rtID.substring(2));
-				tempBookID = rent.get(rtIdToInt - 1).getTitleID();
-				tempReaderId = rent.get(rtIdToInt - 1).getReaderID();
+				rentIndex = Integer.parseInt(rtID.substring(2)) - 1;
+				if (rent.get(rentIndex).isRented() || rent.get(rentIndex).getState().equals("Rented")) {
+					
+					tempBookID = rent.get(rentIndex).getTitleID();
+					tempReaderId = rent.get(rentIndex).getReaderID();
 
-				System.out.println(IO.printUnderLine());
-				System.out.println("One rent record found as follows");
-				System.out.println(rent.get(rtIdToInt - 1));
-				System.out.println(rent.get(rtIdToInt - 1).getTitleID() + ": "
-						+ books.get(Integer.parseInt(tempBookID.substring(1)) - 1).getTitle());
-				System.out.println(rent.get(rtIdToInt - 1).getReaderID() + ": "
-						+ readers.get(Integer.parseInt(tempReaderId.substring(1)) - 1).getFname() + " "
-						+ readers.get(Integer.parseInt(tempReaderId.substring(1)) - 1).getLname());
+					System.out.println(IO.printUnderLine());
+					System.out.println("One rent record found as follows");
+					System.out.println(rent.get(rentIndex));
+					System.out.println(rent.get(rentIndex).getTitleID() + ": "
+							+ books.get(Integer.parseInt(tempBookID.substring(1)) - 1).getTitle());
+					System.out.println(rent.get(rentIndex).getReaderID() + ": "
+							+ readers.get(Integer.parseInt(tempReaderId.substring(1)) - 1).getFname() + " "
+							+ readers.get(Integer.parseInt(tempReaderId.substring(1)) - 1).getLname());
+					
+					String yn = IO.menu(IO.printRendRecordCheckOption(rtID, tempBookID, tempReaderId), "^[y|Y|n|N]$");
 
-				String yn = IO.menu(IO.printRendRecordCheckOption(), "^[y|Y|n|N|q|Q]$");
-
-				if (yn.equalsIgnoreCase("y")) {
-					if (rent.get(rtIdToInt - 1).isRented()) {
-						return rtID.toUpperCase();
-					}
-				}
-
-				if (yn.equalsIgnoreCase("n")) {
-					String rID = "";
-					rID = IO.menu(IO.printReaderIDMenu(), "[a-zA-Z0-9]");
-					int rIdIndex = 0;
-					rIdIndex = Integer.parseInt(rID.substring(1)) - 1;
-					if ((rent.get(rtIdToInt - 1).isRented())
-							&& (rent.get(rtIdToInt - 1).getReaderID().equalsIgnoreCase(rID)) | (readers.get(rIdIndex)
-									.equalsRentInMyRents(rent.get(rtIdToInt - 1).getRentID()))) {
-
+					if (yn.equalsIgnoreCase("y")) {
+						
 						System.out.println(IO.printUnderLine());
-						System.out.println("One rent record found as follows");
-						System.out.println(rent.get(rtIdToInt - 1));
-						System.out.println(rent.get(rtIdToInt - 1).getTitleID() + ": "
-								+ books.get(Integer.parseInt(tempBookID.substring(1)) - 1).getTitle());
-						System.out.println(rent.get(rtIdToInt - 1).getReaderID() + ": "
-								+ readers.get(Integer.parseInt(rID.substring(1)) - 1).getFname() + " "
-								+ readers.get(Integer.parseInt(rID.substring(1)) - 1).getLname());
-						System.out.println();
-
-						return rtID.toUpperCase();
-
+						System.out.println(rent.get(rentIndex));
+						System.out.println(books.get(Integer.parseInt(tempBookID.substring(1)) - 1));
+						System.out.println(readers.get(Integer.parseInt(tempReaderId.substring(1)) - 1));
 					}
-
-				}
-
-				if (yn.equalsIgnoreCase("q")) {
-					System.out.println("Back to main menu....");
-//					return null;
+					
+					String yOrQuit = IO.menu(IO.printRendRecordCheckOption(), "^[y|Y|q|Q]$");
+					if (yOrQuit.equalsIgnoreCase("y")) {
+						
+						return rtID;
+					}
+					
+					if (yOrQuit.equalsIgnoreCase("q")) {
+						System.out.println("going back to menu...");
+					}
+					
+				}else {
+					
+					System.out.println("* The rent record exists but the book on the rent record has been returned");
+					System.out.println(rent.get(rentIndex));
+					System.out.println("going back to menu...");
+					return null;
 				}
 
 			}
 
 		}
+		
 		System.out.println("The rent ID not found. Try again");
 		return null;
 	}
@@ -1072,6 +1097,13 @@ public class Controller {
 
 	}
 
+	/**
+	 * method to manage all the enqueue processes
+	 * @param bID
+	 * @param tempIndex
+	 * @param rID
+	 * @return appropriate message after dealing with an enqueue execution whether successful or not 
+	 */
 	public String waitingQueueManager(String bID, int tempIndex, String rID) {
 
 		String yn = "";
@@ -1095,34 +1127,35 @@ public class Controller {
 
 		}
 		
-		
-		/* the book with the Id in the parameter bID is being rented and could also has the existing queue of readers
-		 * extract any info as necessary */
+		bID = bID.toUpperCase();
+		rID = rID.toUpperCase();
 
-		/* An index of the book with the Id in the parameter bID can be extracted outside for-loop below as well */
-		//bIdToIndex = Integer.parseInt(bID.substring(1)) - 1; //this also works
-		
-		//the state between "Rented" and "Normal" of an OBJ in the original list is not important
-		//because a reader only holds a rent ID in its current rent list during "renting"
-		//In addition, no the same bookId can be in a reader's current rent list
-		
-		
+		//init int fields
 		rentIdToIndex = 0;
 		bIdToIndex = 0;
 		rIdToIndex = 0;
 		rIdToIndex = Integer.parseInt(rID.substring(1)) - 1;
-
 		
+		/* [A quick note for the processes commented & numbered as "1." and "2."]
+		 * 
+		 * No direct validation through the original Rent list is considered.
+		 * Because a reader only holds one whole rent OBJ cloned in the reader's current rent list during "renting" ONLY.
+		 * In addition, no the same bookId can be in reader's current rent list at the same time.
+		 * */
+
+		// 1. filter the input reader that is asking for being in the book's queue -the book whose ID is parameterized as bID- 
+		//    if the reader has already been renting the book.  
 		if (this.readers.get(rIdToIndex).getMyRent() != null) {
 
 			for (int i = 0; i < readers.get(rIdToIndex).getMyRent().size(); i++) {
 
 				if (this.readers.get(rIdToIndex).getMyRent().get(i).getTitleID().equalsIgnoreCase(bID)) {
 					
+					// reader who has already been renting this book at the moment is asking for being in the queue
+					
 					rentIdToIndex = Integer.parseInt(this.readers.get(rIdToIndex).getMyRent().get(i).getRentID().substring(2)) - 1;
 					bIdToIndex = Integer.parseInt(this.readers.get(rIdToIndex).getMyRent().get(i).getTitleID().substring(1)) - 1;
-					isAskReaderQEntry = false;
-					// reader who has already been renting this book at the moment is asking for being in the queue
+					isAskReaderQEntry = false;	
 					
 					System.out.println(IO.printWaitingQueueMenu(this.rent, rentIdToIndex, this.books, bIdToIndex, this.readers, rIdToIndex, null, isAskReaderQEntry));
 					return null;
@@ -1130,79 +1163,53 @@ public class Controller {
 				}
 			}
 
-		}else {
-			
-			int tmep_rentIdToIndex = 0, tmep_bIdToIndex = 0, tmep_rIdToIndex = 0;
-			boolean isBreak = false;
-			
-			for(int i=0; i<this.readers.size(); i++) {
-				if (this.readers.get(i).getMyRent() != null) {
-					for (int j=0; j<readers.get(i).getMyRent().size(); j++) {
-						if (readers.get(i).getMyRent().get(j).getTitleID().equalsIgnoreCase(bID)) {
-							
-							/* A specific reader you are looking at has at least one rent record cloned from the original Rent list,
-							 * represented as a rent ID (a specific rent OBJ copied which is the same as dealing with one specific record in the original Rent list)
-							 * 
-							 * If any current rent records is in a Reader OBJ, 
-							 * that literally means the reader OBJ you are looking at has 
-							 * a current rent info that corresponds to one that is the same states(rentID, bookID, readerID and "Rented" in particular) and is in the original Rent list.
-							 * 
-							 * Thus, by looking at current rent state in a Reader OBJ,    
-							 * an access to rentId, bookID or readerId of a specific record in the original Rent list is possible.  
-							 */
-							tmep_rentIdToIndex = Integer.parseInt(this.readers.get(i).getMyRent().get(j).getRentID().substring(2)) - 1;
-							tmep_bIdToIndex = Integer.parseInt(this.readers.get(i).getMyRent().get(j).getTitleID().substring(1)) - 1;
-							tmep_rIdToIndex = Integer.parseInt(this.readers.get(i).getMyRent().get(j).getReaderID().substring(1)) - 1;
-							isAskReaderQEntry = true;
-							
-							yn = IO.menu(IO.printWaitingQueueMenu(this.rent, tmep_rentIdToIndex, this.books, tmep_bIdToIndex, this.readers, tmep_rIdToIndex, rID, isAskReaderQEntry), "[a-zA-Z0-9]");
-							// ask reader if waning to be in the book's queue
-							if ((yn.equalsIgnoreCase("y"))) {
-								
-								isBreak = true;
-								break;
-
-							}else {
-								System.out.println("Back to main menu....");
-								return null;
-							}
-						}
-					}	
-				}
-				
-				if(isBreak) {
-					break;
-				}
-			}
 		}
 		
-		System.out.println("rIdToIndex: " + rIdToIndex);
+			
+		// 2. the input reader is not renting the book with ID parameterized as bID.  
+		//    so the input reader can be added into the book's queue if wanted.
 		
-//		boolean isAskReaderQEntry = true;
-		//print a state related to a rent record
+		int tmep_rentIdToIndex = 0, tmep_bIdToIndex = 0, tmep_rIdToIndex = 0;
+		boolean isBreak = false;
+		
+		//this FOR-LOOP doesn't care about the input reader and find a reader who is renting the book with ID parameterized as bID.  
+		for(int i=0; i<this.readers.size(); i++) {
+			if (this.readers.get(i).getMyRent() != null) {
+				for (int j=0; j<readers.get(i).getMyRent().size(); j++) {
+					if (readers.get(i).getMyRent().get(j).getTitleID().equalsIgnoreCase(bID)) {
+						
+						
+						tmep_rentIdToIndex = Integer.parseInt(this.readers.get(i).getMyRent().get(j).getRentID().substring(2)) - 1;
+						tmep_bIdToIndex = Integer.parseInt(this.readers.get(i).getMyRent().get(j).getTitleID().substring(1)) - 1;
+						tmep_rIdToIndex = Integer.parseInt(this.readers.get(i).getMyRent().get(j).getReaderID().substring(1)) - 1;
+						isAskReaderQEntry = true;
+						
+						yn = IO.menu(IO.printWaitingQueueMenu(this.rent, tmep_rentIdToIndex, this.books, tmep_bIdToIndex, this.readers, tmep_rIdToIndex, rID, isAskReaderQEntry), "[a-zA-Z0-9]");
+						// ask reader if waning to be in the book's queue
+						if ((yn.equalsIgnoreCase("y"))) {
+							
+							isBreak = true;
+							break;
 
-//		yn = IO.menu(IO.printWaitingQueueMenu(this.rent, rentIdToIndex, this.books, bIdToIndex, this.readers, rIdToIndex, isAskReaderQEntry), "[a-zA-Z0-9]");
-//		// ask reader if waning to be in the book's queue
-//		if (!(yn.equalsIgnoreCase("y"))) {
-//			System.out.println("Back to main menu....");
-//			return null;
-//		}
-
-//		if (rID == null) {
-//			//if rId == null, this waitingQueueManager() method is called from else statement in the method availableBookToLend(); 
-//			//the book with the Id in the parameter bID is being rented == NOT AVAILABLE
-//			rID = "";
-//			if ((rID = checkReeaderID(rID)) == null) {
-//				System.out.println("The reader ID does not exist in Readers db. Try again");
-//				return null;
-//			}
-//
-//		}
-
-
-
+						}else {
+							System.out.println("Back to main menu....");
+							return null;
+						}
+					}
+				}	
+			}
+			
+			if(isBreak) {
+				break;
+			}
+		}
+			
+		
+		// 3. An actual step of enqueue 	
 		if (books.get(tempIndex).getMQ() != null) {
 			if (!books.get(tempIndex).getMQ().isEmpty() && !books.get(tempIndex).getMQ().equalsCustom(rID)) {
+				
+				//the book you are looking at has its queue and has no the same node(readerID) as rID's value
 				
 				isAskReaderQEntry = true;
 				yn = IO.menu(IO.printWaitingQueueMenu(this.books, tempIndex, rID, isAskReaderQEntry), "[a-zA-Z0-9]");
@@ -1214,9 +1221,8 @@ public class Controller {
 
 				}
 				
-				// there's no the existing same reader info(ID) in the book's queue
-				enQueueManager(rID, bID);
-
+				enQueueManager(rID, bID);	//enQueueManager(rID, bID);
+				
 				// update any changes to a file
 				factory.writeBooksToFile(books);
 
@@ -1230,7 +1236,7 @@ public class Controller {
 				return "Successfully added to the reader into the book's queue";
 			}
 
-			// if not meeting conditions just above, the reader is in the book's queue
+			// if not meeting conditions just above, the input reader is in the book's queue
 			System.out.println(IO.printUnderLine());
 			System.out.println("* The reader with ID \"" + rID + "\" is already in the book's queue");
 			System.out.println("\n<Book info>" + books.get(tempIndex));
@@ -1238,20 +1244,14 @@ public class Controller {
 			return null;
 
 		} else {
-			// this book does not have any waiting queue of Readers
-			enQueueManager(rID, bID);
+			
+			// the book you are looking at does not have any queue of Readers
+			
+			enQueueManager(rID, bID);	//enQueueManager(rID, bID);
 
 			// update any changes to a file
 			factory.writeBooksToFile(books);
-
-//			System.out.println(IO.printUnderLine());
-//			System.out.println("!!!!!!!!!!!!!!!!!! QUICK UPDATE !!!!!!!!!!!!!!!!");
-//			System.out.println("* A new update is processed with the following reader and book");
-//			System.out.println("\n[The reader info]");
-//			System.out.println(readers.get(rIdToIndex).toString().replaceAll("\n", ""));
-//
-//			System.out.println(books.get(tempIndex).getQueueToString());
-			
+		
 			System.out.println(IO.printUnderLine());
 			System.out.println("!!!!!!!!!!!!!!!!!! QUICK UPDATE !!!!!!!!!!!!!!!!");
 			System.out.println("* The reader with ID \"" + rID + "\" has just been added into the queue of the book whose ID is \"" + bID + "\"");
@@ -1263,18 +1263,14 @@ public class Controller {
 
 		}
 
-//		return null;
-
 	}
 
-	// queue implementation issue
-	// queue doesnt distinghuish book....
-	// it needs to be an attribute in Books
 
-	// rent and return issue
-	// decide if Readers needs to have all the list of books being rented (allow
-	// multiple rents)or
-	// if one book only (allow only one rent)
+	/**
+	 * method to perform enqueue
+	 * @param rIDTobeInQ
+	 * @param bIDPassed
+	 */
 	private void enQueueManager(String rIDTobeInQ, String bIDPassed) {
 
 		int readerIndex = Integer.parseInt(rIDTobeInQ.substring(1)) - 1;
@@ -1284,34 +1280,5 @@ public class Controller {
 
 	}
 
-//	private Boolean checkReaderInRentHistory(String rIDTobeInQ, String bIDPassed) {
-//		//this need to be fixed! the comparison item should be current myBooks in Reader list!
-//		for(int i=0; i<rent.size(); i++) {
-//			//if a book has already been rented by the reader who wanna be in the queue
-//			//prevent it to give a chance to another reader first
-////			if((rent.get(i).getReaderID().equals(rIDTobeInQ.toUpperCase()))) {
-//			
-//				while( !(rent.get(i).getReaderID().equals(rIDTobeInQ.toUpperCase())) 
-//						&& 	!(rent.get(i).getTitleID().equals(bIDPassed.toUpperCase()))
-//						&&	!(rent.get(i).isRented()) ) {
-//						return true;
-//				}
-//			
-////			}else {
-////				System.out.println("The reader ID does not exist in the rent record");
-////				
-////			}
-//			
-////				System.out.println("The book has already been rented by the reader"
-////						+ "\nPlease inform the reader that he/she should return the book first to borrow it again");
-////				return false;
-//			
-//		}
-//		System.out.println("The book has already been rented by the reader"
-//				+ "\nPlease inform the reader that he/she should return the book first to borrow it again");
-//	
-//		return false;
-//	
-//	}
 
 }

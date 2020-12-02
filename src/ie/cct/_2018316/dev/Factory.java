@@ -267,7 +267,7 @@ public class Factory implements FactoryInterface {
 	/**
 	 * Method for writing Rent list to a file
 	 * @param rent; ref of List<Rent>
-	 * @param isNew; return true if new record-related
+	 * @param isNew; writing to a file by appending
 	 */
 	@Override
 	public void writeRentToFile (List<Rent> rent, boolean isNew) {
@@ -320,7 +320,7 @@ public class Factory implements FactoryInterface {
 		}		
 		
 		if(isNew) {
-			System.out.println("### A new rent record has just been written into Rent.txt ###");
+			System.out.println("### Rent.txt is updated with a new record ###");
 	
 		}else {
 			System.out.println("### Rent.txt is updated ###");

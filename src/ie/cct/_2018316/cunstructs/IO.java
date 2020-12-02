@@ -30,11 +30,20 @@ public final class IO {
     
     public static String printRendRecordCheckOption() {
     	return "___________________________________________________________________________" 
-    			+ "\nAre you sure that the rent record above is correct?"
-    			+ "\nEnter y if so"
-    			+ "\nEnter n to double check the reader ID"
+    			+ "\nAre you sure that the rent record found is correct?"
+    			+ "\nEnter y to confirm"
     			+ "\nEnter q to go back to main menu";
     }
+    
+    public static String printRendRecordCheckOption(String rentID, String bID, String rID) {
+    	return "___________________________________________________________________________" 
+    			+ "\nWould you like to check a full detail of the book with ID \"" + bID + "\" "
+    			+ "and the reader with ID \"" + rID + "\" "
+    			+ "\nbased on the rent ID \"" + rentID + "\"?"
+    			+ "\n\nEnter \"y\" if so"
+    			+ "\nOtherwise, enter \"n\"";
+    }
+    
 	public static String printMenu() {
 		return "___________________________________________________________________________"
 				+ "\n[Please select menu]"
@@ -50,18 +59,24 @@ public final class IO {
 	
 	public static String printReaderIDMenu() {
 		return "___________________________________________________________________________"
-				+ "\nEnter the reader ID";
+				+ "\nEnter a reader ID";
 	}
 	
 	public static String printBookIDMenu() {
 		return "___________________________________________________________________________"
-				+ "\nEnter the book ID";
+				+ "\nEnter a book ID";
 	}
 	
 	public static String printRentIDMenu() {
 		return "___________________________________________________________________________"
 				+ "\nEnter the rent Id";
 	}
+
+//	public static String printRentIDMenu() {
+//		return "___________________________________________________________________________"
+//				+ "\n1: Enter a rent Id"
+//				+ "\n2: Search for a rent ID by a reader ID";
+//	}
 	
 	public static String printForListingRentHistoryOfReaders() {
 		return "___________________________________________________________________________"
@@ -124,19 +139,27 @@ public final class IO {
 				+ "\n\nq: go back to menu ";
 	}
 	
+	/**
+	 * method to ask reader if wanted to be in a book's queue
+	 * @param books
+	 * @param bIndex
+	 * @param userInput
+	 * @param isAskReaderQEntry
+	 * @return an state message related to a book's queue and then ask the reader if wanted to be in a book's queue
+	 */
 	public static String printWaitingQueueMenu(List<Books> books, int bIndex,/* List<Readers> r, int rIndex, */ String userInput, boolean isAskReaderQEntry) {
 		
 		String toReturn = "";
 		if(isAskReaderQEntry) {
 
 				toReturn = "___________________________________________________________________________"
-						//+ "\n* The book with ID \"" + books.get(bIndex).getId() + "\" is being rented by the reader with ID " + "\"" + r.get(rIndex).getId() + "\""					
+						+ "\n* Please recheck the book record below and then confirm the following question."					
 						+ "\n<Book info>" + books.get(bIndex)
 						+ books.get(bIndex).getMQ().toString()
 						+ "\n___________________________________________________________________________"
 						+ "\n* Would the reader with the input ID \"" + userInput + "\" like to be in the waiting queue for renting the book(\"" + books.get(bIndex).getId() + "\")?"
-						+ "\nEnter y if so"
-						+ "\nEnter any other key(s) to go back to the main menu";
+						+ "\nConfirm by entring \"y\""
+						+ "\nOtherwise, enter any other key(s) to go back to the main menu";
 			
 		}
 		
@@ -144,6 +167,20 @@ public final class IO {
 		
 	}
 	
+	/**
+	 * method to check/print an availability if a reader can be added into a book's queue 
+	 * @param rent
+	 * @param rentIndex
+	 * @param books
+	 * @param bIndex
+	 * @param r
+	 * @param rIndex
+	 * @param userInput
+	 * @param isAskReaderQEntry
+	 * @return an appropriate message
+	 *           - if a reader is eligible to be in a book's queue, print all the queue-related state and then ask the reader if wanted to be in a book's queue
+	 *           - if not, print all the related state 
+	 */
 	public static String printWaitingQueueMenu(List<Rent> rent, int rentIndex, List<Books> books, int bIndex, List<Readers> r, int rIndex, String userInput, boolean isAskReaderQEntry) {
 		
 		if(isAskReaderQEntry) {
