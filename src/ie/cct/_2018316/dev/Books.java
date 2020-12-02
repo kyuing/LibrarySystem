@@ -316,25 +316,8 @@ public class Books {
 				+ ", readerInQ=" + getReaderInQ() + "]\n";
 
 	}
-	
-//	public String titleAndAuthorSortedToString(String s) {
-//		return "\n" + s + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
-//				+ ", readerInQ=" + getReaderInQ() + "]\n";
-//
-//	}
-//
-//	public String authorSortedToString() {
-//		return "\n" + author + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
-//				+ ", readerInQ=" + getReaderInQ() + "]\n";
-//
-//	}
-//
-//	public String titleSortedToString() {
-//		return "\n" + title + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
-//				+ ", readerInQ=" + getReaderInQ() + "]\n";
-//
-//	}
 
+	
 	public String menu7_1_toString(List<Rent> rent, int rentIndex, List<Readers> reader, int readerIndex) {
 
 		String toReturn = "";
@@ -344,38 +327,46 @@ public class Books {
 
 			for (int i=0; i<reader.get(readerIndex).getMyRent().size(); i++) {
 
-				// if a rent ID in the reader's current rent list == the rent ID in a specific index of Rent list,
+				// if a rent ID at a specific index of the reader's current rent list == the rent ID in a specific index of Rent list,
 				if (reader.get(readerIndex).getMyRent().get(i).getRentID().equals(rent.get(rentIndex).getRentID())) {
 					
-					//if the rent state of Rent obj in Rent list is "Rented"
-					if (rent.get(rentIndex).getState().equals("Rented")) {
+					/* it's sure that the reader you are looking at is currently renting the book,
+					 * whose rent ID cloned == the rent ID referenced at the specific index of the original Rent list */
+					
+					
+					/* The following code is a strict approach with "AND" operator.
+					 * However, it's fine to use "OR" operator 
+					 * 
+					 * Otherwise, it's still OK to use either one looking at an OBJ in the original Rent list referenced
+					 * or an OBJ in the reader's current Rent list cloned. */
+					
+					// the state is "Rented",
+					if (rent.get(rentIndex).getState().equals("Rented")
+							&& reader.get(readerIndex).getMyRent().get(i).getState().equals("Rented")) {
 						
-						//the reader you are looking at is currently renting the book recorded in the row of the Rent list
+						//the reader you are looking at is currently renting the book,
+						//whose rental state cloned == the state referenced at the specific index of the original Rent list
 						//Thus print rentalState together of this book
 						toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author
 								+ ", rental_state=" + rentalState + ", readerInQ=" + getReaderInQ() + "]\n";
+						break;
 					
 					}
 					
-					/*if (rent.get(rentIndex).getState().equals("Normal")) {
-						
-						//if not, the reader has returned book and no need to print rentalState.
-						toReturn = "\ndsfdsfsdfdsf" + id + "[id=" + id + ", title=" + title + ", author=" + author + ", Queue="
-								+ getReaderInQ() + "]\n";
+				}else {
 					
-					}*/
+					/* The String "toReturn" keeps being re-assigned as the int variable i in this FOR-loop increments 
+					 * However, its value should be the same and it's necessary step */
 					
-					/* else {
-						
-						//if not, the reader has returned book and no need to print rentalState.
-						toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author + ", Queue="
-								+ getReaderInQ() + "]\n";
-					
-					}*/
+					//the reader has returned book and no need to print rentalState of this book.
+					toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author + ", readerInQ="
+							+ getReaderInQ() + "]\n";
 				}
 
 			}
+			
 		}else {
+
 			//the reader has returned book and no need to print rentalState of this book.
 			toReturn = "\n" + id + "[id=" + id + ", title=" + title + ", author=" + author + ", readerInQ="
 					+ getReaderInQ() + "]\n";

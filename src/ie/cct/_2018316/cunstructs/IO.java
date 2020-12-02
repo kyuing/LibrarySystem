@@ -67,16 +67,17 @@ public final class IO {
 				+ "\nEnter a book ID";
 	}
 	
+//	public static String printBookIDMenu() {
+//		return "___________________________________________________________________________"
+//				+ "\n1: Enter a book ID"
+//				+ "\n2: Search for a book info"
+//				+ "\nq: go back to the main menu";
+//	}
+	
 	public static String printRentIDMenu() {
 		return "___________________________________________________________________________"
 				+ "\nEnter the rent Id";
 	}
-
-//	public static String printRentIDMenu() {
-//		return "___________________________________________________________________________"
-//				+ "\n1: Enter a rent Id"
-//				+ "\n2: Search for a rent ID by a reader ID";
-//	}
 	
 	public static String printForListingRentHistoryOfReaders() {
 		return "___________________________________________________________________________"

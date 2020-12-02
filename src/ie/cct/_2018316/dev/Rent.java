@@ -120,8 +120,9 @@ public class Rent {
 				+ "]\n";
 	}
 
-	public String menu7_1_toString() {
-		return "\n" + rentID + "\n[rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + ", state=" + state
-				+ "]\n";
-	}
+//	public String menu7_1_toString() {
+//		return "\n" + rentID + "\n[rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + ", state=" + state
+//				+ "]\n";
+//	}
+	
 }

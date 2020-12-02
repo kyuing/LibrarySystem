@@ -217,9 +217,6 @@ public class Readers {
 		return "\n" + "temp.get(" + this.rIndex + ")"  + this.r.nameTagToString(this.nameTag);
 	}
 	
-	public String menu7_1_toString() {
-		return "\n" + id + "\n[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
-	}
 	
 	@Override
 	public String toString() {

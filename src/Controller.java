@@ -105,15 +105,22 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * method to list rent histories depending on an option user selects
+	 */
 	private void listRentHistoryOfReaders() {
 
 		String op = IO.menu(IO.printForListingRentHistoryOfReaders(), "^[1|2|3|q|Q]$");
+		String advOp = "";
+		int bookIndex, readerIndex;
+		
 		switch (op) {
-		case "1": // all record
+		
+		case "1": // all rent record 
 			System.out.println(IO.printUnderLine() 
-					+ "\n### All of the books that readers have borrowed ###"
-					+ "\n\n* Quick reminder for the filed value of 'state' on a rent record"
-					+ "\n  'state=Rented' represents the book(titleID) is being rented the reader(readerID)"
+					+ "\n### All of the rent records ###"
+					+ "\n\n* Quick reminder for the field value of 'state' on a rent record"
+					+ "\n  'state=Rented' represents the book(titleID) is being rented by a reader(readerID)"
 					+ "\n  'state=Normal' represents the reader(readerID) has returned the book(titleID)");
 			
 
@@ -123,47 +130,73 @@ public class Controller {
 			}
 			System.out.println();
 			
-			String advOp = IO.menu(IO.printUnderLine() 
-					+ "\nWould you like to see all the rent record in detail(y/n)?", "^[a-zA-Z]$");
-			if(advOp.equalsIgnoreCase("y")) {
-				
-				System.out.println(IO.printUnderLine()
-						+ "\n* The following is the breakdown represented by"
-						+ "\n  Line 1 == a specific rent record found in the previous step."
-						+ "\n            ->> [Quick reminder] for the filed value of 'state' on a rent record, Line 1"
-						+ "\n                'state=Rented' represents the book(titleID) is being rented the reader(readerID)"
-						+ "\n                'state=Normal' represents the reader(readerID) has returned the book(titleID)"
-						+ "\n\n  Line 2 == the book info belonged to the rent record"
-						+ "\n  Line 3 == the reader info belonged to the rent record");
-				
-//				System.out.println("\n* Quick reminder for the filed value of 'state' on a rent record"
-//						+ "\n  'state=Rented' represents the book(titleID) is being rented the reader(readerID)"
-//						+ "\n  'state=Normal' represents the reader(readerID) has returned the book(titleID)");
-				
-				//it doesnt work as expected.
-				for (int i = 0; i < rent.size(); i++) {
+			
+			//ask user if wanting to check all the rent records in detail
+			advOp = IO.menu(IO.printUnderLine()	+ "\nWould you like to see all the rent record in detail(y/n)?", "^[a-zA-Z]$");
+			
+				if(advOp.equalsIgnoreCase("y")) {
 					
-					System.out.println(IO.printHyphen() + rent.get(i)/* .menu7_1_toString() */
-					+ books.get(Integer.parseInt(rent.get(i).getTitleID().substring(1)) - 1).menu7_1_toString(rent, i, readers, Integer.parseInt(rent.get(i).getReaderID().substring(1)) - 1)/*.menu7_1_toString()*/
-					+ readers.get(Integer.parseInt(rent.get(i).getReaderID().substring(1)) - 1)/*.menu7_1_toString()*/);
-//							+ books.get(Integer.parseInt(rent.get(i).getTitleID().substring(1)) - 1)/*.menu7_1_toString()*/
-//							+ readers.get(Integer.parseInt(rent.get(i).getReaderID().substring(1)) - 1)/*.menu7_1_toString()*/);
+					bookIndex = 0;
+					readerIndex = 0;
+					
+					System.out.println(IO.printUnderLine()
+							+ "\n* The following result(s) is/are the breakdown represented by"
+							+ "\n\n  Line 1 == a specific rent record found in the previous step."
+							+ "\n            'state=Rented' represents the book(titleID) is being rented by the reader(readerID)"
+							+ "\n            'state=Normal' represents the reader(readerID) has returned the book(titleID)"
+							+ "\n\n  Line 2 == the book info belonged to the rent record"
+							+ "\n  Line 3 == the reader info belonged to the rent record"
+							+ "\n\n\n[NOTE]"
+							+ "\n\n* The field 'rental_state' of any book record will be shown"
+							+ "\n  only when a book is being rented by the reader specified at the moment.\n\n");
+								
+					for (int i = 0; i < rent.size(); i++) {
+						
+						bookIndex = Integer.parseInt(rent.get(i).getTitleID().substring(1)) - 1;
+						readerIndex = Integer.parseInt(rent.get(i).getReaderID().substring(1)) - 1;
+						
+						if(this.rent.get(i).isRented() || this.rent.get(i).getState().equals("Rented")) {
+						
+							System.out.println(IO.printHyphen()
+									+ "\n* The rent record with ID \"" + this.rent.get(i).getRentID() + "\" "
+									+ "has its record with book ID \"" + this.rent.get(i).getTitleID() + "\" "
+									+ "and reader ID \"" + this.rent.get(i).getReaderID() + "\"."
+									+ "\n\n* The book with ID \"" + this.rent.get(i).getTitleID() + "\" "
+									+ "is being rented by the reader with ID \"" + this.rent.get(i).getReaderID() + "\"."
+									+ "\n\n" + rent.get(i)
+									+ books.get(bookIndex).menu7_1_toString(rent, i, readers, readerIndex)
+									+ readers.get(readerIndex));	
+							
+							
+						}else {
 
-				}	
-			}else  {
-				System.out.println("going back to menu...");
-			}
+							System.out.println(IO.printHyphen()
+									+ "\n* The rent record with ID \"" + this.rent.get(i).getRentID() + "\" "
+									+ "has its record with book ID \"" + this.rent.get(i).getTitleID() + "\" "
+									+ "and reader ID \"" + this.rent.get(i).getReaderID() + "\"."
+									+ "\n\n* The book with ID \"" + this.rent.get(i).getTitleID() + "\" "
+									+ "has been rented by the reader with ID \"" + this.rent.get(i).getReaderID() + "\" before, "
+									+ "\n  it has successfully been returned."
+									+ "\n\n" + rent.get(i)
+									+ books.get(bookIndex).menu7_1_toString(rent, i, readers, readerIndex)
+									+ readers.get(readerIndex));	
+							
+						}
+
+					}	
+					
+				}else  {
+					System.out.println("going back to menu...");
+				}
 			
 			break;
 
-		case "2": // all record of a specific reader
+		case "2": // all rent record of a specific reader
 
 			int objCounter = 0;
 			searchForReader();
 
 			if (this.readerIDFoundForMenu7_2 != null) {
-
-				System.out.println(IO.printUnderLine() + "\n### all of books that a specific reader have borrowed ###\n");
 
 				for (int i = 0; i < rent.size(); i++) {
 
@@ -174,60 +207,164 @@ public class Controller {
 				
 				if(objCounter > 0) {
 					
-					System.out.println("* Rent history found with the reader ID '" 
-					+ this.readerIDFoundForMenu7_2 + "'");
+					System.out.println(IO.printUnderLine() 
+							+ "\n### All of the rent records that hold the reader (with ID \"" + this.readerIDFoundForMenu7_2 + "\") and books the reader have rented/returned ###"
+							+ "\n\n* Quick reminder for the field value of 'state' on a rent record"
+							+ "\n  'state=Rented' represents the book(titleID) is being rented by a reader(readerID)"
+							+ "\n  'state=Normal' represents the reader(readerID) has returned the book(titleID)");
+					
 					for (int i = 0; i < rent.size(); i++) {
 						if (rent.get(i).getReaderID().equals(this.readerIDFoundForMenu7_2)) {
 							System.out.print(rent.get(i));
 						}
 					}
+					
+					//ask user if wanting to check all the rent records in detail
+					advOp = IO.menu(IO.printUnderLine()	+ "\nWould you like to see all the rent record in detail(y/n)?", "^[a-zA-Z]$");
+					if(advOp.equalsIgnoreCase("y")) {
+						
+						System.out.println(IO.printUnderLine()
+								+ "\n* The following result(s) is/are the breakdown represented by"
+								+ "\n\n  Line 1 == a specific rent record found in the previous step."
+								+ "\n            'state=Rented' represents the book(titleID) is being rented by the reader(readerID)"
+								+ "\n            'state=Normal' represents the reader(readerID) has returned the book(titleID)"
+								+ "\n\n  Line 2 == the book info belonged to the rent record"
+								+ "\n  Line 3 == the reader info belonged to the rent record"
+								+ "\n\n\n[NOTE]"
+								+ "\n\n* The field 'rental_state' of any book record will be shown"
+								+ "\n  only when a book is being rented by the reader specified at the moment.\n\n");
+						
+						bookIndex = 0;
+						readerIndex = 0;
+						
+						readerIndex = Integer.parseInt(this.readerIDFoundForMenu7_2.substring(1)) - 1;
+						
+						for (int i = 0; i < rent.size(); i++) {
+							
+							if (rent.get(i).getReaderID().equals(this.readerIDFoundForMenu7_2)) {
+								
+								bookIndex = Integer.parseInt(rent.get(i).getTitleID().substring(1)) - 1;
+								
+								if(this.rent.get(i).isRented() || this.rent.get(i).getState().equals("Rented")) {
+									
+									System.out.println(IO.printHyphen()
+											+ "\n* The rent record with ID \"" + this.rent.get(i).getRentID() + "\" "
+											+ "has its record with book ID \"" + this.rent.get(i).getTitleID() + "\" "
+											+ "and reader ID \"" + this.rent.get(i).getReaderID() + "\"."
+											+ "\n\n* The book with ID \"" + this.rent.get(i).getTitleID() + "\" "
+											+ "is being rented by the reader with ID \"" + this.rent.get(i).getReaderID() + "\"."
+											+ "\n\n" + rent.get(i)
+											+ books.get(bookIndex).menu7_1_toString(rent, i, readers, readerIndex)
+											+ readers.get(readerIndex));	
+									
+									
+								}else {
 
-					//here, since the rent histories 
-					System.out.println(IO.printUnderLine()
-							+ "\n* The following is the breakdown represented by"
-							+ "\n  Line 1 == a specific rent record found'"
-							+ "\n  Line 2 == the book info belonged to the rent record'"
-							+ "\n  Line 3 == the reader info belonged to the rent record'");
-					for (int i = 0; i < rent.size(); i++) {
-						if (rent.get(i).getReaderID().equals(this.readerIDFoundForMenu7_2)) {
-							System.out.println(IO.printHyphen()
-									+ rent.get(i)/* .menu7_1_toString() */
-									+ books.get(Integer.parseInt(rent.get(i).getTitleID().substring(1)) - 1)
-									/* .menu7_2_toString() */
-									+ readers.get(Integer.parseInt(rent.get(i).getReaderID().substring(1)) - 1)
-							/* .menu7_2_toString() */);	
+									System.out.println(IO.printHyphen()
+											+ "\n* The rent record with ID \"" + this.rent.get(i).getRentID() + "\" "
+											+ "has its record with book ID \"" + this.rent.get(i).getTitleID() + "\" "
+											+ "and reader ID \"" + this.rent.get(i).getReaderID() + "\"."
+											+ "\n\n* The book with ID \"" + this.rent.get(i).getTitleID() + "\" "
+											+ "has been rented by the reader with ID \"" + this.rent.get(i).getReaderID() + "\" before, "
+											+ "\n  it has successfully been returned."
+											+ "\n\n" + rent.get(i)
+											+ books.get(bookIndex).menu7_1_toString(rent, i, readers, readerIndex)
+											+ readers.get(readerIndex));	
+									
+								}
+
+							}
+	
 						}
+						
+						
+					}else  {
+						System.out.println("going back to menu...");
 					}
-					this.readerIDFoundForMenu7_2 = null;
-					
-					
+			
 				}else {
 					System.out.println("!!! No rent history belonged to the reader ID "
-							+ "'" + this.readerIDFoundForMenu7_2 + "'"
+							+ "\"" + this.readerIDFoundForMenu7_2 + "\""
 							+ " found !!!");
-					this.readerIDFoundForMenu7_2 = null;
 				}
-				
-				
+					
+			}else {
+				System.out.println("!!! No valid reader info found. Please recheck the input and then try again. !!!");
 			}
+			
 			break;
 
 		case "3": // all record that a specific reader is CURRENTLY renting
 
 			searchForReader();
 
-			if (readerIndexFoundForMenu7_3 != -1) {
+			if (readerIndexFoundForMenu7_3 != -1 && this.readerIDFoundForMenu7_2 != null) {
 				if(readers.get(readerIndexFoundForMenu7_3).getMyRent() != null) {
-					System.out.print(IO.printUnderLine() + "\n### all of books that a specific reader is borrowing currently ###\n");
-					System.out.println("\n* Reader info" + "\n" + readers.get(readerIndexFoundForMenu7_3));
-					System.out.println(IO.printHyphen() + "\n* Current rent of books");
+					
+					System.out.println(IO.printUnderLine() 
+							+ "\n### All of the rent records that hold the reader (with ID \"" + this.readerIDFoundForMenu7_2 + "\") and books the reader is renting currently###"
+							+ "\n\n* Quick reminder for the field value of 'state' on a rent record"
+							+ "\n  'state=Rented' represents the book(titleID) is being rented by a reader(readerID)"
+							+ "\n  'state=Normal' represents the reader(readerID) has returned the book(titleID)");
+								
 					for (int i = 0; i < readers.get(readerIndexFoundForMenu7_3).getMyRent().size(); i++) {
 						System.out.print(readers.get(readerIndexFoundForMenu7_3).getMyRent().get(i));
 					}
+					
+					//ask user if wanting to check all the rent records in detail
+					advOp = IO.menu(IO.printUnderLine()	+ "\nWould you like to see all the rent record in detail(y/n)?", "^[a-zA-Z]$");
+					if(advOp.equalsIgnoreCase("y")) {
+
+						System.out.println(IO.printUnderLine()
+								+ "\n* The following result(s) is/are the breakdown represented by"
+								+ "\n\n  Line 1 == a specific rent record found in the previous step."
+								+ "\n            'state=Rented' represents the book(titleID) is being rented by the reader(readerID)"
+								+ "\n            'state=Normal' represents the reader(readerID) has returned the book(titleID)"
+								+ "\n\n  Line 2 == the book info belonged to the rent record"
+								+ "\n  Line 3 == the reader info belonged to the rent record"
+								+ "\n\n\n[NOTE]" +
+								"\n\n* The field 'rental_state' of any book record returned represents that" +
+								"\n  (a) book(s) is/are being rented by the reader specified at the moment.\n\n");
+						
+						bookIndex = 0;
+						readerIndex = 0;
+						
+						readerIndex = Integer.parseInt(this.readerIDFoundForMenu7_2.substring(1)) - 1;
+						
+						for (int i = 0; i < rent.size(); i++) {
+							
+							if (rent.get(i).getReaderID().equals(this.readerIDFoundForMenu7_2)) {
+								
+								bookIndex = Integer.parseInt(rent.get(i).getTitleID().substring(1)) - 1;
+								
+								if(this.rent.get(i).isRented() || this.rent.get(i).getState().equals("Rented")) {
+									
+									System.out.println(IO.printHyphen()
+											+ "\n* The rent record with ID \"" + this.rent.get(i).getRentID() + "\" "
+											+ "has its record with book ID \"" + this.rent.get(i).getTitleID() + "\" "
+											+ "and reader ID \"" + this.rent.get(i).getReaderID() + "\"."
+											+ "\n\n* The book with ID \"" + this.rent.get(i).getTitleID() + "\" "
+											+ "is being rented by the reader with ID \"" + this.rent.get(i).getReaderID() + "\"."
+											+ "\n\n" + rent.get(i)
+											+ books.get(bookIndex).menu7_1_toString(rent, i, readers, readerIndex)
+											+ readers.get(readerIndex));					
+								}
+
+							}
+	
+						}
+						
+					}else  {
+						System.out.println("going back to menu...");
+					}
+					
+					
 				}else {
-					System.out.println("!!! The reader is not renting any books currently. !!!");
+					System.out.println("!!! The reader with ID \"" + this.readerIDFoundForMenu7_2 + "\" is not renting any books currently. !!!");
 				}
-				//readerIndexFoundForMenu7_3 = 0;
+				
+			}else {
+				System.out.println("!!! No valid reader info found. Please recheck the input and then try again. !!!");
 			}
 			break;
 
@@ -420,13 +557,13 @@ public class Controller {
 					System.out.println("No match found with the keyword");
 					
 					readerIDFoundForMenu7_2 = null;
-					readerIndexFoundForMenu7_3 = found;
+					readerIndexFoundForMenu7_3 = found;	//-1
 
 				} else {
 					
 					System.out.println(this.readers.get(found));
 					
-					readerIndexFoundForMenu7_3 =0;
+					readerIndexFoundForMenu7_3 = 0;
 					readerIndexFoundForMenu7_3 = found;
 					readerIDFoundForMenu7_2 = "";
 					readerIDFoundForMenu7_2 = readers.get(found).getId();
@@ -1072,7 +1209,9 @@ public class Controller {
 	 */
 	public String availableBookToLend(String bID) {
 		
-		bID = IO.menu(IO.printBookIDMenu(), "[a-zA-Z0-9]");
+//		bID = IO.menu(IO.printBookIDMenu(), "[a-zA-Z0-9]");
+		bID = IO.menu(IO.printBookIDMenu(), "^[1|2|q|Q]$");
+		
 		
 		for (int i = 0; i < books.size(); i++) { // this needs to be working for all indexes in books
 			if (books.get(i).getId().equalsIgnoreCase(bID)) {
