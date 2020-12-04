@@ -1,0 +1,7 @@
+readerID | first name | last name | current rent
+R01#Dulce#Abril#none
+R02#Mara#Hashimoto#none
+R03#Philip#Gent#none
+R04#Dulce#Abril#none
+R05#Mara#Hashimoto#none
+R06#Philip#Gent#none

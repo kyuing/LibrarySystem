@@ -1,0 +1,8 @@
+readerID | first name | last name | currentRent
+R01#Dulce#Abril#RT03 RT04 RT06
+R02#Mara#Hashimoto#none
+R03#Philip#Gent#none
+R04#Kathleen#Hanner#RT07 RT08
+R05#Nereida#Magwood#none
+R06#Gaston#Brumm#none
+R07#Etta#Hurn#none

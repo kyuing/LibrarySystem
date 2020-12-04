@@ -1,6 +1,5 @@
 package ie.cct._2018316.dev;
 
-import java.util.List;
 
 public class Rent {
 	
@@ -120,9 +119,5 @@ public class Rent {
 				+ "]\n";
 	}
 
-//	public String menu7_1_toString() {
-//		return "\n" + rentID + "\n[rentID=" + rentID + ", titleID=" + titleID + ", readerID=" + readerID + ", state=" + state
-//				+ "]\n";
-//	}
 	
 }

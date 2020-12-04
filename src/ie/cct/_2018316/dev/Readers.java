@@ -21,7 +21,7 @@ public class Readers {
 	private String nameTag;
 	private int rIndex, indexToRemove;
 	private Readers r;
-	
+	private String tempIdentifier;
 	
 	/**
 	 * specific constructor for loading Readers.txt into the system and creating reader OBJs
@@ -44,12 +44,14 @@ public class Readers {
 	 * specific constructor to clone current states of each of Readers for searching a reader
 	 * @param r
 	 * @param index
+	 * @param tempIdentifier
 	 */
-	Readers(Readers r, int index) {
+	Readers(Readers r, int index, String tempIdentifier) {
 		
 		this.r = r;
 		this.rIndex = index;
 		this.nameTag = null;
+		this.tempIdentifier = tempIdentifier;
 		
 		//clone value of the fields from the original Reader obj
 		this.id = r.getId();
@@ -58,6 +60,29 @@ public class Readers {
 		this.myRent = r.getMyRent();
 		setCurrentState();		//clone the field currentRent
 	}
+	
+	public String getTempIdentifier() {
+		return this.tempIdentifier;
+	}
+	
+//	/**
+//	 * specific constructor to clone current states of each of Readers for searching a reader
+//	 * @param r
+//	 * @param index
+//	 */
+//	Readers(Readers r, int index) {
+//		
+//		this.r = r;
+//		this.rIndex = index;
+//		this.nameTag = null;
+//		
+//		//clone value of the fields from the original Reader obj
+//		this.id = r.getId();
+//		this.fname = r.getFname();
+//		this.lname = r.getLname();		
+//		this.myRent = r.getMyRent();
+//		setCurrentState();		//clone the field currentRent
+//	}
 
 	/**
 	 * method to initialize/update the field currentRent
@@ -204,6 +229,11 @@ public class Readers {
 	
 	
 	/************************* toString methods as needed *********************************************/
+	
+	public String tempIdentifierToString() {
+		
+		return "\n" + this.tempIdentifier + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
+	}
 	
 	//used when printing sorted result 
 	public String nameTagToString(String s) {

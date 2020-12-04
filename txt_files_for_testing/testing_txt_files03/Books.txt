@@ -1,0 +1,21 @@
+bookID|title|author|rental state|readerInQ
+B01#Hunger#Georgi Facello#Available#none
+B02#Frogmen Breaking#Bezalel Simmel#Available#none
+B03#Outbreak Divine#Parto Bamford#Available#none
+B04#Language#Chirstian Koblick#Available#none
+B05#Stampede Disturbing#Kyoichi Maliniak#Available#none
+B06#World Leathernecks#Anneke Preusig#Available#none
+B07#Goodfellas Salute#Tzvetan Zielinski#Available#none
+B08#Core Suit#Saniya#Available#none
+B09#Knock Warlock#Sumant Peac#Available#none
+B10#Dangerous Uptown#Duangkaew Piveteau#Available#none
+B11#Chocolate Duck#Mary Sluis#Available#none
+B12#Heavyweights Beast#Patricio Bridgland#Available#none
+B13#Trap Guys#Terkki#Available#none
+B14#Frankenstein#Berni Genin#Available#none
+B15#Wisdom Worker#Guoxiang Nooteboom#Available#none
+B16#Divorce Shining#Kazuhito Cappelletti#Available#none
+B17#Groove Fiction#Bouloucos#Available#none
+B18#Pet Haunting#Kazuhide Peha#Available#none
+B19#Network Peak#Lillian Haddadi#Available#none
+B20#Forever#Mayuko Warwick#Available#none

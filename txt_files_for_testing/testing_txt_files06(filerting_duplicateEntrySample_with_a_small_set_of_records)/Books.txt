@@ -1,0 +1,7 @@
+bookID|title|author|rental state|readerInQ
+B01#Hunger#Georgi Facello#Available#none
+B02#Frogmen Breaking#Bezalel Simmel#Available#none
+B03#Outbreak#Parto Bamford#Available#none
+B04#Hunger#Georgi Facello#Available#none
+B05#Frogmen Breaking#Bezalel Simmel#Available#none
+B06#Outbreak#Parto Bamford#Available#none

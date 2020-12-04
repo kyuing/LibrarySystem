@@ -1,7 +1,6 @@
 package ie.cct._2018316.dev;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ie.cct._2018316.cunstructs.IO;
@@ -153,18 +152,84 @@ public class Search {
 		
 		List<Readers> temp = new ArrayList<>(); // create a temp list
 		
+		//if necessary, uncomment the code below out to check the sorted values in String[]arr
+//		/***************************************************  //ctrl + /
+		for (int i = 0; i < arr.length; i++) {
+			System.out.println("arr[" + i + "]: " + arr[i]);
+		} 
+//		****************************************************/	//ctrl + /
+		
 		// create a temporary Readers list
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < r.size(); j++) {
 
-				if (arr[i].equalsIgnoreCase(r.get(j).getId()) || arr[i].equalsIgnoreCase(r.get(j).getFname())
-						|| arr[i].equalsIgnoreCase(r.get(j).getLname())) {
+				if (arr[i].equals(r.get(j).getId())) {
 					
-					temp.add(new Readers(r.get(j), i));	// now, add reader obj to temp Reader list
+					// now, add obj to temp Readers list
+					temp.add(new Readers(r.get(j), i, arr[i]));
+					j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+					break;	//exit from nested FOR-LOOP at current index
+				}	
+				
+				if (arr[i].equals(r.get(j).getFname())) {
+					
+					if(temp.size() == 0) {
+						
+						// now, add obj to temp Readers list
+						temp.add(new Readers(r.get(j), i, arr[i]));
+						j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+						break;	//exit from nested FOR-LOOP at current index
+						
+					}else {
+						
+						if(filterDuplicateReaderEntry(r.get(j).getId(), r.get(j).getFname(), temp)) {
+							// now, add obj to temp Readers list
+							temp.add(new Readers(r.get(j), i, arr[i]));
+							j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}
+						
+					}
+					
 				}
-
+				
+				if (arr[i].equals(r.get(j).getLname())) {
+					
+					if(temp.size() == 0) {
+						
+						// now, add obj to temp Readers list
+						temp.add(new Readers(r.get(j), i, arr[i]));
+						j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+						break;	//exit from nested FOR-LOOP at current index
+						
+					}else {
+						
+						if(filterDuplicateReaderEntry(r.get(j).getId(), r.get(j).getLname(), temp)) {
+							// now, add obj to temp Readers list
+							temp.add(new Readers(r.get(j), i, arr[i]));
+							j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}
+						
+					}
+					
+				}
+				
 			}
 		}
+		
+		//if necessary, uncomment the code below out 
+		//to check the temp list created and sorted based on the values in String[]arr
+//		/***************************************************************************************	//ctrl + /
+		System.out.println("arr.length: " + arr.length);
+		System.out.println("temp.size(): " + temp.size());
+		for (int i = 0; i < temp.size(); i++) {
+			//if result is big, it may not print out all.
+			System.out.print("In debugging.. temp index[" + i + "]: " + temp.get(i).tempIdentifierToString() + "\n");
+		}
+//		****************************************************************************************/	//ctrl + /
 
 		for (int i = 0; i < temp.size(); i++) {
 			/** 
@@ -195,39 +260,138 @@ public class Search {
 		
 		List<Books> temp = new ArrayList<>(); // create a temp list
 		
+		//if necessary, uncomment the code below out to check the sorted values in String[]arr
+//		/***************************************************  //ctrl + /
+		for (int i = 0; i < arr.length; i++) {
+			System.out.println("arr[" + i + "]: " + arr[i]);
+		} 
+//		****************************************************/	//ctrl + /
+		
 		if(!isForAdvancedSearch) {	
-			// create a temporary Readers list
+			// create a temporary Books list
 			for (int i = 0; i < arr.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
-					if (arr[i].equals(b.get(j).getId()) || arr[i].equals(b.get(j).getTitle())
-							|| arr[i].equals(b.get(j).getAuthor())) {
+					if (arr[i].equals(b.get(j).getId())) {
 						
-						temp.add(new Books(b.get(j), i));	// now, add reader obj to temp Books list
+						// now, add obj to temp Books list
+						temp.add(new Books(b.get(j), i, arr[i]));
+						j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+						break;	//exit from nested FOR-LOOP at current index
+					}	
+					
+					if (arr[i].equals(b.get(j).getTitle())) {
+						
+						if(temp.size() == 0) {
+							
+							// now, add obj to temp Books list
+							temp.add(new Books(b.get(j), i, arr[i]));
+							j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getTitle(), temp)) {
+								// now, add obj to temp Books list
+								temp.add(new Books(b.get(j), i, arr[i]));
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+								
+							}
+							
+						}
+						
+					}	
+					
+					if (arr[i].equals(b.get(j).getAuthor())) {
+						
+						if(temp.size() == 0) {
+							
+							// now, add obj to temp Books list
+							temp.add(new Books(b.get(j), i, arr[i]));
+							j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getAuthor(), temp)) {
+								// now, add obj to temp Books list
+								temp.add(new Books(b.get(j), i, arr[i]));
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+								
+							}
+							
+						}
+						
 					}
+				
 				}
 			}			
 		}else {	//isForAdvancedSearch == true
 
-			// create a temporary Readers list
+			// create a temporary Books list
 			for (int i = 0; i < arr.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 					if (arr[i].equals(b.get(j).getId())) {
-						// now, add reader obj to temp Books list
-						temp.add(new Books(b.get(j), i));
+						
+						// now, add obj to temp Books list
+						temp.add(new Books(b.get(j), i, arr[i]));
+						j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+						break;	//exit from nested FOR-LOOP at current index
 					}	
 					
 					for (int k = 0; k < b.get(j).getAggregateTitleAndAuthorSplit().length; k++) {
+					
 						if (arr[i].equals(b.get(j).getAggregateTitleAndAuthorSplit()[k])) {
+							
 							// now, add reader obj to temp Books list
-							temp.add(new Books(b.get(j), i));
-						}	
+							if(temp.size() == 0) {
+								
+								temp.add(new Books(b.get(j), i, arr[i]));
+								
+								//point k to be at the end of inner nested FOR-LOOP
+								k = b.get(j).getAggregateTitleAndAuthorSplit().length-1;	
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								
+							}else {
+							
+								if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getAggregateTitleAndAuthorSplit()[k], temp)) {
+									
+									//non-duplicate entry
+									temp.add(new Books(b.get(j), i, arr[i]));
+									
+									//point k to be at the end of inner nested FOR-LOOP
+									k = b.get(j).getAggregateTitleAndAuthorSplit().length-1;
+									j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+									
+								}else {
+									//nested FOR-LOOP is not looked up
+									if(j < b.size()-1) {
+										break;	//exit from inner nested FOR-LOOP at current index
+									}
+								}
+							}
+							
+						}
+						
 					}
+					
 				}
 			}
 		}
 		
-		//System.out.println("temp list size: " + temp.size());		
+		//if necessary, uncomment the code below out 
+		//to check the temp list created and sorted based on the values in String[]arr
+//		/***************************************************************************************	//ctrl + /
+		System.out.println("arr.length: " + arr.length);
+		System.out.println("temp.size(): " + temp.size());
+		for (int i = 0; i < temp.size(); i++) {
+			//if result is big, it may not print out all.
+			System.out.print("In debugging.. temp index[" + i + "]: " + temp.get(i).tempIdentifierToString() + "\n");
+		}
+//		****************************************************************************************/	//ctrl + /
+			
 		for (int i = 0; i < temp.size(); i++) {
 			/** 
 			 * The list 'temp' now has OBJs basing its order on the values of indexes in String[] arr
@@ -240,6 +404,60 @@ public class Search {
 		}
 		
 		return temp;
+	}
+	
+	/**
+	 *  method to filter duplicate entry to the temporary Readers list
+	 * @param rID
+	 * @param tempKey
+	 * @param temp
+	 * @return true if not duplicate entry
+	 */
+	public boolean filterDuplicateReaderEntry(String rID, String tempKey, List<Readers> temp) {
+		
+		/* Once temp list has its OBJ based on a sorted input but cloned from the original Books list,
+		 * each of OBJs in the temp list has an unique ID(bookID) and an unique key ID(a specific sorted value) 
+		 * 
+		 * By regarding those two as a compound key,
+		 * a duplicate entry to the temp list can be filtered
+		 */
+		
+		for (int i = 0; i < temp.size(); i++) {
+			
+			if(temp.get(i).getId().equals(rID) && temp.get(i).getTempIdentifier().equals(tempKey)) {
+				
+				return false;		
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * method to filter duplicate entry to the temporary Books list
+	 * @param bID
+	 * @param tempKey
+	 * @param temp
+	 * @return true if not duplicate entry
+	 */
+	public boolean filterDuplicateBookEntry(String bID, String tempKey, List<Books> temp) {
+		
+		/* Once temp list has its OBJ based on a sorted input but cloned from the original Books list,
+		 * each of OBJs in the temp list has an unique ID(bookID) and an unique key ID(a specific sorted value) 
+		 * 
+		 * By regarding those two as a compound key,
+		 * a duplicate entry to the temp list can be filtered
+		 */
+		
+		for (int i = 0; i < temp.size(); i++) {
+			
+			if(temp.get(i).getId().equals(bID) && temp.get(i).getTempIdentifier().equals(tempKey)) {
+				
+				return false;		
+			}
+		}
+		
+		return true;
 	}
 	
 	/**

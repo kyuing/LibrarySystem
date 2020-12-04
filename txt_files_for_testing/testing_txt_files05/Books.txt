@@ -1,13 +1,13 @@
-bookID | title name | author | rental state | waitingQ
-B1#Hunger Roof#Georgi Facello#Rented#R1 R2 R3
-B2#Frogmen Breaking#Bezalel Simmel#Available#none
-B3#Outbreak Divine#Parto Bamford#Rented#R3 R4 R5
-B4#Young Language#Chirstian Koblick#Rented#none
-B5#Stampede Disturbing#Kyoichi Maliniak#Rented#none
-B6#World Leathernecks#Anneke Preusig#Available#none
-B7#Goodfellas Salute#Tzvetan Zielinski#Available#none
-B8#Core Suit#Saniya Kalloufi#Available#none
-B9#Knock Warlock#Sumant Peac#Available#none
+bookID|title|author|rental state|readerInQ
+B01#Hunger Roof#Georgi Facello#Available#none
+B02#Frogmen Breaking#Bezalel Simmel#Available#none
+B03#Outbreak Divine#Parto Bamford#Available#none
+B04#Young Language#Chirstian Koblick#Available#none
+B05#Stampede Disturbing#Kyoichi Maliniak#Available#none
+B06#World Leathernecks#Anneke Preusig#Available#none
+B07#Goodfellas Salute#Tzvetan Zielinski#Available#none
+B08#Core Suit#Saniya Kalloufi#Available#none
+B09#Knock Warlock#Sumant Peac#Available#none
 B10#Dangerous Uptown#Duangkaew Piveteau#Available#none
 B11#Chocolate Duck#Mary Sluis#Available#none
 B12#Heavyweights Beast#Patricio Bridgland#Available#none

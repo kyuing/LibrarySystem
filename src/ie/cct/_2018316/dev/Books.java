@@ -1,7 +1,6 @@
 package ie.cct._2018316.dev;
 
 import java.util.List;
-import ie.cct._2018316.cunstructs.IO;
 
 public class Books {
 
@@ -47,6 +46,7 @@ public class Books {
 	private String nameTag;
 	private int bIndex;
 	private Books b;
+	private String tempIdentifier;
 
 	/**
 	 * specific constructor for loading Books.txt into the system and creating book OBJs
@@ -83,16 +83,38 @@ public class Books {
 
 	}
 	
+//	/**
+//	 * specific constructor to clone current states of each of Books when searching for a book
+//	 * @param b
+//	 * @param index
+//	 */
+//	public Books(Books b, int index) {
+//		
+//		this.b = b;
+//		this.bIndex = index;
+//		this.nameTag = null;
+////		this.isAdded = true;
+//		
+//		//clone value of the fields from the original Reader obj
+//		this.id = b.getId();
+//		this.title = b.getTitle();
+//		this.author = b.getAuthor();
+//		this.rentalState = b.getRentalState();
+//		this.readerInQ = b.getReaderInQ();
+//	}
+	
 	/**
 	 * specific constructor to clone current states of each of Books when searching for a book
 	 * @param b
 	 * @param index
+	 * @param tempIdentifier	//unique key that identifies the unique sorted value
 	 */
-	public Books(Books b, int index) {
+	public Books(Books b, int index, String tempIdentifier) {
 		
 		this.b = b;
 		this.bIndex = index;
 		this.nameTag = null;
+		this.tempIdentifier = tempIdentifier;
 		
 		//clone value of the fields from the original Reader obj
 		this.id = b.getId();
@@ -100,6 +122,10 @@ public class Books {
 		this.author = b.getAuthor();
 		this.rentalState = b.getRentalState();
 		this.readerInQ = b.getReaderInQ();
+	}
+	
+	public String getTempIdentifier() {
+		return this.tempIdentifier;
 	}
 	
 	/**
@@ -116,7 +142,7 @@ public class Books {
 		}
 		
 		this.aggregateTitleAndAuthorSplit = new String[this.titleSplit.length + this.authorSplit.length];
-		
+		//System.out.println("this.aggregateTitleAndAuthorSplit.length: " + this.aggregateTitleAndAuthorSplit.length);
 		
 		for (int i = 0; i < this.titleSplit.length; i++) {
 			this.aggregateTitleAndAuthorSplit[i] = this.titleSplit[i];			
@@ -286,6 +312,13 @@ public class Books {
 
 	/************************* toString methods as needed *********************************************/
 	
+	public String tempIdentifierToString() {
+		
+		return "\n" + this.tempIdentifier + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
+				+ ", readerInQ=" + getReaderInQ() + "]\n";
+
+	}
+	
 	public String nameTagToString(String s) {
 		
 		this.nameTag = s;
@@ -318,6 +351,14 @@ public class Books {
 	}
 
 	
+	/**
+	 * method to print a book OBJ
+	 * @param rent
+	 * @param rentIndex
+	 * @param reader
+	 * @param readerIndex
+	 * @return a book OBJ's record filtering the field 'rentalState' depending on its value 
+	 */
 	public String menu7_1_toString(List<Rent> rent, int rentIndex, List<Readers> reader, int readerIndex) {
 
 		String toReturn = "";

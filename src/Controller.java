@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import ie.cct._2018316.cunstructs.FactoryInterface;
 import ie.cct._2018316.cunstructs.IO;
@@ -24,8 +23,6 @@ public class Controller {
 	private List<Readers> readers;
 	private List<Rent> rent;
 	private FactoryInterface factory;
-	private String readerIDFoundForMenu7_2 = null;
-	private int readerIndexFoundForMenu7_3;
 
 	public Controller() throws IOException {
 
@@ -34,19 +31,46 @@ public class Controller {
 		String rt = "Rent.txt";
 		rent_in = new BufferedReader(new FileReader(rt));
 		rent = (List<Rent>) factory.createRentDB(rent_in);
-		System.out.println(rent);
+		//System.out.println(rent);
 
 		String r = "Readers.txt";
 		readers_in = new BufferedReader(new FileReader(r));
 		readers = (List<Readers>) factory.createReaderDB(readers_in, rent);
-		System.out.println(readers);
+		//System.out.println(readers);
 
 		// read input and store them
 		String b = "Books.txt";
 		books_in = new BufferedReader(new FileReader(b));
 		books = (List<Books>) factory.createBookDB(books_in, readers);
-		System.out.println(books);
+		//System.out.println(books);
 
+		if(this.rent != null) {
+			System.out.println("### Rent.txt is successfully loaded intto system ###");
+		}else {
+			System.out.println("!!! Error ocurred while loading 'Rent.txt' file. !!!");
+			System.out.println("!!! Please check the input file and the file path. !!!");
+			System.out.println("!!! System terminates.. !!!");
+			System.exit(0);
+		}
+		
+		if(this.readers != null) {
+			System.out.println("### Readers.txt is successfully loaded intto system ###");
+		}else {
+			System.out.println("!!! Error ocurred while loading 'Readers.txt' file. !!!");
+			System.out.println("!!! Please check the input file and the file path. !!!");
+			System.out.println("!!! System terminates.. !!!");
+			System.exit(0);
+		}
+		
+		if(this.books != null) {
+			System.out.println("### Books.txt is successfully loaded intto system ###");
+		}else {
+			System.out.println("!!! Error ocurred while loading 'Books.txt' file. !!!");
+			System.out.println("!!! Please check the input file and the file path. !!!");
+			System.out.println("!!! System terminates.. !!!");
+			System.exit(0);
+		}
+		
 		//inform user if there's 1st queue of reader that exists in any book OBJs
 		for(int i=0; i<books.size(); i++) {
 			if (books.get(i).getMQ() != null) {
@@ -64,7 +88,7 @@ public class Controller {
 
 	private void menu() {
 
-		String op = IO.menu(IO.printMenu(), "^[1|2|3|4|5|6|7|8]$");
+		String op = IO.menu(IO.printMenu(), "^[1|2|3|4|5|6|7|8|9]$");
 
 		switch (op) {
 
@@ -95,13 +119,74 @@ public class Controller {
 		case "7":
 			listRentHistoryOfReaders();
 			menu();
-
+			
 		case "8":
+			printDBs();
+			menu();
+
+		case "9":
 			System.out.println(IO.printUnderLine() + "\nBYE :)");
 			System.exit(0);
 
 		default:
 			menu();
+		}
+	}
+
+	private void printDBs() {
+		
+		String op = IO.menu(IO.printDB(), "^[1|2|3|4|q|Q]$");
+		
+		switch (op) {
+
+		case "1":
+			
+			System.out.println(IO.printUnderLine() + "\nRent");
+			for (int i = 0; i < rent.size(); i++) {
+				System.out.print(rent.get(i));
+
+			}
+			break;
+
+		case "2":
+			
+			System.out.println(IO.printUnderLine() + "\nReaders");
+			for (int i = 0; i < readers.size(); i++) {
+				System.out.print(readers.get(i));
+
+			}
+			break;
+
+		case "3":
+			
+			System.out.println(IO.printUnderLine() + "\nBooks");
+			for (int i = 0; i < books.size(); i++) {
+				
+				System.out.print(books.get(i));
+
+			}
+			break;
+		
+		case "4":
+			System.out.println(IO.printUnderLine() + "\nRent");
+			for (int i = 0; i < rent.size(); i++) {
+				System.out.print(rent.get(i));
+
+			}
+			System.out.println(IO.printUnderLine() + "\nReaders");
+			for (int i = 0; i < readers.size(); i++) {
+				System.out.print(readers.get(i));
+
+			}
+			System.out.println(IO.printUnderLine() + "\nBooks");
+			for (int i = 0; i < books.size(); i++) {
+				System.out.print(books.get(i));
+
+			}
+			break;
+			
+		default:
+			System.out.println("going back to menu...");
 		}
 	}
 
@@ -112,7 +197,8 @@ public class Controller {
 
 		String op = IO.menu(IO.printForListingRentHistoryOfReaders(), "^[1|2|3|q|Q]$");
 		String advOp = "";
-		int bookIndex, readerIndex;
+		String readerID = "";
+		int bookIndex, readerIndex, rentIndex;
 		
 		switch (op) {
 		
@@ -129,7 +215,6 @@ public class Controller {
 
 			}
 			System.out.println();
-			
 			
 			//ask user if wanting to check all the rent records in detail
 			advOp = IO.menu(IO.printUnderLine()	+ "\nWould you like to see all the rent record in detail(y/n)?", "^[a-zA-Z]$");
@@ -194,13 +279,13 @@ public class Controller {
 		case "2": // all rent record of a specific reader
 
 			int objCounter = 0;
-			searchForReader();
-
-			if (this.readerIDFoundForMenu7_2 != null) {
+			readerID = searchForReader();
+			
+			if (readerID != null) {
 
 				for (int i = 0; i < rent.size(); i++) {
 
-					if (rent.get(i).getReaderID().equals(this.readerIDFoundForMenu7_2)) {
+					if (rent.get(i).getReaderID().equals(readerID)) {
 						objCounter++;
 					}
 				}
@@ -208,13 +293,13 @@ public class Controller {
 				if(objCounter > 0) {
 					
 					System.out.println(IO.printUnderLine() 
-							+ "\n### All of the rent records that hold the reader (with ID \"" + this.readerIDFoundForMenu7_2 + "\") and books the reader have rented/returned ###"
+							+ "\n### All of the rent records that hold the reader (with ID \"" + readerID + "\") and books the reader have rented/returned ###"
 							+ "\n\n* Quick reminder for the field value of 'state' on a rent record"
 							+ "\n  'state=Rented' represents the book(titleID) is being rented by a reader(readerID)"
 							+ "\n  'state=Normal' represents the reader(readerID) has returned the book(titleID)");
 					
 					for (int i = 0; i < rent.size(); i++) {
-						if (rent.get(i).getReaderID().equals(this.readerIDFoundForMenu7_2)) {
+						if (rent.get(i).getReaderID().equals(readerID)) {
 							System.out.print(rent.get(i));
 						}
 					}
@@ -222,6 +307,9 @@ public class Controller {
 					//ask user if wanting to check all the rent records in detail
 					advOp = IO.menu(IO.printUnderLine()	+ "\nWould you like to see all the rent record in detail(y/n)?", "^[a-zA-Z]$");
 					if(advOp.equalsIgnoreCase("y")) {
+						
+						bookIndex = 0;
+						readerIndex = 0;
 						
 						System.out.println(IO.printUnderLine()
 								+ "\n* The following result(s) is/are the breakdown represented by"
@@ -234,14 +322,11 @@ public class Controller {
 								+ "\n\n* The field 'rental_state' of any book record will be shown"
 								+ "\n  only when a book is being rented by the reader specified at the moment.\n\n");
 						
-						bookIndex = 0;
-						readerIndex = 0;
-						
-						readerIndex = Integer.parseInt(this.readerIDFoundForMenu7_2.substring(1)) - 1;
+						readerIndex = Integer.parseInt(readerID.substring(1)) - 1;
 						
 						for (int i = 0; i < rent.size(); i++) {
 							
-							if (rent.get(i).getReaderID().equals(this.readerIDFoundForMenu7_2)) {
+							if (rent.get(i).getReaderID().equals(readerID)) {
 								
 								bookIndex = Integer.parseInt(rent.get(i).getTitleID().substring(1)) - 1;
 								
@@ -259,7 +344,7 @@ public class Controller {
 									
 									
 								}else {
-
+									//Not Rented == Returned == "Normal"
 									System.out.println(IO.printHyphen()
 											+ "\n* The rent record with ID \"" + this.rent.get(i).getRentID() + "\" "
 											+ "has its record with book ID \"" + this.rent.get(i).getTitleID() + "\" "
@@ -284,7 +369,7 @@ public class Controller {
 			
 				}else {
 					System.out.println("!!! No rent history belonged to the reader ID "
-							+ "\"" + this.readerIDFoundForMenu7_2 + "\""
+							+ "\"" + readerID + "\""
 							+ " found !!!");
 				}
 					
@@ -296,25 +381,32 @@ public class Controller {
 
 		case "3": // all record that a specific reader is CURRENTLY renting
 
-			searchForReader();
+			readerID = searchForReader();
 
-			if (readerIndexFoundForMenu7_3 != -1 && this.readerIDFoundForMenu7_2 != null) {
-				if(readers.get(readerIndexFoundForMenu7_3).getMyRent() != null) {
+			if (readerID != null) {
+				
+				readerIndex = 0;
+				readerIndex = Integer.parseInt(readerID.substring(1)) - 1;
+				
+				if(readers.get(readerIndex).getMyRent() != null) {
 					
 					System.out.println(IO.printUnderLine() 
-							+ "\n### All of the rent records that hold the reader (with ID \"" + this.readerIDFoundForMenu7_2 + "\") and books the reader is renting currently###"
+							+ "\n### All of the rent records that hold the reader (with ID \"" + readerID + "\") and books the reader is renting currently###"
 							+ "\n\n* Quick reminder for the field value of 'state' on a rent record"
 							+ "\n  'state=Rented' represents the book(titleID) is being rented by a reader(readerID)"
 							+ "\n  'state=Normal' represents the reader(readerID) has returned the book(titleID)");
 								
-					for (int i = 0; i < readers.get(readerIndexFoundForMenu7_3).getMyRent().size(); i++) {
-						System.out.print(readers.get(readerIndexFoundForMenu7_3).getMyRent().get(i));
+					for (int i = 0; i < readers.get(readerIndex).getMyRent().size(); i++) {
+						System.out.print(readers.get(readerIndex).getMyRent().get(i));
 					}
 					
 					//ask user if wanting to check all the rent records in detail
 					advOp = IO.menu(IO.printUnderLine()	+ "\nWould you like to see all the rent record in detail(y/n)?", "^[a-zA-Z]$");
 					if(advOp.equalsIgnoreCase("y")) {
 
+						bookIndex = 0;
+						rentIndex = 0;
+						
 						System.out.println(IO.printUnderLine()
 								+ "\n* The following result(s) is/are the breakdown represented by"
 								+ "\n\n  Line 1 == a specific rent record found in the previous step."
@@ -326,32 +418,21 @@ public class Controller {
 								"\n\n* The field 'rental_state' of any book record returned represents that" +
 								"\n  (a) book(s) is/are being rented by the reader specified at the moment.\n\n");
 						
-						bookIndex = 0;
-						readerIndex = 0;
-						
-						readerIndex = Integer.parseInt(this.readerIDFoundForMenu7_2.substring(1)) - 1;
-						
-						for (int i = 0; i < rent.size(); i++) {
-							
-							if (rent.get(i).getReaderID().equals(this.readerIDFoundForMenu7_2)) {
+						for (int i = 0; i < readers.get(readerIndex).getMyRent().size(); i++) {
 								
-								bookIndex = Integer.parseInt(rent.get(i).getTitleID().substring(1)) - 1;
+							bookIndex = Integer.parseInt(readers.get(readerIndex).getMyRent().get(i).getTitleID().substring(1)) - 1;
+							rentIndex = Integer.parseInt(readers.get(readerIndex).getMyRent().get(i).getRentID().substring(2)) - 1;
 								
-								if(this.rent.get(i).isRented() || this.rent.get(i).getState().equals("Rented")) {
-									
-									System.out.println(IO.printHyphen()
-											+ "\n* The rent record with ID \"" + this.rent.get(i).getRentID() + "\" "
-											+ "has its record with book ID \"" + this.rent.get(i).getTitleID() + "\" "
-											+ "and reader ID \"" + this.rent.get(i).getReaderID() + "\"."
-											+ "\n\n* The book with ID \"" + this.rent.get(i).getTitleID() + "\" "
-											+ "is being rented by the reader with ID \"" + this.rent.get(i).getReaderID() + "\"."
-											+ "\n\n" + rent.get(i)
-											+ books.get(bookIndex).menu7_1_toString(rent, i, readers, readerIndex)
-											+ readers.get(readerIndex));					
-								}
+							System.out.println(IO.printHyphen()
+									+ "\n* The rent record with ID \"" + readers.get(readerIndex).getMyRent().get(i).getRentID() + "\" "
+									+ "has its record with book ID \"" + readers.get(readerIndex).getMyRent().get(i).getTitleID() + "\" "
+									+ "and reader ID \"" + readers.get(readerIndex).getMyRent().get(i).getReaderID() + "\"."
+									+ "\n\n* The book with ID \"" + readers.get(readerIndex).getMyRent().get(i).getTitleID() + "\" "
+									+ "is being rented by the reader with ID \"" + readers.get(readerIndex).getMyRent().get(i).getReaderID() + "\"."
+									+ "\n\n" + readers.get(readerIndex).getMyRent().get(i)
+									+ books.get(bookIndex).menu7_1_toString(rent, rentIndex, readers, readerIndex)
+									+ readers.get(readerIndex));					
 
-							}
-	
 						}
 						
 					}else  {
@@ -360,7 +441,7 @@ public class Controller {
 					
 					
 				}else {
-					System.out.println("!!! The reader with ID \"" + this.readerIDFoundForMenu7_2 + "\" is not renting any books currently. !!!");
+					System.out.println("!!! The reader with ID \"" + readerID + "\" is not renting any books currently. !!!");
 				}
 				
 			}else {
@@ -519,15 +600,21 @@ public class Controller {
 	 *  
 	 *  Search option "2" returns the exact match if found, 
 	 *  allowing one search keyword for each of fields(readerId, first name, last name) at a time
+	 *  
+	 **************************************************************************************************
+	 * [NOTE]
+	 * Basically, the main function of the method is to print the result searched rather than returning something.
+	 * When searching for a reader ID is necessary, the method is called and returns a reader ID as a string   
 	 * 
 	 */
-	private void searchForReader() {
+	private String searchForReader() {
 
-		String keyword = "", askUserOp = "";
+		String keyword = "", askUserOp = "", toReturn = "";
 
 		askUserOp = IO.menu(IO.printReaderSearchOptionMenu(), "^[1|2|q|Q]$");
 		
 		if (askUserOp.equals("1")) {	//search for reader allowing multiple keywords
+			
 			keyword = IO.menu(IO.printReaderSearchMenu(), "[a-zA-Z0-9]++");
 
 			if (keyword != null) {
@@ -554,23 +641,19 @@ public class Controller {
 				found = search.binarySearch(temp, keyword.trim()); // return an index number of a reader if found
 
 				if (found == -1) {
+					//not found
 					System.out.println("No match found with the keyword");
-					
-					readerIDFoundForMenu7_2 = null;
-					readerIndexFoundForMenu7_3 = found;	//-1
+					toReturn = null;
 
 				} else {
-					
+					//found
 					System.out.println(this.readers.get(found));
+					toReturn = this.readers.get(found).getId();
 					
-					readerIndexFoundForMenu7_3 = 0;
-					readerIndexFoundForMenu7_3 = found;
-					readerIDFoundForMenu7_2 = "";
-					readerIDFoundForMenu7_2 = readers.get(found).getId();
 				}
 			} else {
-				System.out.println(
-						"Please be aware that alphabet letters and numbers are allowed as an input. Try again");
+				System.out.println("No match found with the keyword");
+				toReturn = null;
 			}
 		}
 
@@ -591,25 +674,25 @@ public class Controller {
 			found = search.linearSerch(this.readers, keyword.trim());	//generic method approach
 
 			if (found == -1) {
-				
+				//not found
 				System.out.println("No match found with the keyword");
+				toReturn = null;
 				
-				readerIDFoundForMenu7_2 = null;
-				readerIndexFoundForMenu7_3 = found;
 
 			} else {
-				System.out.println(this.readers.get(found));	//found
 				
-				readerIndexFoundForMenu7_3 =0;
-				readerIndexFoundForMenu7_3 = found;
-				readerIDFoundForMenu7_2 = "";
-				readerIDFoundForMenu7_2 = readers.get(found).getId();
+				System.out.println(this.readers.get(found));	//found
+				toReturn = this.readers.get(found).getId();
+		
 			}
 		}
 
 		if (askUserOp.equalsIgnoreCase("q")) {
-			System.out.println("Going back to menu...");
+			System.out.println("going back to menu...");
+			toReturn = null;
 		}
+		
+		return toReturn;
 	}
 
 	/**
@@ -759,10 +842,16 @@ public class Controller {
 	 * 
 	 * Search option "2" allows one search keyword for each of fields(title, author) at a time 
 	 * and returns the exact match if found.
+	 * 
+	 **************************************************************************************************
+	 * [NOTE]
+	 * Basically, the main function of the method is to print the result searched rather than returning something.
+	 * When searching for a book ID is necessary, the method is called and returns a book ID as a string 
 	 */
-	private void searchForBook() {
+	private String searchForBook() {
 		
-		String keyword = "", askUserOp = "";
+		String keyword = "", askUserOp = "", toReturn = "";
+		boolean isForAdvancedSearch;
 
 		askUserOp = IO.menu(IO.printBookSearchOptionMenu(), "^[1|2|q|Q]$");
 		
@@ -790,7 +879,7 @@ public class Controller {
 			keyword = IO.menu(IO.printBookSearchMenu(), "[a-zA-Z0-9]++");
 			String[] keys;			//array to split up keyword
 			List<Books> temp = null;
-			boolean isForAdvancedSearch = false;
+			isForAdvancedSearch = false;
 			
 			//create a temporary book list
 			temp = s.createTempBooksList(arr, this.books, isForAdvancedSearch);
@@ -805,6 +894,7 @@ public class Controller {
 				if (found != -1) {
 					
 					System.out.println(this.books.get(found));	//found
+					toReturn = this.books.get(found).getId();
 					
 				} else {
 					
@@ -844,16 +934,19 @@ public class Controller {
 					if (found != -1) {
 						
 						System.out.println(this.books.get(found));	//found
+						toReturn = this.books.get(found).getId();
 						
 					} else {
-						
+						//not found
 						System.out.println("No match found with the keyword");
+						toReturn = null;
 					}
 					
 				}
 				
 			}else {
 				System.out.println(IO.printUnderLine() + "\nPlease check search keyword and try it again");
+				toReturn = null;
 			}
 					
 		}
@@ -872,17 +965,22 @@ public class Controller {
 			found = s.linearSerch(this.books, keyword);	//generic method approach
 
 			if (found == -1) {
+				//not found
 				System.out.println("No match found with the keyword");
+				toReturn = null;
 
 			} else {
 				System.out.println(this.books.get(found));	//found
+				toReturn = this.books.get(found).getId();
 			}
 		}
 
 		if (askUserOp.equalsIgnoreCase("q")) {
 			System.out.println("Going back to menu...");
+			toReturn = null;
 		}
 
+		return toReturn;
 	}
 
 	/**
@@ -1102,9 +1200,9 @@ public class Controller {
 
 					}
 
-				} else {
-					System.out.println("the reader does not exist. Try again");
-				}
+				} /*
+					 * else { System.out.println("the reader does not exist. Try again"); }
+					 */
 			}
 		}
 
@@ -1118,12 +1216,41 @@ public class Controller {
 	 */
 	public String checkReeaderID(String rID) {
 
-		rID = IO.menu(IO.printReaderIDMenu(), "[a-zA-Z0-9]");
-		for (int i = 0; i < readers.size(); i++) {
-			if (readers.get(i).getId().equalsIgnoreCase(rID)) {
-				return rID.toUpperCase();
-			}
+		String op = "";
+		boolean isGoBackToMenu = false;
+		
+		op = IO.menu(IO.askUserReaderIdWithOp(), "^[1|2|q|Q]$");
+		
+		if(op.equalsIgnoreCase("1")) {
+			rID = IO.menu(IO.printReaderIDMenu(), "[a-zA-Z0-9]");
 		}
+		
+		if(op.equalsIgnoreCase("2")) {
+			rID = searchForReader();
+		}
+		
+		if(op.equalsIgnoreCase("q")) {
+			
+			isGoBackToMenu = true;
+			System.out.println("going back to menu...");
+		}
+		
+		if(rID != null) {
+			
+			for (int i = 0; i < readers.size(); i++) {
+				if (readers.get(i).getId().equalsIgnoreCase(rID)) {
+					
+					return rID.toUpperCase();
+				}
+			}
+			
+			if (!isGoBackToMenu) {
+				
+				System.out.println("The reader ID not found. Try again.");
+			}
+			
+		}
+	
 		return null;
 	}
 
@@ -1209,31 +1336,55 @@ public class Controller {
 	 */
 	public String availableBookToLend(String bID) {
 		
-//		bID = IO.menu(IO.printBookIDMenu(), "[a-zA-Z0-9]");
-		bID = IO.menu(IO.printBookIDMenu(), "^[1|2|q|Q]$");
+		String op = "";
+		boolean isGoBackToMenu = false;
 		
+		op = IO.menu(IO.askUserBookIdWithOp(), "^[1|2|q|Q]$");
 		
-		for (int i = 0; i < books.size(); i++) { // this needs to be working for all indexes in books
-			if (books.get(i).getId().equalsIgnoreCase(bID)) {
-
-				if (books.get(i).isAvailable()) {
-					
-					return bID.toUpperCase();	// the book is available to be rented
-
-				} else {
-					// the book is NOT available to rent since somebody is renting it at the moment.
-					// a reader can be added to the book's queue
-					String rID = null;
-					return waitingQueueManager(bID, i, rID);
-
-				}
-			}
-
+		if(op.equalsIgnoreCase("1")) {
+			bID = IO.menu(IO.printBookIDMenu(), "[a-zA-Z0-9]");
 		}
-		System.out.println("The book ID not found. Try again."
-				+ "\nPlease use menu \"1\" or menu \"2\" to get any book-related info. ");
-		return null;
+		
+		if(op.equalsIgnoreCase("2")) {
+			bID = searchForBook();
+		}
+		
+		if(op.equalsIgnoreCase("q")) {
+			
+			isGoBackToMenu = true;
+			System.out.println("going back to menu...");
+		}
+		
+		if(bID != null) {
+			
+			System.out.println(bID);
+			
+			for (int i = 0; i < books.size(); i++) { 
+				if (books.get(i).getId().equalsIgnoreCase(bID)) {
 
+					if (books.get(i).isAvailable()) {
+						
+						return bID.toUpperCase();	// the book is available to be rented
+
+					} else {
+						// the book is NOT available to rent since somebody is renting it at the moment.
+						// a reader can be added to the book's queue
+						String rID = null;
+						return waitingQueueManager(bID, i, rID);
+
+					}
+				}
+
+			}
+			
+			if (!isGoBackToMenu) {
+				
+				System.out.println("The book ID not found. Try again.");
+			}
+			
+		}
+
+		return null;
 	}
 
 	/**
@@ -1260,7 +1411,7 @@ public class Controller {
 		if (rID == null) {
 			rID = "";
 			if ((rID = checkReeaderID(rID)) == null) {
-				System.out.println("The reader ID does not exist in Readers db. Try again");
+//				System.out.println("The reader ID does not exist in Readers db. Try again");
 				return null;
 			}
 
@@ -1269,7 +1420,7 @@ public class Controller {
 		bID = bID.toUpperCase();
 		rID = rID.toUpperCase();
 
-		//init int fields
+		//init fields
 		rentIdToIndex = 0;
 		bIdToIndex = 0;
 		rIdToIndex = 0;

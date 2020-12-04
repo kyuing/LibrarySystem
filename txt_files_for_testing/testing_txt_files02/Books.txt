@@ -1,0 +1,11 @@
+bookID|title|author|rental state|readerInQ
+B01#Hunger Game#George#Rented#R02 R03 R04
+B02#Frogmen Breaking#Bezalel Simmel#Rented#none
+B03#Outbreak#Parto Bamford#Available#R03 R04 R05 R06 R01
+B04#Young Language#Chirstian Koblick#Rented#R04
+B05#Stampede Disturbing#Kyoichi Maliniak#Rented#none
+B06#World Leathernecks#Anneke Preusig#Available#none
+B07#Goodfellas Salute#Tzvetan#Available#none
+B08#Core Suit#Saniya Kalloufi#Available#none
+B09#Knock Warlock#Sumant Peac#Rented#none
+B10#Dangerous#Duangkaew Piveteau#Available#none

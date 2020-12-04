@@ -54,7 +54,20 @@ public final class IO {
 				+ "\n5: Register a rent"
 				+ "\n6: Register a return"
 				+ "\n7: List the books that readers have borrowed"
-				+ "\n8: Close program";
+				+ "\n   (List/Search for rent record by reader ID)"
+				+ "\n8: Print DBs"
+				+ "\n9: Close program";
+	}
+	
+	public static String printDB() {
+		
+		return "___________________________________________________________________________"
+				+ "\n[Please select menu]"
+				+ "\n1: print Rent DB"
+				+ "\n2: print readers DB"
+				+ "\n3: print Books DB"
+				+ "\n4: print All"
+				+ "\nq: go back to menu";
 	}
 	
 	public static String printReaderIDMenu() {
@@ -62,17 +75,24 @@ public final class IO {
 				+ "\nEnter a reader ID";
 	}
 	
+	public static String askUserReaderIdWithOp() {
+		return "___________________________________________________________________________"
+				+ "\n1: Enter a reader ID"
+				+ "\n2: Search for a reader ID"
+				+ "\nq: go back to the main menu";
+	}
+	
 	public static String printBookIDMenu() {
 		return "___________________________________________________________________________"
 				+ "\nEnter a book ID";
 	}
 	
-//	public static String printBookIDMenu() {
-//		return "___________________________________________________________________________"
-//				+ "\n1: Enter a book ID"
-//				+ "\n2: Search for a book info"
-//				+ "\nq: go back to the main menu";
-//	}
+	public static String askUserBookIdWithOp() {
+		return "___________________________________________________________________________"
+				+ "\n1: Enter a book ID"
+				+ "\n2: Search for a book ID"
+				+ "\nq: go back to the main menu";
+	}
 	
 	public static String printRentIDMenu() {
 		return "___________________________________________________________________________"
@@ -105,7 +125,7 @@ public final class IO {
 				+ "\nSelect one of the following options for searching for a book. "
 				+ "\n\n1: search for a book by multiple search keywords"
 				+ "\n2: search for a book by title and author"
-				+ "\n   (This option requires accurate inputs of a specific book)"
+				+ "\n   (This option requires accurate inputs of a specific book including any space if there's)"
 				+ "\n\nq: go back to menu ";
 	}
 	
