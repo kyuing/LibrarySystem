@@ -69,6 +69,17 @@ public final class IO {
 				+ "\nq: go back to menu";
 	}
 	
+	public static String askUserConfirmBeforRegisteringRent(List<Books> b, int bIndex, List<Readers> r, int rIndex) {
+		return "___________________________________________________________________________"
+				+ "\nPlease check the below and confirm(y/n)"
+				+ "\n\n<Book info>"
+				+ "\n" + b.get(bIndex)
+				+ "\n\n<Reader info>"
+				+ "\n" + r.get(rIndex)
+				+ "\n\ny: keep processing steps of registering a rent "
+				+ "\nn: go back to menu";
+	}
+	
 	public static String askUserForPrintingLargeRecords() {
 		return "___________________________________________________________________________"
 				+ "\nWould you like to print the next records/rows left?(y/n)"
@@ -102,7 +113,11 @@ public final class IO {
 	
 	public static String printRentIDMenu() {
 		return "___________________________________________________________________________"
-				+ "\nEnter the rent Id";
+				+ "\nEnter a rent Id"
+				+ "\n\n* If you would like to check and alternatively search for any existing rent records by a reader ID"
+				+ "\n  before registering a return, "
+				+ "\n\n  type \"q\" to go back to main menu and then"
+				+ "\n  use(type) the menu option \"7\" in the main menu.";
 	}
 	
 	public static String printForListingRentHistoryOfReaders() {
@@ -172,7 +187,7 @@ public final class IO {
 	 * @param bIndex
 	 * @param userInput
 	 * @param isAskReaderQEntry
-	 * @return an state message related to a book's queue and then ask the reader if wanted to be in a book's queue
+	 * @return a state message related to a book's queue and then ask the reader if wanted to be in a book's queue
 	 */
 	public static String printWaitingQueueMenu(List<Books> books, int bIndex,/* List<Readers> r, int rIndex, */ String userInput, boolean isAskReaderQEntry) {
 		
@@ -181,7 +196,7 @@ public final class IO {
 
 				toReturn = "___________________________________________________________________________"
 						+ "\n* Please recheck the book record below and then confirm the following question."					
-						+ "\n<Book info>" + books.get(bIndex)
+						+ "\n\n<Book info>" + books.get(bIndex)
 						+ books.get(bIndex).getMQ().toString()
 						+ "\n___________________________________________________________________________"
 						+ "\n* Would the reader with the input ID \"" + userInput + "\" like to be in the waiting queue for renting the book(\"" + books.get(bIndex).getId() + "\")?"

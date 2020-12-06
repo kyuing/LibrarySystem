@@ -10,6 +10,11 @@ import java.util.Collection;
 import java.util.List;
 import ie.cct._2018316.cunstructs.FactoryInterface;
 
+/**
+ * Class Factory that loads txt inputs and writes to txt files
+ * @author Kyu
+ *
+ */
 public class Factory implements FactoryInterface {
 
 	/**

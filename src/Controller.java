@@ -144,7 +144,7 @@ public class Controller {
 		case "1":
 			
 			System.out.println(IO.printUnderLine() + "\nRent");
-			System.out.println("* The number of result listed is " + this.rent.size());
+			System.out.println("* The number of result listed is " + this.rent.size() + "\n");
 			sort.printSortedResult(this.rent, true);
 			
 			break;
@@ -152,7 +152,7 @@ public class Controller {
 		case "2":
 			
 			System.out.println(IO.printUnderLine() + "\nReaders");
-			System.out.println("* The number of result listed is " + this.readers.size());
+			System.out.println("* The number of result listed is " + this.readers.size() + "\n");
 			sort.printSortedResult(this.readers, true);
 			
 			break;
@@ -160,7 +160,7 @@ public class Controller {
 		case "3":
 			
 			System.out.println(IO.printUnderLine() + "\nBooks");
-			System.out.println("* The number of result listed is " + this.books.size());
+			System.out.println("* The number of result listed is " + this.books.size() + "\n");
 			sort.printSortedResult(this.books, true);
 			
 			break;
@@ -1065,7 +1065,7 @@ public class Controller {
 			factory.writeBooksToFile(books);
 			factory.writeReadersToFile(readers);
 
-			System.out.println("### Successfully returned###");
+			System.out.println(IO.printUnderLine() + "\n### Successfully returned###");
 			System.out.println(rent.get(rentIndex));
 			System.out.println(books.get(bookIndex));
 			System.out.println(readers.get(readerIndex));
@@ -1119,6 +1119,12 @@ public class Controller {
 					int bIdToIndex = Integer.parseInt(bID.substring(1)) - 1;
 					int rIdToIndex = Integer.parseInt(rID.substring(1)) - 1;
 					
+					String confirmYN = IO.menu(IO.askUserConfirmBeforRegisteringRent(this.books, bIdToIndex, this.readers, rIdToIndex), "^[y|Y|n|N]$");
+					if(confirmYN.equalsIgnoreCase("n")) {
+						System.out.println("going back to menu...");
+						menu();
+					}
+					
 					if (books.get(bIdToIndex).getReaderInQ().equals("none")) {
 						
 						//nothing is in this book's queue, keep going
@@ -1126,7 +1132,7 @@ public class Controller {
 						rent.add(new Rent());
 						
 						if(this.rent.size() < 10) {
-							
+							//set a zero padding
 							rent.get(rent.size() - 1).setRentID("RT0" + String.valueOf(rent.size()));
 							
 						}else {
@@ -1149,6 +1155,7 @@ public class Controller {
 						factory.writeReadersToFile(readers);
 						
 						System.out.println(IO.printUnderLine());
+						System.out.println("### A new rent record is successfully created. ###");
 						System.out.println(rent.get(rent.size() - 1));
 						System.out.println(books.get(Integer.parseInt(bID.substring(1)) - 1));
 						System.out.println(readers.get(rIdToIndex));
@@ -1186,6 +1193,7 @@ public class Controller {
 								factory.writeReadersToFile(readers);
 								
 								System.out.println(IO.printUnderLine());
+								System.out.println("### A new rent record is successfully created. ###");
 								System.out.println(rent.get(rent.size() - 1));
 								System.out.println(books.get(Integer.parseInt(bID.substring(1)) - 1));
 								System.out.println(readers.get(rIdToIndex));
@@ -1315,6 +1323,11 @@ public class Controller {
 		rtID = IO.menu(IO.printRentIDMenu(), "[a-zA-Z0-9]"); 
 		rtID = rtID.toUpperCase();
 		
+		if(rtID.equalsIgnoreCase("q")) {
+			System.out.println("going back to menu...");
+			return null;
+		}
+		
 		for (int i = 0; i < rent.size(); i++) {
 			if (rent.get(i).getRentID().equalsIgnoreCase(rtID)) {
 
@@ -1351,11 +1364,13 @@ public class Controller {
 					
 					if (yOrQuit.equalsIgnoreCase("q")) {
 						System.out.println("going back to menu...");
+						return null;
 					}
 					
 				}else {
 					
-					System.out.println("* The rent record exists but the book on the rent record has been returned");
+					System.out.println(IO.printUnderLine() 
+							+ "\n* The rent record exists but the book on the rent record has already been returned");
 					System.out.println(rent.get(rentIndex));
 					System.out.println("going back to menu...");
 					return null;

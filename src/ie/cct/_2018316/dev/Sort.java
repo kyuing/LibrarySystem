@@ -564,283 +564,6 @@ public class Sort {
 		return true;
 	}
 	
-	public <T> void printSortedResult(List<T> l, boolean isDefaultToString) {
-		
-		String printOp = "";
-		
-		if (l.get(0).getClass().getSimpleName().equals("Rent")) {
-			
-			for (int i = 0; i < l.size(); i++) {
-				
-				if(l.size() > 500 && i >= 500) {
-					if(printOp != null) {
-						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
-					}
-					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
-						System.out.println("going back to menu..."); break;
-						
-					}else {
-						if(i < 1000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;							
-							
-						}else if (i > 1000 && i < 1500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 1500 && i < 2000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 2000 && i < 2500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 2500 && i < 3000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 3000 && i < 3500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 3500 && i < 4000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 4000 && i < 4500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 4500 && i < 5000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						} else { printOp = ""; }
-					}
-				}else {
-					if(isDefaultToString) {
-						System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
-					}
-				}
-				
-			}
-		}
-		
-		if (l.get(0).getClass().getSimpleName().equals("Books")) {
-	
-			for (int i = 0; i < l.size(); i++) {
-				
-				if(l.size() > 500 && i >= 500) {
-					if(printOp != null) {
-						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
-					}
-					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
-						System.out.println("going back to menu..."); break;
-						
-					}else {
-						if(i < 1000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;							
-							
-						}else if (i > 1000 && i < 1500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 1500 && i < 2000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 2000 && i < 2500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 2500 && i < 3000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 3000 && i < 3500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 3500 && i < 4000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 4000 && i < 4500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						}else if (i > 4500 && i < 5000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;			
-							
-						} else { printOp = ""; }
-					}
-				}else {
-					if(isDefaultToString) {
-						System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
-					}else {
-						System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
-					}
-				}
-				
-			}
-		}
-
-		if (l.get(0).getClass().getSimpleName().equals("Readers")) {
-			
-			for (int i = 0; i < l.size(); i++) {
-				
-				if(l.size() > 500 && i >= 500) {
-					if(printOp != null) {
-						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
-					}
-					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
-						System.out.println("going back to menu..."); break;
-						
-					}else {
-						if(i < 1000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						}else if (i > 1000 && i < 1500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						}else if (i > 1500 && i < 2000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						}else if (i > 2000 && i < 2500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						}else if (i > 2500 && i < 3000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						}else if (i > 3000 && i < 3500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						}else if (i > 3500 && i < 4000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						}else if (i > 4000 && i < 4500) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						}else if (i > 4500 && i < 5000) {
-							if(isDefaultToString) {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-							}else {
-								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-							}
-							printOp = null;
-							
-						} else { printOp = ""; }
-					}
-				}else {
-					if(isDefaultToString) {
-						System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
-					}else {
-						System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
-					}
-				}
-				
-			}
-		}
-		
-	}
-	
 	
 	/**
 	 * method to print the sorted result of Readers list depending on the sort option selected
@@ -1232,6 +955,289 @@ public class Sort {
 			}
 
 			printSortedResult(l, false);
+		}
+		
+	}
+	
+	/**
+	 * method to print a temporary list
+	 * @param <T>
+	 * @param l
+	 * @param isDefaultToString
+	 */
+	public <T> void printSortedResult(List<T> l, boolean isDefaultToString) {
+		
+		String printOp = "";
+		
+		if (l.get(0).getClass().getSimpleName().equals("Rent")) {
+			
+			for (int i = 0; i < l.size(); i++) {
+				
+				if(l.size() > 500 && i >= 500) {
+					if(printOp != null) {
+						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
+					}
+					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
+						System.out.println("going back to menu..."); break;
+						
+					}else {
+						if(i < 1000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;							
+							
+						}else if (i > 1000 && i < 1500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 1500 && i < 2000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 2000 && i < 2500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 2500 && i < 3000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 3000 && i < 3500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 3500 && i < 4000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 4000 && i < 4500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 4500 && i < 5000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						} else { printOp = ""; }
+					}
+				}else {
+					if(isDefaultToString) {
+						System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+					}
+				}
+				
+			}
+		}
+		
+		if (l.get(0).getClass().getSimpleName().equals("Books")) {
+	
+			for (int i = 0; i < l.size(); i++) {
+				
+				if(l.size() > 500 && i >= 500) {
+					if(printOp != null) {
+						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
+					}
+					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
+						System.out.println("going back to menu..."); break;
+						
+					}else {
+						if(i < 1000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;							
+							
+						}else if (i > 1000 && i < 1500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 1500 && i < 2000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 2000 && i < 2500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 2500 && i < 3000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 3000 && i < 3500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 3500 && i < 4000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 4000 && i < 4500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 4500 && i < 5000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						} else { printOp = ""; }
+					}
+				}else {
+					if(isDefaultToString) {
+						System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+					}else {
+						System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+					}
+				}
+				
+			}
+		}
+
+		if (l.get(0).getClass().getSimpleName().equals("Readers")) {
+			
+			for (int i = 0; i < l.size(); i++) {
+				
+				if(l.size() > 500 && i >= 500) {
+					if(printOp != null) {
+						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
+					}
+					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
+						System.out.println("going back to menu..."); break;
+						
+					}else {
+						if(i < 1000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 1000 && i < 1500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 1500 && i < 2000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 2000 && i < 2500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 2500 && i < 3000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 3000 && i < 3500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 3500 && i < 4000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 4000 && i < 4500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 4500 && i < 5000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						} else { printOp = ""; }
+					}
+				}else {
+					if(isDefaultToString) {
+						System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+					}else {
+						System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+					}
+				}
+				
+			}
 		}
 		
 	}

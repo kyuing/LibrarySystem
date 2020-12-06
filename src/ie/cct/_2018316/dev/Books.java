@@ -2,6 +2,11 @@ package ie.cct._2018316.dev;
 
 import java.util.List;
 
+/**
+ * Class Books
+ * @author Kyu
+ *
+ */
 public class Books {
 
 	/* [The field rentalState info in detail]

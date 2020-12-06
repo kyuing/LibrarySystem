@@ -3,7 +3,11 @@ package ie.cct._2018316.dev;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class Readers
+ * @author Kyu
+ *
+ */
 public class Readers {
 
 	/* [The field currentRent info in detail]
