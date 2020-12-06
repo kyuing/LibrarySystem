@@ -83,28 +83,8 @@ public class Books {
 
 	}
 	
-//	/**
-//	 * specific constructor to clone current states of each of Books when searching for a book
-//	 * @param b
-//	 * @param index
-//	 */
-//	public Books(Books b, int index) {
-//		
-//		this.b = b;
-//		this.bIndex = index;
-//		this.nameTag = null;
-////		this.isAdded = true;
-//		
-//		//clone value of the fields from the original Reader obj
-//		this.id = b.getId();
-//		this.title = b.getTitle();
-//		this.author = b.getAuthor();
-//		this.rentalState = b.getRentalState();
-//		this.readerInQ = b.getReaderInQ();
-//	}
-	
 	/**
-	 * specific constructor to clone current states of each of Books when searching for a book
+	 * specific constructor to clone current states of each of Books when searching/sorting for a book(s)
 	 * @param b
 	 * @param index
 	 * @param tempIdentifier	//unique key that identifies the unique sorted value
@@ -113,8 +93,9 @@ public class Books {
 		
 		this.b = b;
 		this.bIndex = index;
-		this.nameTag = null;
+		this.nameTag = "";
 		this.tempIdentifier = tempIdentifier;
+		setNameTag(this.tempIdentifier);
 		
 		//clone value of the fields from the original Reader obj
 		this.id = b.getId();
@@ -298,13 +279,13 @@ public class Books {
 		this.id = id;
 	}
 
-	//used when preparing .compareTo() during binary search 
+	//used for preparing/executing/outputting sort/search 
 	public void setNameTag(String s) {
 		this.nameTag = s;
 		
 	}	
 	
-	//used when executing .compareTo() during binary search
+	//used for preparing/executing/outputting sort/search
 	public String getNameTag() {
 		return this.nameTag;
 	}
@@ -312,6 +293,7 @@ public class Books {
 
 	/************************* toString methods as needed *********************************************/
 	
+	//used on testing purpose while dev 
 	public String tempIdentifierToString() {
 		
 		return "\n" + this.tempIdentifier + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
@@ -319,6 +301,7 @@ public class Books {
 
 	}
 	
+	//used on testing purpose while dev 
 	public String nameTagToString(String s) {
 		
 		this.nameTag = s;
@@ -327,9 +310,18 @@ public class Books {
 
 	}
 	
+	//used on testing purpose while dev 
 	//used for testing when executing a binary search for a reader
 	public String sortedAllInAcendingToString() {
 		return "\n" + "temp.get(" + this.bIndex + ")"  + this.b.nameTagToString(this.nameTag);
+	}
+	
+	//used when printing sorted result 
+	public String nameTagToString() {
+		
+		return "\n" + this.nameTag + "[id=" + id + ", title=" + title + ", author=" + author + ", rental_state=" + rentalState
+				+ ", readerInQ=" + getReaderInQ() + "]\n";
+
 	}
 	
 	public String getQueueToString() {

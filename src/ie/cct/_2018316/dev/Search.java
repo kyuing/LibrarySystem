@@ -5,11 +5,26 @@ import java.util.List;
 
 import ie.cct._2018316.cunstructs.IO;
 
+/**
+ * Class that searches for a book/reader
+ * 
+ * The custom linear search and binary search are implemented in the following methods
+ * 
+ * public <T> int linearSerch(List<T> t, String keyword) 
+ * public int binarySearch(List<Books> temp, String key, String[] keys, int keyIndex, int left, int right)
+ * public int binarySearch(List<Readers> temp, String key)
+ * 
+ * They reference/have modified/have improved the search algorithm course contents that were lectured by Professor Amilcar
+ *     
+ * @author Kyu
+ *
+ */
 public class Search {
 
 	private List<Books> b;
 	private List<Readers> r;
 
+	//testing purpose.
 	//method for printing an array and that is used for testing some of the result
 	public void printArray(String[] arr) {
 		
@@ -23,10 +38,11 @@ public class Search {
 		
 	}
 		
-	/** [In USE]
-	 * method to search for a book or a reader with exact field values entered by user
+	/** 
+	 * method to search for a book or a reader with exact field values entered by user.
 	 * 
-	 * Even though the type of the parameter t is surely determined at human-understandable-level when this method is called,
+	 * [Note]
+	 * Even though the type of the parameter t is surely determined (at human-understandable-level) when this method is called,
 	 * JAVA throws a type safety warning.
 	 * (It makes sense since no sophisticated type check is performed inside this method)
 	 * Thus @SuppressWarnings("unchecked") is added on the top of this method signature
@@ -153,11 +169,11 @@ public class Search {
 		List<Readers> temp = new ArrayList<>(); // create a temp list
 		
 		//if necessary, uncomment the code below out to check the sorted values in String[]arr
-//		/***************************************************  //ctrl + /
+		/***************************************************  //ctrl + /
 		for (int i = 0; i < arr.length; i++) {
 			System.out.println("arr[" + i + "]: " + arr[i]);
 		} 
-//		****************************************************/	//ctrl + /
+		****************************************************/	//ctrl + /
 		
 		// create a temporary Readers list
 		for (int i = 0; i < arr.length; i++) {
@@ -222,25 +238,15 @@ public class Search {
 		
 		//if necessary, uncomment the code below out 
 		//to check the temp list created and sorted based on the values in String[]arr
-//		/***************************************************************************************	//ctrl + /
+		/***************************************************************************************	//ctrl + /
 		System.out.println("arr.length: " + arr.length);
 		System.out.println("temp.size(): " + temp.size());
 		for (int i = 0; i < temp.size(); i++) {
 			//if result is big, it may not print out all.
 			System.out.print("In debugging.. temp index[" + i + "]: " + temp.get(i).tempIdentifierToString() + "\n");
 		}
-//		****************************************************************************************/	//ctrl + /
-
-		for (int i = 0; i < temp.size(); i++) {
-			/** 
-			 * The list 'temp' now has OBJs basing its order on the values of indexes in String[] arr
-			 * Set a temporary name tag that identifies an OBJ itself,
-			 * so that it can be used when executing a binary search */
-			temp.get(i).setNameTag(arr[i]);
-
-			/* if necessary, uncomment the code below out to check what's set by the code above */
-			//System.out.print(temp.get(i).sortedAllInAcendingToString());
-		}
+		****************************************************************************************/	//ctrl + /
+	
 		return temp;
 	}
 	
@@ -261,11 +267,11 @@ public class Search {
 		List<Books> temp = new ArrayList<>(); // create a temp list
 		
 		//if necessary, uncomment the code below out to check the sorted values in String[]arr
-//		/***************************************************  //ctrl + /
+		/***************************************************  //ctrl + /
 		for (int i = 0; i < arr.length; i++) {
 			System.out.println("arr[" + i + "]: " + arr[i]);
 		} 
-//		****************************************************/	//ctrl + /
+		****************************************************/	//ctrl + /
 		
 		if(!isForAdvancedSearch) {	
 			// create a temporary Books list
@@ -366,6 +372,7 @@ public class Search {
 									j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
 									
 								}else {
+
 									//nested FOR-LOOP is not looked up
 									if(j < b.size()-1) {
 										break;	//exit from inner nested FOR-LOOP at current index
@@ -383,25 +390,14 @@ public class Search {
 		
 		//if necessary, uncomment the code below out 
 		//to check the temp list created and sorted based on the values in String[]arr
-//		/***************************************************************************************	//ctrl + /
+		/***************************************************************************************	//ctrl + /
 		System.out.println("arr.length: " + arr.length);
 		System.out.println("temp.size(): " + temp.size());
 		for (int i = 0; i < temp.size(); i++) {
 			//if result is big, it may not print out all.
 			System.out.print("In debugging.. temp index[" + i + "]: " + temp.get(i).tempIdentifierToString() + "\n");
 		}
-//		****************************************************************************************/	//ctrl + /
-			
-		for (int i = 0; i < temp.size(); i++) {
-			/** 
-			 * The list 'temp' now has OBJs basing its order on the values of indexes in String[] arr
-			 * Set a temporary name tag that identifies an OBJ itself,
-			 * so that it can be used when executing a binary search */
-			temp.get(i).setNameTag(arr[i]);
-
-			/* if necessary, uncomment the code below out to check what's set by the code above */
-			//System.out.print(temp.get(i).sortedAllInAcendingToString());
-		}
+		****************************************************************************************/	//ctrl + /
 		
 		return temp;
 	}
@@ -415,7 +411,7 @@ public class Search {
 	 */
 	public boolean filterDuplicateReaderEntry(String rID, String tempKey, List<Readers> temp) {
 		
-		/* Once temp list has its OBJ based on a sorted input but cloned from the original Books list,
+		/* Once temp list has its OBJ based on a sorted input but cloned from the original Reader list,
 		 * each of OBJs in the temp list has an unique ID(bookID) and an unique key ID(a specific sorted value) 
 		 * 
 		 * By regarding those two as a compound key,
@@ -423,8 +419,8 @@ public class Search {
 		 */
 		
 		for (int i = 0; i < temp.size(); i++) {
-			
-			if(temp.get(i).getId().equals(rID) && temp.get(i).getTempIdentifier().equals(tempKey)) {
+
+			if(temp.get(i).getId().equals(rID) && temp.get(i).getNameTag().equals(tempKey)) {
 				
 				return false;		
 			}
@@ -450,8 +446,8 @@ public class Search {
 		 */
 		
 		for (int i = 0; i < temp.size(); i++) {
-			
-			if(temp.get(i).getId().equals(bID) && temp.get(i).getTempIdentifier().equals(tempKey)) {
+
+			if(temp.get(i).getId().equals(bID) && temp.get(i).getNameTag().equals(tempKey)) {
 				
 				return false;		
 			}
@@ -552,11 +548,16 @@ public class Search {
 						System.out.println(keys[keyIndex] + " is found in the book index at " + indexNum);
 						
 					}else {
+						//System.out.println("\ntemp.get(" + mid + ").getTempNameTag(): " + temp.get(mid).getNameTag());
+						//System.out.println("temp.get(" + mid + ").getTempIdentifier(): " + temp.get(mid).getTempIdentifier());
+						
 						System.out.println(IO.printUnderLine());
 						System.out.println("[Partial match]");	
 						System.out.println(keys[keyIndex] + " is found in the book index at " + indexNum);
-						System.out.println("\n\n* If you want have an exact match returned, please improve your search keyword"
-								+ "\n* by checking the following field info of the book");
+						System.out.println("\n\n* If you want to have an exact match returned, please improve your search keyword."
+								+ "\n\n* If book DB is huge, a wrong or some different result might sometimes be returned."
+								+ "\n  In that case, please re-run the program and try it again. "
+								+ "\n  Otherwise, it's safe to search for a book by ID or use the search option \"2\" within the book search menu.");
 					}	
 
 				} else {
@@ -629,8 +630,11 @@ public class Search {
 
 					// return the exact match
 					System.out.println(IO.printUnderLine());
-					System.out.println("[The exact match]");
+					System.out.println("[Exact match]");
 					System.out.println(keySplit[i] + " is found in the reader index at " + indexNum);
+					System.out.println("\n* If result isn't what you look for, please improve search keyword."
+							+ "\n\n* Searching for a reader by ID gives the best result by default. "
+							+ "\n  Otherwise, use the search option \"2\" within the reader search menu.  ");
 					break;
 
 				} else {

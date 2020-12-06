@@ -66,8 +66,14 @@ public final class IO {
 				+ "\n1: print Rent DB"
 				+ "\n2: print readers DB"
 				+ "\n3: print Books DB"
-				+ "\n4: print All"
 				+ "\nq: go back to menu";
+	}
+	
+	public static String askUserForPrintingLargeRecords() {
+		return "___________________________________________________________________________"
+				+ "\nWould you like to print the next records/rows left?(y/n)"
+				+ "\n\ny: print"
+				+ "\nn: go back to menu";
 	}
 	
 	public static String printReaderIDMenu() {

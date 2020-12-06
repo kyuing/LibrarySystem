@@ -1,2 +1,3 @@
 rentID | bookID | readerID | State | 
 RT01#B01#R05#Normal
+RT02#B01#R01#Rented

@@ -135,54 +135,34 @@ public class Controller {
 
 	private void printDBs() {
 		
-		String op = IO.menu(IO.printDB(), "^[1|2|3|4|q|Q]$");
+		String op = IO.menu(IO.printDB(), "^[1|2|3|q|Q]$");
+		Sort sort = new Sort();
 		
+		//just print each of the lists in its order created
 		switch (op) {
 
 		case "1":
 			
 			System.out.println(IO.printUnderLine() + "\nRent");
-			for (int i = 0; i < rent.size(); i++) {
-				System.out.print(rent.get(i));
-
-			}
+			System.out.println("* The number of result listed is " + this.rent.size());
+			sort.printSortedResult(this.rent, true);
+			
 			break;
 
 		case "2":
 			
 			System.out.println(IO.printUnderLine() + "\nReaders");
-			for (int i = 0; i < readers.size(); i++) {
-				System.out.print(readers.get(i));
-
-			}
+			System.out.println("* The number of result listed is " + this.readers.size());
+			sort.printSortedResult(this.readers, true);
+			
 			break;
 
 		case "3":
 			
 			System.out.println(IO.printUnderLine() + "\nBooks");
-			for (int i = 0; i < books.size(); i++) {
-				
-				System.out.print(books.get(i));
-
-			}
-			break;
-		
-		case "4":
-			System.out.println(IO.printUnderLine() + "\nRent");
-			for (int i = 0; i < rent.size(); i++) {
-				System.out.print(rent.get(i));
-
-			}
-			System.out.println(IO.printUnderLine() + "\nReaders");
-			for (int i = 0; i < readers.size(); i++) {
-				System.out.print(readers.get(i));
-
-			}
-			System.out.println(IO.printUnderLine() + "\nBooks");
-			for (int i = 0; i < books.size(); i++) {
-				System.out.print(books.get(i));
-
-			}
+			System.out.println("* The number of result listed is " + this.books.size());
+			sort.printSortedResult(this.books, true);
+			
 			break;
 			
 		default:
@@ -496,6 +476,7 @@ public class Controller {
 
 		Sort sort = new Sort();
 		String[] result = null;
+		boolean isRequiredToRemoveTempPrefixAndSuffix = false, isHundreadUnit;
 
 		String op = IO.menu(IO.printReaderSortOptionMenu(), "^[1|2|3|4|5|q|Q]$");
 		switch (op) {
@@ -558,10 +539,39 @@ public class Controller {
 			// id + first name + last name sort
 			if ((result = sort.collectFieldsOfReaders(this.readers, 5)) != null) {
 				
+				/* When OBJs in the list > 99 or > 999, the unique ID(alphanumeric ID) of an OBJ in the list won't be sorted as expected,
+				 * Since .compareTo() is based on UNICODE/ASCII while a sorting execution. 
+				 * Thus, deal with that by setting a temporary values.
+				 * (It's briefly tested up to 1000 records/rows. Please note that no strict validation with a large DB was performed)
+				 * 
+				 * More details can be found at the methods in Sort class */
+				if(this.readers.size() > 99 && this.readers.size() < 1000) {
+					isHundreadUnit = true;
+					result = sort.setTempPrefixAndSuffix(result, this.readers, isHundreadUnit);
+					isRequiredToRemoveTempPrefixAndSuffix = true;
+					//System.out.println("before sorting but after: result = sort.setTempPrefixAndSuffix(result, this.readers.size(), isHundreadUnit);");
+					//sort.printArrayInColumn(result);
+				}
+				if (this.readers.size() > 999 && this.readers.size() < 10000) {
+					isHundreadUnit = true;
+					result = sort.setTempPrefixAndSuffix(result, this.readers, isHundreadUnit);
+					result = sort.setTempPrefixAndSuffix(result, this.readers, !isHundreadUnit);
+					isRequiredToRemoveTempPrefixAndSuffix = true;
+					//System.out.println("before sorting but after: result = sort.setTempPrefixAndSuffix(result, this.books, isHundreadUnit);");
+					//sort.printArrayInColumn(result);
+				}
+				
 				/* if wanted the result using merge sort, uncomment the code below out */
 				//result = sort.mergeSort(result);	
 				
 				result = sort.bubbleSort(result);	//comment this out if used merge sort above
+				
+				if(isRequiredToRemoveTempPrefixAndSuffix) {
+					result = sort.removeTempPrefixAndSuffix(result);
+					//System.out.println("after sorting and after: result = sort.removeTempPrefixAndSuffix(result);");
+					//sort.printArrayInColumn(result);
+				}
+				
 				System.out.println(
 						IO.printUnderLine() + "\n[ID, names of all the readers sorted in alphabetical order.]\n");
 				System.out.println("* The number of result listed is " + result.length);
@@ -613,6 +623,7 @@ public class Controller {
 
 		askUserOp = IO.menu(IO.printReaderSearchOptionMenu(), "^[1|2|q|Q]$");
 		
+		//binarySearch
 		if (askUserOp.equals("1")) {	//search for reader allowing multiple keywords
 			
 			keyword = IO.menu(IO.printReaderSearchMenu(), "[a-zA-Z0-9]++");
@@ -636,7 +647,6 @@ public class Controller {
 				//create a temporary reader list
 				temp = search.createTempReadersList(arr, readers);
 				
-				
 				int found = 0;
 				found = search.binarySearch(temp, keyword.trim()); // return an index number of a reader if found
 
@@ -657,6 +667,7 @@ public class Controller {
 			}
 		}
 
+		//linear search
 		if (askUserOp.equals("2")) {	//search for reader with reader's Id, fname and lname
 
 			//take accurate input from user and execute a linear search
@@ -735,6 +746,8 @@ public class Controller {
 
 		Sort sort = new Sort();
 		String[] result = null;
+		boolean isRequiredToRemoveTempPrefixAndSuffix = false, isHundreadUnit;
+
 
 		String op = IO.menu(IO.printBookSortOptionMenu(), "^[1|2|3|4|5|q|Q]$");
 		switch (op) {
@@ -794,10 +807,39 @@ public class Controller {
 			// bookID + title + author sort
 			if ((result = sort.collectFieldsOfBooks(this.books, 5)) != null) {
 
+				/* When OBJs in the list > 99 or > 999, the unique ID(alphanumeric ID) of an OBJ in the list won't be sorted as expected,
+				 * Since .compareTo() is based on UNICODE/ASCII while a sorting execution. 
+				 * Thus, deal with that by setting a temporary values.
+				 * (It's briefly tested up to 1000 records/rows. Please note that no strict validation with a large DB was performed)
+				 * 
+				 * More details can be found at the methods in Sort class */
+				if(this.books.size() > 99 && this.books.size() < 1000) {
+					isHundreadUnit = true;
+					result = sort.setTempPrefixAndSuffix(result, this.books, isHundreadUnit);
+					isRequiredToRemoveTempPrefixAndSuffix = true;
+					//System.out.println("before sorting but after: result = sort.setTempPrefixAndSuffix(result, this.books, isHundreadUnit);");
+					//sort.printArrayInColumn(result);
+				}
+				if (this.books.size() > 999 && this.books.size() < 10000) {
+					isHundreadUnit = true;
+					result = sort.setTempPrefixAndSuffix(result, this.books, isHundreadUnit);
+					result = sort.setTempPrefixAndSuffix(result, this.books, !isHundreadUnit);
+					isRequiredToRemoveTempPrefixAndSuffix = true;
+					//System.out.println("before sorting but after: result = sort.setTempPrefixAndSuffix(result, this.books, isHundreadUnit);");
+					//sort.printArrayInColumn(result);
+				}
+				
 				/* if wanted the result using bubble sort, uncomment the code below out */
 				//result = sort.bubbleSort(result);	
 				
 				result = sort.mergeSort(result);	//comment this out if used bubble sort above
+				
+				if(isRequiredToRemoveTempPrefixAndSuffix) {
+					result = sort.removeTempPrefixAndSuffix(result);
+					//System.out.println("after sorting and after: result = sort.removeTempPrefixAndSuffix(result);");
+					//sort.printArrayInColumn(result);
+				}
+				
 				System.out.println(IO.printUnderLine()
 						+ "\n[BookID, Titles and authors of all the books sorted in alphabetical order.]\n");
 				System.out.println("* The number of result listed is " + result.length);
@@ -855,6 +897,7 @@ public class Controller {
 
 		askUserOp = IO.menu(IO.printBookSearchOptionMenu(), "^[1|2|q|Q]$");
 		
+		//binary search
 		if (askUserOp.equals("1")) {	//search for a book by multiple keywords from user 
 			
 			Sort sort = new Sort();	//declare & init a new sort 
@@ -864,14 +907,14 @@ public class Controller {
 				// now, arr has got bookId, title and author collected
 				
 				/* if necessary, uncomment the code below out to check the process of merge sort of arr*/
-				//System.out.println("--------------before merging----------");
-				//sort.printArray(arr);
+				//System.out.println("--------------before sorting----------");
+				//sort.printArrayInColumn(arr);
 				
 				arr = sort.mergeSort(arr);	 //now, arr has got bookId, title and author sorted in ASC
 				
 				/* if necessary, uncomment the code below out to check the process of merge sort of arr*/
-				//System.out.println("\n--------------after merging-----------");
-				//sort.printArray(arr);
+				//System.out.println("\n--------------after sorting-----------");
+				//sort.printArrayInColumn(arr);
 
 			}
 			
@@ -906,24 +949,21 @@ public class Controller {
 					if ((arr = sort.collectFieldsOfBooks(this.books)) != null) {
 						
 						/* if necessary, uncomment the code below out to check the process of merge sort of arr*/
+						//System.out.println("--------------before sorting----------");
 						//sort.printArrayInColumn(arr);
-						
-						/* if necessary, uncomment the code below out to check the process of merge sort of arr*/
-						//System.out.println("--------------before merging----------");
-						//sort.printArray(arr);
 						
 						arr = sort.mergeSort(arr);	//now, arr has got bookId, title split and author split sorted in ASC
 						
 						/* if necessary, uncomment the code below out to check the process of merge sort of arr*/
-						//System.out.println("\n--------------after merging----------");
-						//sort.printArray(arr);
+						//System.out.println("\n--------------after sorting----------");
+						//sort.printArrayInColumn(arr);
 					}
 					
 					temp = null;	//re-init the previous temporary Books list
 					isForAdvancedSearch = true;
 					
 					//create a temporary book list
-					temp = s.createTempBooksList(arr, this.books, isForAdvancedSearch);
+					temp = s.createTempBooksList(arr, this.books, isForAdvancedSearch);					
 					keys = keyword.trim().split(" ");	// split up the keyword input
 				
 					found = 0;	//re-init it
@@ -951,6 +991,7 @@ public class Controller {
 					
 		}
 
+		//linear search
 		if (askUserOp.equals("2")) {	//search for a book by title and author
 
 			//take accurate input from user and execute a linear search
@@ -1411,7 +1452,7 @@ public class Controller {
 		if (rID == null) {
 			rID = "";
 			if ((rID = checkReeaderID(rID)) == null) {
-//				System.out.println("The reader ID does not exist in Readers db. Try again");
+				//System.out.println("The reader ID does not exist in Readers db. Try again");
 				return null;
 			}
 

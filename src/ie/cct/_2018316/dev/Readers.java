@@ -41,7 +41,7 @@ public class Readers {
 	}
 	
 	/**
-	 * specific constructor to clone current states of each of Readers for searching a reader
+	 * specific constructor to clone current states of each of Readers for searching/sorting a reader(s)
 	 * @param r
 	 * @param index
 	 * @param tempIdentifier
@@ -50,8 +50,9 @@ public class Readers {
 		
 		this.r = r;
 		this.rIndex = index;
-		this.nameTag = null;
+		this.nameTag = "";
 		this.tempIdentifier = tempIdentifier;
+		setNameTag(this.tempIdentifier);
 		
 		//clone value of the fields from the original Reader obj
 		this.id = r.getId();
@@ -64,25 +65,6 @@ public class Readers {
 	public String getTempIdentifier() {
 		return this.tempIdentifier;
 	}
-	
-//	/**
-//	 * specific constructor to clone current states of each of Readers for searching a reader
-//	 * @param r
-//	 * @param index
-//	 */
-//	Readers(Readers r, int index) {
-//		
-//		this.r = r;
-//		this.rIndex = index;
-//		this.nameTag = null;
-//		
-//		//clone value of the fields from the original Reader obj
-//		this.id = r.getId();
-//		this.fname = r.getFname();
-//		this.lname = r.getLname();		
-//		this.myRent = r.getMyRent();
-//		setCurrentState();		//clone the field currentRent
-//	}
 
 	/**
 	 * method to initialize/update the field currentRent
@@ -230,24 +212,31 @@ public class Readers {
 	
 	/************************* toString methods as needed *********************************************/
 	
+	//used on testing purpose while dev 
 	public String tempIdentifierToString() {
 		
 		return "\n" + this.tempIdentifier + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
 	}
 	
-	//used when printing sorted result 
+	//used on testing purpose while dev 
 	public String nameTagToString(String s) {
 		
 		this.nameTag = s;
 		return "\n" + nameTag + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
 	}
 	
+	//used on testing purpose while dev 
 	//used for testing when executing a binary search for a reader
 	public String sortedAllInAcendingToString() {
 		return "\n" + "temp.get(" + this.rIndex + ")"  + this.r.nameTagToString(this.nameTag);
 	}
 	
-	
+	//used when printing sorted result 
+	public String nameTagToString() {
+		
+		return "\n" + this.nameTag + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";
+	}
+
 	@Override
 	public String toString() {
 		return "\n" + id + "[id=" + id + ", fname=" + fname + ", lname=" + lname + ", Current Rent=" + currentRent + "]\n";

@@ -3,8 +3,25 @@ package ie.cct._2018316.dev;
 import java.util.ArrayList;
 import java.util.List;
 
+import ie.cct._2018316.cunstructs.IO;
 
+/**
+ * Class for sorting books/readers
+ *  
+ * The custom merge sort and bubble sort are implemented in the following methods
+ * 
+ * public String[] mergeSort(String[] arr)
+ * public String[] bubbleSort(String[] arr)
+ * 
+ * They reference/have modified/have improved the search algorithm course contents that were lectured by Professor Amilcar
+ * 
+ * @author Kyu
+ *
+ */
 public class Sort {
+	
+	private List<Books> b;
+	private List<Readers> r;
 	
 	public Sort() {}
 	
@@ -27,11 +44,159 @@ public class Sort {
 			System.out.println(i + "\t" + arr[i]);			
 		}	
 	}
+	
+
+	/**
+	 * method to swap temp-assigned values at specific indexes with its original alphanumeric IDs
+	 * On calling this method, arr is sorted.
+	 * Just put the original value back to itself.
+	 * Now, String[] arr is ready to interact with .compareTo() method
+	 * 
+	 * @param arr
+	 * @return arr
+	 */
+	public String[] removeTempPrefixAndSuffix(String[] arr) {
+		
+		for (int i = 0; i < arr.length; i++) {
+		
+			if(arr[i].startsWith("BA") && arr[i].endsWith("!")) {
+				
+				arr[i] = arr[i].substring(2, arr[i].length()-1);
+				arr[i] = "B" + arr[i]; 
+			}
+			
+			if(arr[i].startsWith("BB") && arr[i].endsWith("!")) {
+				
+				arr[i] = arr[i].substring(2, arr[i].length()-1);
+				arr[i] = "B" + arr[i];
+			}
+			
+			if(arr[i].startsWith("RA") && arr[i].endsWith("!")) {
+				
+				arr[i] = arr[i].substring(2, arr[i].length()-1);
+				arr[i] = "R" + arr[i]; 
+			}
+			
+			if(arr[i].startsWith("RB") && arr[i].endsWith("!")) {
+				
+				arr[i] = arr[i].substring(2, arr[i].length()-1);
+				arr[i] = "R" + arr[i];
+			}
+		}
+		return arr;
+	}
+	
+	
+	
+	/**
+	 * method to return String[] arr with a temporary update before executing a sort/search.
+	 * main function is to keep looking for a specific index that has alphanumeric ID.
+	 * 
+	 * On finding it, set a temporary UNICODE/ASCII based value to it,
+	 * in order for .compareTo() method to return correct result when it's used for a sort or a search. 
+	 * 
+	 * [e.g.]
+	 * When calling .compareTo() method during searching and sorting in particular,
+	 * 'B100' will be returned before 'B99' since 'B100' lower value than 'B99' based on UNICODE/ASCII values, 
+	 * 'R100' will be returned before 'R99' since 'R100' lower value than 'R99' based on UNICODE/ASCII values, 
+	 * which will give an unexpected result at a human-understandable level.  
+	 *  
+	 * Thus, add an appropriate prefix and suffix in temporary.
+	 * 
+	 * @param <T> a referenced list  
+	 * @param arr
+	 * @param b
+	 * @param isHundreadUnit
+	 * @return arr
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> String[] setTempPrefixAndSuffix(String[] arr, List<T> t, boolean isHundreadUnit) {
+		
+		if (t.get(0).getClass().getSimpleName().equals("Books")) {
+			
+			this.b = (List<Books>) t;
+			
+			if(isHundreadUnit) {
+				
+				for (int i = 99; i < this.b.size(); i++) {
+					
+					for (int j = 0; j < arr.length; j++) {
+						
+						if(this.b.get(i).getId().equals(arr[j])) {
+							
+							if(i < 999) {
+								
+								arr[j] = "BA" + arr[j].substring(1) + "!";	//e.g. BA100!, BA101!...
+							}
+						}
+					}
+				}
+				
+			}else { //Thousands
+				
+				for (int i = 999; i < this.b.size(); i++) {
+					
+					for (int j = 0; j < arr.length; j++) {
+						
+						
+						if(this.b.get(i).getId().equals(arr[j])) {
+							
+							arr[j] = "BB" + arr[j].substring(1) + "!";	//e.g. BB1000!, BB1001!...
+						}
+						
+					}
+					
+				}
+			}
+		
+		}
+		
+		if (t.get(0).getClass().getSimpleName().equals("Readers")) {
+			
+			this.r = (List<Readers>) t;
+			
+			if(isHundreadUnit) {
+				
+				for (int i = 99; i < this.r.size(); i++) {
+					
+					for (int j = 0; j < arr.length; j++) {
+						
+						if(this.r.get(i).getId().equals(arr[j])) {
+							
+							if(i < 999) {
+								arr[j] = "RA" + arr[j].substring(1) + "!";	//e.g. RA100!, RA101!...
+							}
+
+						}
+						
+					}
+					
+				}
+			}else { //Thousands
+				
+				for (int i = 999; i < this.r.size(); i++) {
+					
+					for (int j = 0; j < arr.length; j++) {
+						
+						
+						if(this.r.get(i).getId().equals(arr[j])) {
+							
+							arr[j] = "RB" + arr[j].substring(1) + "!";	//e.g. RB1000!, RB1001!...
+						}
+						
+					}
+					
+				}
+			}
+			
+		}
+		
+
+		return arr;
+	}
 		
 	/**
-	 * method to perform a merge sort
-	 * This custom merge implementation references/has modified/has improved the sort algorithm course content
-	 * that was lectured by Professor Amilcar  
+	 * method to perform a merge sort 
 	 * 
 	 * @param arr that has been populated with string values
 	 */
@@ -139,6 +304,31 @@ public class Sort {
 		
 		
 	}
+	
+	/**
+	 * method to sort the values in the array arr
+	 * .compareTo() used since no user input is involved for this bubble sort.
+	 * 
+	 * @param arr
+	 * @return sorted arr in ascending(alphabetical) order
+	 */
+	public String[] bubbleSort(String[] arr) {
+		
+		String temp = ""; // temp string
+		
+		for (int i = 0; i < arr.length - 1; i++) { // stop at 2nd last item since the last one must be sorted
+			for (int j = 0; j < arr.length - 1; j++) { // stop on getting to the one that is already sorted
+
+				if (arr[j].compareTo(arr[j + 1]) > 0) { // can change the > to < for DESCENDING order
+
+					temp = arr[j]; // temp assigned with the value at current index
+					arr[j] = arr[j + 1]; // current index assigned with the value at the next index of current index
+					arr[j + 1] = temp; // the next index of current index assigned with temp
+				}
+			}
+		}
+		return arr;
+	}
 
 	/**
 	 * method that returns field value of OBJs from the Readers list
@@ -193,32 +383,6 @@ public class Sort {
 		return arr;
 		
 	}
-
-	/**
-	 * method to sort the values in the array arr
-	 * .compareTo() used since no user input is involved for this bubble sort
-	 * 
-	 * @param arr
-	 * @return sorted arr in ascending(alphabetical) order
-	 */
-	public String[] bubbleSort(String[] arr) {
-		
-		String temp = ""; // temp string
-		
-		for (int i = 0; i < arr.length - 1; i++) { // stop at 2nd last item since the last one must be sorted
-			for (int j = 0; j < arr.length - 1; j++) { // stop on getting to the one that is already sorted
-
-				if (arr[j].compareTo(arr[j + 1]) > 0) { // can change the > to < for DESCENDING order
-
-					temp = arr[j]; // temp assigned with the value at current index
-					arr[j] = arr[j + 1]; // current index assigned with the value at the next index of current index
-					arr[j + 1] = temp; // the next index of current index assigned with temp
-				}
-			}
-		}
-		return arr;
-	}
-
 	
 	/**
 	 * Method that collects field value of OBJs from the Books list.
@@ -347,6 +511,338 @@ public class Sort {
 	}
 	
 	/**
+	 *  method to filter duplicate entry to the temporary Readers list
+	 * @param rID
+	 * @param tempKey
+	 * @param temp
+	 * @return true if not duplicate entry
+	 */
+	public boolean filterDuplicateReaderEntry(String rID, String tempKey, List<Readers> temp) {
+		
+		/* Once temp list has its OBJ based on a sorted input but cloned from the original Reader list,
+		 * each of OBJs in the temp list has an unique ID(bookID) and an unique key ID(a specific sorted value) 
+		 * 
+		 * By regarding those two as a compound key,
+		 * a duplicate entry to the temp list can be filtered
+		 */
+		
+		for (int i = 0; i < temp.size(); i++) {
+
+			if(temp.get(i).getId().equals(rID) && temp.get(i).getNameTag().equals(tempKey)) {	
+				return false;		
+			}
+		}
+		
+		return true;
+	}
+	
+
+	/**
+	 * method to filter duplicate entry to the temporary Books list
+	 * @param bID
+	 * @param tempKey
+	 * @param temp
+	 * @return true if not duplicate entry
+	 */
+	public boolean filterDuplicateBookEntry(String bID, String tempKey, List<Books> temp) {
+		
+		/* Once temp list has its OBJ based on a sorted input but cloned from the original Books list,
+		 * each of OBJs in the temp list has an unique ID(bookID) and an unique key ID(a specific sorted value) 
+		 * 
+		 * By regarding those two as a compound key,
+		 * a duplicate entry to the temp list can be filtered
+		 */
+		
+		for (int i = 0; i < temp.size(); i++) {
+
+			if(temp.get(i).getId().equals(bID) && temp.get(i).getNameTag().equals(tempKey)) {
+				
+				return false;		
+			}
+		}
+		
+		return true;
+	}
+	
+	public <T> void printSortedResult(List<T> l, boolean isDefaultToString) {
+		
+		String printOp = "";
+		
+		if (l.get(0).getClass().getSimpleName().equals("Rent")) {
+			
+			for (int i = 0; i < l.size(); i++) {
+				
+				if(l.size() > 500 && i >= 500) {
+					if(printOp != null) {
+						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
+					}
+					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
+						System.out.println("going back to menu..."); break;
+						
+					}else {
+						if(i < 1000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;							
+							
+						}else if (i > 1000 && i < 1500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 1500 && i < 2000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 2000 && i < 2500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 2500 && i < 3000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 3000 && i < 3500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 3500 && i < 4000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 4000 && i < 4500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 4500 && i < 5000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						} else { printOp = ""; }
+					}
+				}else {
+					if(isDefaultToString) {
+						System.out.println(i+1 + "\t" + ((Rent) l.get(i)).toString().replace("\n", "")); // print
+					}
+				}
+				
+			}
+		}
+		
+		if (l.get(0).getClass().getSimpleName().equals("Books")) {
+	
+			for (int i = 0; i < l.size(); i++) {
+				
+				if(l.size() > 500 && i >= 500) {
+					if(printOp != null) {
+						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
+					}
+					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
+						System.out.println("going back to menu..."); break;
+						
+					}else {
+						if(i < 1000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;							
+							
+						}else if (i > 1000 && i < 1500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 1500 && i < 2000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 2000 && i < 2500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 2500 && i < 3000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 3000 && i < 3500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 3500 && i < 4000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 4000 && i < 4500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						}else if (i > 4500 && i < 5000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;			
+							
+						} else { printOp = ""; }
+					}
+				}else {
+					if(isDefaultToString) {
+						System.out.println(i+1 + "\t" + ((Books) l.get(i)).toString().replace("\n", "")); // print
+					}else {
+						System.out.println(i+1 + "\t" + ((Books) l.get(i)).nameTagToString().replace("\n", "")); // print
+					}
+				}
+				
+			}
+		}
+
+		if (l.get(0).getClass().getSimpleName().equals("Readers")) {
+			
+			for (int i = 0; i < l.size(); i++) {
+				
+				if(l.size() > 500 && i >= 500) {
+					if(printOp != null) {
+						printOp = IO.menu(IO.askUserForPrintingLargeRecords(), "^[y|Y|n|N]$");	
+					}
+					if(printOp != null && !printOp.equalsIgnoreCase("y")) {
+						System.out.println("going back to menu..."); break;
+						
+					}else {
+						if(i < 1000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 1000 && i < 1500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 1500 && i < 2000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 2000 && i < 2500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 2500 && i < 3000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 3000 && i < 3500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 3500 && i < 4000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 4000 && i < 4500) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						}else if (i > 4500 && i < 5000) {
+							if(isDefaultToString) {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+							}else {
+								System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+							}
+							printOp = null;
+							
+						} else { printOp = ""; }
+					}
+				}else {
+					if(isDefaultToString) {
+						System.out.println(i+1 + "\t" + ((Readers) l.get(i)).toString().replace("\n", "")); // print
+					}else {
+						System.out.println(i+1 + "\t" + ((Readers) l.get(i)).nameTagToString().replace("\n", "")); // print
+					}
+				}
+				
+			}
+		}
+		
+	}
+	
+	
+	/**
 	 * method to print the sorted result of Readers list depending on the sort option selected
 	 * 
 	 * @param String[] result
@@ -367,74 +863,193 @@ public class Sort {
 		
 		if (sortOp == 1) {	//reader ID
 
-			for (int i = 0; i < r.size(); i++) {
-				System.out.print(r.get(i)); // just print the original Readers list
-			}
-
+			printSortedResult(r, true);
+			
 		} else if (sortOp == 2) {	//reader's first name
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < r.size(); j++) {
-
+						
 					if (result[i].equals(r.get(j).getFname())) {
-						l.add(r.get(j)); // add the matching one into the temp list l
+					
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Readers list l
+							l.add(new Readers(r.get(j), i, result[i]));
+							j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateReaderEntry(r.get(j).getId(), r.get(j).getFname(), l)) {
+								// now, add obj to temp Readers list l
+								l.add(new Readers(r.get(j), i, result[i]));
+								j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+								
+							}
+							
+						}
 					}
+
 				}
 			}
+			
+			printSortedResult(l, false);
 
-			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).nameTagToString(result[i])); // print
-			}
 
 		} else if (sortOp == 3) {	//reader's last name
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < r.size(); j++) {
 
 					if (result[i].equals(r.get(j).getLname())) {
-						l.add(r.get(j)); // add the matching one into the temp list l
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Readers list l
+							l.add(new Readers(r.get(j), i, result[i]));
+							j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateReaderEntry(r.get(j).getId(), r.get(j).getLname(), l)) {
+								// now, add obj to temp Readers list l
+								l.add(new Readers(r.get(j), i, result[i]));
+								j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+								
+							}
+							
+						}
+
 					}
 				}
 			}
 
-			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).nameTagToString(result[i])); // print
-			}
+			printSortedResult(l, false);
 
 		} else if (sortOp == 4) {	//reader's first and last name
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < r.size(); j++) {
 
-					if (result[i].equals(r.get(j).getFname()) || result[i].equals(r.get(j).getLname())) {
+					if (result[i].equals(r.get(j).getFname())) {
 						
-						l.add(r.get(j)); // add the matching one into the temp list l
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Readers list l
+							l.add(new Readers(r.get(j), i, result[i]));
+							j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateReaderEntry(r.get(j).getId(), r.get(j).getFname(), l)) {
+								// now, add obj to temp Readers list l
+								l.add(new Readers(r.get(j), i, result[i]));
+								j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+								
+							}
+							
+						}
 					}
+					
+					if (result[i].equals(r.get(j).getLname())) {
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Readers list l
+							l.add(new Readers(r.get(j), i, result[i]));
+							j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateReaderEntry(r.get(j).getId(), r.get(j).getLname(), l)) {
+								// now, add obj to temp Readers list l
+								l.add(new Readers(r.get(j), i, result[i]));
+								j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+								
+							}
+							
+						}
+
+					}
+					
 				}
 			}
+			
+			printSortedResult(l, false);
 
-			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).nameTagToString(result[i])); // print
-			}
 
 		} else {	//ascending(alphabetical) order throughout reader Id, fname and lname
 	
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < r.size(); j++) {
 
-					if (result[i].equals(r.get(j).getId()) 
-							|| result[i].equals(r.get(j).getFname())
-							|| result[i].equals(r.get(j).getLname())) {
+					if (result[i].equals(r.get(j).getId())) {
+						// now, add obj to temp Readers list l
+						l.add(new Readers(r.get(j), i, result[i]));
+						j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+						break;	//exit from nested FOR-LOOP at current index
+					}
+							
+					
+					if (result[i].equals(r.get(j).getFname())) {
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Readers list l
+							l.add(new Readers(r.get(j), i, result[i]));
+							j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateReaderEntry(r.get(j).getId(), r.get(j).getFname(), l)) {
+								// now, add obj to temp Readers list l
+								l.add(new Readers(r.get(j), i, result[i]));
+								j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+								
+							}
+							
+						}
+					}
+					
+					if (result[i].equals(r.get(j).getLname())) {
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Readers list l
+							l.add(new Readers(r.get(j), i, result[i]));
+							j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateReaderEntry(r.get(j).getId(), r.get(j).getLname(), l)) {
+								// now, add obj to temp Readers list l
+								l.add(new Readers(r.get(j), i, result[i]));
+								j = r.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+								
+							}
+							
+						}
 
-						l.add(r.get(j)); // add the matching one into the temp list l
 					}
 				}
 			}
-
-			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).nameTagToString(result[i])); // print
-			}
+			printSortedResult(l, false);
+			
 		}
 	}
 	
 
+	
+	 
 	/**
 	 * method to print the sorted result depending on the sort option selected
 	 * 
@@ -455,71 +1070,168 @@ public class Sort {
 		 */	
 		if (sortOp == 1) {	//ID
 	
-			for (int i = 0; i < b.size(); i++) {
-				System.out.print(b.get(i)); // just print the ref of the original Books list b
-			}
+			printSortedResult(b, true);
 
 		} else if (sortOp == 2) {	//title
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
 					if (result[i].equals(b.get(j).getTitle())) {
-						l.add(b.get(j)); // add the matching one into the temp list l
-					}
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Books list
+							l.add(new Books(b.get(j), i, result[i]));
+							j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getTitle(), l)) {
+								// now, add obj to temp Books list
+								l.add(new Books(b.get(j), i, result[i]));
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+							}
+						}
+					}	
 				}
 			}
-			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).booksSortedToString(result[i])); // print
-			}
+			
+			printSortedResult(l, false);
 
 		} else if (sortOp == 3) {	//author
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
 					if (result[i].equals(b.get(j).getAuthor())) {
-						l.add(b.get(j)); // add the matching one into the temp list l
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Books list
+							l.add(new Books(b.get(j), i, result[i]));
+							j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getAuthor(), l)) {
+								// now, add obj to temp Books list
+								l.add(new Books(b.get(j), i, result[i]));
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+							}
+						}
 					}
 				}
 			}
 
-			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).booksSortedToString(result[i])); // print
-			}
+			printSortedResult(l, false);
 
 		} else if (sortOp == 4) {	//title and author
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
-					if (result[i].equals(b.get(j).getTitle()) || result[i].equals(b.get(j).getAuthor())) {
-
-						l.add(b.get(j)); // add the matching one into the temp list l
+					if (result[i].equals(b.get(j).getTitle())) {
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Books list
+							l.add(new Books(b.get(j), i, result[i]));
+							j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getTitle(), l)) {
+								// now, add obj to temp Books list
+								l.add(new Books(b.get(j), i, result[i]));
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+							}
+						}
 					}
-
+					
+					if (result[i].equals(b.get(j).getAuthor())) {
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Books list
+							l.add(new Books(b.get(j), i, result[i]));
+							j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getAuthor(), l)) {
+								// now, add obj to temp Books list
+								l.add(new Books(b.get(j), i, result[i]));
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+							}
+						}
+					}
 				}
 			}
 
-			for (int i = 0; i < l.size(); i++) {
-				System.out.print(l.get(i).booksSortedToString(result[i])); // print
-			}
+			printSortedResult(l, false);
 			
 		} else {	//sortOp == 5; book Id, title and author
 			for (int i = 0; i < result.length; i++) {
 				for (int j = 0; j < b.size(); j++) {
 
-					if (result[i].equals(b.get(j).getId()) 
-							|| result[i].equals(b.get(j).getTitle()) 
-							|| result[i].equals(b.get(j).getAuthor())) {
+					if (result[i].equals(b.get(j).getId())) {
 
-						l.add(b.get(j)); // add the matching one into the temp list l
+						// now, add obj to temp Books list
+						l.add(new Books(b.get(j), i, result[i]));
+						j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+						break;	//exit from nested FOR-LOOP at current index
+					}
+					
+					if (result[i].equals(b.get(j).getTitle())) {
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Books list
+							l.add(new Books(b.get(j), i, result[i]));
+							j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getTitle(), l)) {
+								// now, add obj to temp Books list
+								l.add(new Books(b.get(j), i, result[i]));
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+							}
+						}
+					}
+					
+					if (result[i].equals(b.get(j).getAuthor())) {
+						
+						if(l.size() == 0) {
+							
+							// now, add obj to temp Books list
+							l.add(new Books(b.get(j), i, result[i]));
+							j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+							break;	//exit from nested FOR-LOOP at current index
+							
+						}else {
+							
+							if(filterDuplicateBookEntry(b.get(j).getId(), b.get(j).getAuthor(), l)) {
+								// now, add obj to temp Books list
+								l.add(new Books(b.get(j), i, result[i]));
+								j = b.size()-1;	//point j to be at the end of nested FOR-LOOP
+								break;	//exit from nested FOR-LOOP at current index
+							}
+						}
 					}
 
 				}
 			}
 
-			for (int i = 0; i < l.size(); i++) {
-
-				System.out.print(l.get(i).booksSortedToString(result[i])); // print
-			}
+			printSortedResult(l, false);
 		}
 		
 	}
