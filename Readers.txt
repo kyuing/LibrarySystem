@@ -1,5 +1,5 @@
 readerID | first name | last name | currentRent
-R01#Dulce#Abril#RT02 RT03 RT04
+R01#Dulce#Abril#RT03 RT04
 R02#Mara#Hashimoto#none
 R03#Philip#Gent#none
 R04#Kathleen#Hanner#none
